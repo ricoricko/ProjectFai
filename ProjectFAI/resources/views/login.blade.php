@@ -118,13 +118,14 @@
         </div>
 
         <div class="login">
-            <form action="" method="post">
-                @csrf
-                <label for="chk" aria-hidden="true">Login</label>
-                <input type="text" name="username" id="username" placeholder="username">
-                <input type="password" name="password" id="password" placeholder="password">
-                <button>Login</button>
-            </form>
+        <form action="/login" method="post">
+    @csrf
+    <label for="chk" aria-hidden="true">Login</label>
+    <input type="text" name="username" id="username" placeholder="username" required>
+    <input type="password" name="password" id="password" placeholder="password" required>
+    <button type="submit">Login</button>
+</form>
+
         </div>
     </div>
 

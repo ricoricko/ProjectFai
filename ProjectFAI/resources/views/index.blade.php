@@ -47,16 +47,15 @@
           <i class="bi bi-phone d-flex align-items-center d-none d-lg-block"><span>+62 81234567890</span></i>
           <i class="bi bi-clock ms-4 d-none d-lg-flex align-items-center"><span>Mon-Sat: 11:00 AM - 23:00 PM</span></i>
         </div>
-        <a href="#book-a-table" class="cta-btn">Order</a>
+        <a href="/menu" class="cta-btn">Order</a>
       </div>
-    </div><!-- End Top Bar -->
+    </div>
 
     <div class="branding d-flex align-items-cente">
 
       <div class="container position-relative d-flex align-items-center justify-content-between">
         <a href="index.html" class="logo d-flex align-items-center">
-          <!-- Uncomment the line below if you also wish to use an image logo -->
-          <!-- <img src="assets/img/logo.png" alt=""> -->
+
           <h1 class="sitename">Urban Cafe</h1>
         </a>
 
@@ -99,7 +98,6 @@
 
   <main class="main">
 
-    <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
 
       <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
@@ -114,7 +112,7 @@
               <a href="#book-a-table" class="btn-get-started">Book a table</a>
             </div>
           </div>
-        </div><!-- End Carousel Item -->
+        </div>
 
         <div class="carousel-item">
           <img src="assets/img/hero-carousel/hero-carousel-2.jpg" alt="">
