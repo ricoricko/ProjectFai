@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.2.1 (64 bit)
-MySQL - 10.4.32-MariaDB : Database - projectfai
+MySQL - 10.4.28-MariaDB : Database - projectfai
 *********************************************************************
 */
 
@@ -133,6 +133,33 @@ CREATE TABLE `produk` (
 
 /*Data for the table `produk` */
 
+/*Table structure for table `resep` */
+
+DROP TABLE IF EXISTS `resep`;
+
+CREATE TABLE `resep` (
+  `id_resep` int(11) DEFAULT NULL,
+  `id_stok` int(11) DEFAULT NULL,
+  `jumlah_stok` int(11) DEFAULT NULL,
+  KEY `id_stok` (`id_stok`),
+  CONSTRAINT `resep_ibfk_1` FOREIGN KEY (`id_stok`) REFERENCES `stok` (`id_stok`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `resep` */
+
+/*Table structure for table `stok` */
+
+DROP TABLE IF EXISTS `stok`;
+
+CREATE TABLE `stok` (
+  `id_stok` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_stok` varchar(255) DEFAULT NULL,
+  `jumlah_stok` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_stok`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `stok` */
+
 /*Table structure for table `supplier` */
 
 DROP TABLE IF EXISTS `supplier`;
@@ -175,17 +202,17 @@ CREATE TABLE `transaksi` (
   PRIMARY KEY (`id_transaksi`),
   KEY `id_user` (`id_user`),
   KEY `id_menu` (`id_menu`),
-  CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`),
+  CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
   CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `transaksi` */
 
-/*Table structure for table `user` */
+/*Table structure for table `users` */
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `users`;
 
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `id_user` int(50) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
@@ -193,12 +220,13 @@ CREATE TABLE `user` (
   `email` varchar(255) DEFAULT NULL,
   `phone` varbinary(255) DEFAULT NULL,
   `id_member` int(50) DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_user`),
   KEY `id_member` (`id_member`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`)
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `user` */
+/*Data for the table `users` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
