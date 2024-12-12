@@ -1,14 +1,16 @@
 <?php
-use App\Http\Controllers\AuthController;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
 });
 
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::post('/login', function () {
+
+    return redirect('/index');
+});
 
 Route::get('/index', function () {
     return view('index');
@@ -21,3 +23,10 @@ Route::get('/menu', function () {
 Route::get('/payment', function () {
     return view('payment');
 });
+Route::get('/admin', function () {
+    return view('admin');
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
