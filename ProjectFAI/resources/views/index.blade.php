@@ -40,7 +40,8 @@
 <body class="index-page">
 
   <header id="header" class="header fixed-top">
-
+    <h1>Welcome, {{ session('username') }}</h1>
+    <a href="/logout">logout</a>
     <div class="topbar d-flex align-items-center">
       <div class="container d-flex justify-content-end justify-content-md-between">
         <div class="contact-info d-flex align-items-center">

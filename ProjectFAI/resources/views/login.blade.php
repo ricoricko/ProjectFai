@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
     <style>
-        body{
+        body {
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,7 +16,7 @@
             font-family: 'Jost', sans-serif;
             background: linear-gradient(to bottom, #fbd3b6, #f7c08a, #fdebd0);
         }
-        .main{
+        .main {
             width: 350px;
             height: 600px;
             overflow: hidden;
@@ -24,16 +24,15 @@
             border-radius: 10px;
             box-shadow: 5px 20px 50px #000;
         }
-
-        #chk{
+        #chk {
             display: none;
         }
-        .signup{
+        .signup {
             position: relative;
             width: 100%;
             height: 100%;
         }
-        label{
+        label {
             color: #f3920b;
             font-size: 2.3em;
             justify-content: center;
@@ -43,7 +42,7 @@
             cursor: pointer;
             transition: .5s ease-in-out;
         }
-        input{
+        input {
             width: 60%;
             height: 20px;
             background: #f7e6d4;
@@ -55,7 +54,7 @@
             outline: none;
             border-radius: 5px;
         }
-        button{
+        button {
             width: 60%;
             height: 40px;
             margin: 10px auto;
@@ -72,39 +71,52 @@
             transition: .2s ease-in;
             cursor: pointer;
         }
-        button:hover{
+        button:hover {
             background: #ffa559;
         }
-        .login{
+        .login {
             height: 560px;
             background: #f7e6d4;
             border-radius: 60% / 10%;
             transform: translateY(-180px);
             transition: .8s ease-in-out;
         }
-        .login label{
+        .login label {
             color: #ff8c42;
             transform: scale(.6);
         }
-        #chk:checked ~ .login{
+        #chk:checked ~ .login {
             transform: translateY(-600px);
         }
-        #chk:checked ~ .login label{
+        #chk:checked ~ .login label {
             transform: scale(1);
         }
-        #chk:checked ~ .signup label{
+        #chk:checked ~ .signup label {
             transform: scale(.6);
         }
+        .alert {
+            padding: 15px;
+            background-color: #f44336;
+            color: white;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .alert.success {
+            background-color: #4CAF50;
+        }
+        .alert.error {
+            background-color: #f44336;
+        }
     </style>
-
 </head>
 <body>
-    
     <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+        
+        
 
-        <input type="checkbox" name="" id="chk" aria-hidden="true">
         <div class="signup">
-            <form action="" method="post">
+            <form action="{{ route('register') }}" method="post">
                 @csrf
                 <label for="chk" aria-hidden="true">Sign Up</label>
                 <input type="text" name="username" id="username" placeholder="username" required>
@@ -114,20 +126,28 @@
                 <input type="text" name="phone" id="phone" placeholder="Phone" required>
                 <button>Sign Up</button>
             </form>
-
         </div>
 
         <div class="login">
-        <form action="/login" method="post">
-    @csrf
-    <label for="chk" aria-hidden="true">Login</label>
-    <input type="text" name="username" id="username" placeholder="username" required>
-    <input type="password" name="password" id="password" placeholder="password" required>
-    <button type="submit">Login</button>
-</form>
-
+            <form action="/login" method="post">
+                @csrf
+                <label for="chk" aria-hidden="true">Login</label>
+                <input type="text" name="username" id="username" placeholder="username" required>
+                <input type="password" name="password" id="password" placeholder="password" required>
+                <button type="submit">Login</button>
+            </form>
         </div>
     </div>
-
+    @if(session('success'))
+            <div class="alert success">
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        @if($errors->any())
+            <div class="alert error">
+                {{ $errors->first() }}
+            </div>
+        @endif
 </body>
 </html>
