@@ -183,6 +183,7 @@ CREATE TABLE `topping` (
   `nama_topping` varchar(255) DEFAULT NULL,
   `harga_topping` int(50) DEFAULT NULL,
   `image_topping` varchar(255) DEFAULT NULL,
+  `tipe` int(255) DEFAULT NULL,
   PRIMARY KEY (`id_topping`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
