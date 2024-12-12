@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -7,10 +8,6 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::post('/login', function () {
-
-    return redirect('/index');
-});
 
 Route::get('/index', function () {
     return view('index');
@@ -30,3 +27,8 @@ Route::get('/admin', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout']);
