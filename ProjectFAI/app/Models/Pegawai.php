@@ -15,10 +15,11 @@ class Pegawai extends Model
 
     protected $fillable = [
          // Pastikan kamu memiliki kolom 'username' di tabel pegawai
-        'nama_pegawai',
-        'alamat_pegawai',
-        'status_pegawai',
-        'password_pegawai',
+         'nama_pegawai',
+         'alamat_pegawai',
+         'status_pegawai',
+         'password_pegawai',
+         'gaji_pegawai',
     ];
 
     public $timestamps = false;

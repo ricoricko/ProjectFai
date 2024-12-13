@@ -32,3 +32,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout']);
+
+
+Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
+Route::resource('admin', ManagerController::class); 
+
+Route::get('/admin/create', [ManagerController::class, 'create'])->name('admin.create');
+Route::post('/admin', [ManagerController::class, 'store'])->name('admin.store');
