@@ -12,9 +12,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|unique:user',
-            'email' => 'required|string|email|unique:user',
-            'password' => 'required|string|min:8',
+            'username' => 'required|string|unique:users',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:2',
             'phone' => 'required|string',
             'name' => 'required|string',
         ]);
@@ -22,7 +22,7 @@ class AuthController extends Controller
         $username = $request->input('username');
 
         // Pengecekan apakah username ada di tabel pegawai
-        $pegawaiExists = Pegawai::where('username', $username)->exists();
+        $pegawaiExists = Pegawai::where('nama_pegawai', $username)->exists();
         if ($pegawaiExists) {
             return redirect('/')->with('error', 'Username already exists in pegawai!');
         }
