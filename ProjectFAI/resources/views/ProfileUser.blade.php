@@ -1,4 +1,4 @@
-<!-- resources/views/ProfileUser.blade.php -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +47,11 @@
         @endif
         
         <button type="submit">Update Profile</button>
+        
+    </form>
+    <form action="{{ route('profile.delete') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account?');">
+        @csrf
+        <button type="submit">Delete Account</button>
     </form>
 </body>
 </html>

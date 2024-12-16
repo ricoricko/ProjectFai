@@ -34,6 +34,7 @@ class AuthController extends Controller
             'password' => $request->input('password'),
             'phone' => $request->input('phone'),
             'nama' => $request->input('name'),
+            'status' => '1',
         ]);
 
         return redirect('/')->with('success', 'Account created successfully! Please login.');
@@ -48,6 +49,7 @@ class AuthController extends Controller
 
         $user = User::where('username', $request->username)
                     ->where('password', $request->password)
+                    ->where('status', '1') 
                     ->first();
 
         if ($user) {
@@ -100,5 +102,15 @@ class AuthController extends Controller
         $user->save();
 
         return redirect()->route('profile')->with('success', 'Profile updated successfully.');
+    }
+    public function deleteAccount()
+    {
+        $user = User::find(Session::get('user_id'));
+        $user->status = '0'; 
+        $user->save();
+
+        Session::flush();
+
+        return redirect('/')->with('success', 'Your account has been deactivated.');
     }
 }

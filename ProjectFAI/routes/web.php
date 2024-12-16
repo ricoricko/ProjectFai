@@ -42,3 +42,4 @@ Route::post('/admin', [ManagerController::class, 'store'])->name('admin.store');
 
 Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
 Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+Route::post('/profile/delete', [AuthController::class, 'deleteAccount'])->name('profile.delete');
