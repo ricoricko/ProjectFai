@@ -4,17 +4,24 @@
 
 @section('content_header')
     <h1>Dashboard</h1>
-    <button>
-        <a  href="/admin/produk">Produk</a>
+    <button class="btn btn-primary">
+        <a style="color: white" href="/admin/produk">Produk</a>
 
     </button>
-    <button>
-        <a  href="/admin">Admin</a>
+    <button class="btn btn-success">
+        <a style="color: white" href="/admin">Admin</a>
+
+    </button>
+    <button class="btn btn-success">
+        <a style="color: white" href="/admin/kategori">Kategori</a>
 
     </button>
 @stop
 
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <p>Welcome to this beautiful admin panel.</p>
     <table border="1">
         <thead>

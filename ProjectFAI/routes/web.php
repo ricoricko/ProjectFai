@@ -30,6 +30,14 @@ Route::put('/admin/produk/update/{id}', [ManagerController::class, 'updateProduk
 Route::delete('/admin/produk/delete/{id}', [ManagerController::class, 'deleteProduk'])->name('admin.deleteproduk');
 
 
+
+Route::get('/admin/kategori', [ManagerController::class, 'indexkategori'])->name('admin.kategori');
+Route::post('/admin/kategori/add', [ManagerController::class, 'addkategori'])->name('admin.addkategori');
+Route::put('/admin/kategori/update/{id}', [ManagerController::class, 'updateKategori'])->name('admin.updatekategori');
+Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
+
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
