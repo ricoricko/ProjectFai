@@ -4,6 +4,14 @@
 
 @section('content_header')
     <h1>Dashboard</h1>
+    <button>
+        <a  href="/admin/produk">Produk</a>
+
+    </button>
+    <button>
+        <a  href="/admin">Admin</a>
+
+    </button>
 @stop
 
 @section('content')

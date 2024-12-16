@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ManagerController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,10 +24,16 @@ Route::get('/payment', function () {
 Route::get('/admin', function () {
     return view('admin');
 });
+Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
+Route::post('/admin/produk/add', [ManagerController::class, 'addproduk'])->name('admin.addproduk');
+Route::put('/admin/produk/update/{id}', [ManagerController::class, 'updateProduk'])->name('admin.updateproduk');
+Route::delete('/admin/produk/delete/{id}', [ManagerController::class, 'deleteProduk'])->name('admin.deleteproduk');
+
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');

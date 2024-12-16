@@ -34,7 +34,7 @@ class AuthController extends Controller
             'password' => $request->input('password'),
             'phone' => $request->input('phone'),
             'nama' => $request->input('name'),
-            'status' => '1',
+            
         ]);
 
         return redirect('/')->with('success', 'Account created successfully! Please login.');
@@ -46,31 +46,36 @@ class AuthController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-
+    
         $user = User::where('username', $request->username)
                     ->where('password', $request->password)
                     ->where('status', '1') 
                     ->first();
-
+    
         if ($user) {
             Session::put('user_id', $user->id_user);
             Session::put('username', $user->username);
             return redirect('/index');
         }
-
+    
         // Cek apakah user berada di tabel pegawai
         $pegawai = Pegawai::where('nama_pegawai', $request->username)
                          ->where('password_pegawai', $request->password)
                          ->first();
-
+    
         if ($pegawai) {
             Session::put('pegawai_id', $pegawai->id_pegawai);
             Session::put('pegawai_name', $pegawai->nama_pegawai);
-            return redirect('/menu');
+            if ($pegawai->status_pegawai == '1') {
+                return redirect('/admin');
+            } else {
+                return redirect('/menu');
+            }
         } else {
             return redirect('/')->withErrors(['loginError' => 'Login failed']);
         }
     }
+    
 
     public function logout()
     {
