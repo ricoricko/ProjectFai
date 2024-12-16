@@ -75,4 +75,30 @@ class AuthController extends Controller
         Session::flush();
         return redirect('/');
     }
+    public function profile()
+    {
+        $user = User::find(Session::get('user_id'));
+        return view('ProfileUser', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(Session::get('user_id'));
+        
+        $request->validate([
+            'nama' => 'required|string',
+            'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ]);
+
+        $user->nama = $request->input('nama');
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+            $user->img = $filename;
+        }
+        $user->save();
+
+        return redirect()->route('profile')->with('success', 'Profile updated successfully.');
+    }
 }

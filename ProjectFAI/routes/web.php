@@ -39,3 +39,6 @@ Route::resource('admin', ManagerController::class);
 
 Route::get('/admin/create', [ManagerController::class, 'create'])->name('admin.create');
 Route::post('/admin', [ManagerController::class, 'store'])->name('admin.store');
+
+Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
