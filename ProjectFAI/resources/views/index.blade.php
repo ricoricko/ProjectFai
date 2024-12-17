@@ -35,12 +35,52 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
+<style>
+  .profile-picture {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+  }
+  .profile-initials {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: orange;
+      text-align: center;
+      line-height: 100px;
+      font-size: 40px;
+      color: white;
+  }
+</style>
 
 
 <body class="index-page">
 
   <header id="header" class="header fixed-top">
+    <h1>Welcome, {{ session('username') }}</h1>
+        {{-- ================================================ --}}
+        @php
+        $user = \App\Models\User::find(session('user_id'));
+        $initials = strtoupper(substr(explode(' ', $user->nama)[0], 0, 1)) . (isset(explode(' ', $user->nama)[1]) ? strtoupper(substr(explode(' ', $user->nama)[1], 0, 1)) : strtoupper(substr($user->nama, 1, 1)));
+    @endphp
 
+    <div style="text-align: center;">
+        @if ($user->img)
+            <a href="{{ route('profile') }}">
+                <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture">
+            </a>
+        @else
+            <a href="{{ route('profile') }}">
+                <div class="profile-initials">
+                    {{ $initials }}
+                </div>
+            </a>
+        @endif
+    </div>
+
+{{-- ================================================ --}}
+    <a href="/logout">logout</a>
     <div class="topbar d-flex align-items-center">
       <div class="container d-flex justify-content-end justify-content-md-between">
         <div class="contact-info d-flex align-items-center">

@@ -1,6 +1,6 @@
 /*
 SQLyog Community v13.2.1 (64 bit)
-MySQL - 10.4.28-MariaDB : Database - projectfai
+MySQL - 10.4.32-MariaDB : Database - projectfai
 *********************************************************************
 */
 
@@ -21,14 +21,14 @@ USE `projectfai`;
 DROP TABLE IF EXISTS `history`;
 
 CREATE TABLE `history` (
-  `nota_pesanan` int(11) NOT NULL,
-  `id_produk` int(11) DEFAULT NULL,
-  `waktu` date DEFAULT NULL,
-  `id_pelanggan` int(11) DEFAULT NULL,
-  `id_pegawai` int(11) DEFAULT NULL,
-  `status_nota` int(11) DEFAULT NULL,
+  `nota_pesanan` INT(11) NOT NULL,
+  `id_produk` INT(11) DEFAULT NULL,
+  `waktu` DATE DEFAULT NULL,
+  `id_pelanggan` INT(11) DEFAULT NULL,
+  `id_pegawai` INT(11) DEFAULT NULL,
+  `status_nota` INT(11) DEFAULT NULL,
   PRIMARY KEY (`nota_pesanan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `history` */
 
@@ -37,10 +37,10 @@ CREATE TABLE `history` (
 DROP TABLE IF EXISTS `kategori`;
 
 CREATE TABLE `kategori` (
-  `id_kategori` int(50) NOT NULL AUTO_INCREMENT,
-  `nama_kategori` varchar(255) DEFAULT NULL,
+  `id_kategori` INT(50) NOT NULL AUTO_INCREMENT,
+  `nama_kategori` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id_kategori`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `kategori` */
 
@@ -49,12 +49,12 @@ CREATE TABLE `kategori` (
 DROP TABLE IF EXISTS `member`;
 
 CREATE TABLE `member` (
-  `id_member` int(50) NOT NULL AUTO_INCREMENT,
-  `nama_member` varchar(255) DEFAULT NULL,
-  `potongan_member` int(50) DEFAULT NULL,
-  `minTrans_member` int(50) DEFAULT NULL,
+  `id_member` INT(50) NOT NULL AUTO_INCREMENT,
+  `nama_member` VARCHAR(255) DEFAULT NULL,
+  `potongan_member` INT(50) DEFAULT NULL,
+  `minTrans_member` INT(50) DEFAULT NULL,
   PRIMARY KEY (`id_member`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `member` */
 
@@ -63,15 +63,15 @@ CREATE TABLE `member` (
 DROP TABLE IF EXISTS `menu`;
 
 CREATE TABLE `menu` (
-  `id_menu` int(50) NOT NULL AUTO_INCREMENT,
-  `nama_menu` varchar(255) DEFAULT NULL,
-  `kategori_menu` int(50) DEFAULT NULL,
-  `harga_menu` int(50) DEFAULT NULL,
-  `image_menu` varchar(255) DEFAULT NULL,
+  `id_menu` INT(50) NOT NULL AUTO_INCREMENT,
+  `nama_menu` VARCHAR(255) DEFAULT NULL,
+  `kategori_menu` INT(50) DEFAULT NULL,
+  `harga_menu` INT(50) DEFAULT NULL,
+  `image_menu` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id_menu`),
   KEY `kategori_menu` (`kategori_menu`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`kategori_menu`) REFERENCES `kategori` (`id_kategori`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `menu` */
 
@@ -80,40 +80,27 @@ CREATE TABLE `menu` (
 DROP TABLE IF EXISTS `pegawai`;
 
 CREATE TABLE `pegawai` (
-  `id_pegawai` int(50) NOT NULL AUTO_INCREMENT,
-  `nama_pegawai` varchar(255) DEFAULT NULL,
-  `alamat_pegawai` varchar(255) DEFAULT NULL,
-  `status_pegawai` int(50) DEFAULT NULL,
+  `id_pegawai` INT(50) NOT NULL AUTO_INCREMENT,
+  `nama_pegawai` VARCHAR(255) DEFAULT NULL,
+  `alamat_pegawai` VARCHAR(255) DEFAULT NULL,
+  `status_pegawai` INT(50) DEFAULT NULL,
+  `password_pegawai` VARCHAR(255) DEFAULT NULL,
+  `gaji_pegawai` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id_pegawai`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `pegawai` */
-
-/*Table structure for table `pelanggan` */
-
-DROP TABLE IF EXISTS `pelanggan`;
-
-CREATE TABLE `pelanggan` (
-  `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_pelanggan` varchar(255) DEFAULT NULL,
-  `jabatan` varchar(255) DEFAULT NULL,
-  `telp` varchar(225) DEFAULT NULL,
-  `email` varchar(225) DEFAULT NULL,
-  PRIMARY KEY (`id_pelanggan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-/*Data for the table `pelanggan` */
 
 /*Table structure for table `pesanan` */
 
 DROP TABLE IF EXISTS `pesanan`;
 
 CREATE TABLE `pesanan` (
-  `nota_pesanan` int(11) NOT NULL,
-  `id_produk` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
+  `nota_pesanan` INT(11) NOT NULL,
+  `id_produk` INT(11) DEFAULT NULL,
+  `quantity` INT(11) DEFAULT NULL,
   PRIMARY KEY (`nota_pesanan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `pesanan` */
 
@@ -122,14 +109,14 @@ CREATE TABLE `pesanan` (
 DROP TABLE IF EXISTS `produk`;
 
 CREATE TABLE `produk` (
-  `id_produk` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_produk` varchar(255) DEFAULT NULL,
-  `id_kategori` int(11) DEFAULT NULL,
-  `harga` varchar(225) DEFAULT NULL,
-  `stok` int(11) DEFAULT NULL,
-  `id_supplier` int(11) DEFAULT NULL,
+  `id_produk` INT(11) NOT NULL AUTO_INCREMENT,
+  `nama_produk` VARCHAR(255) DEFAULT NULL,
+  `id_kategori` INT(11) DEFAULT NULL,
+  `harga` VARCHAR(225) DEFAULT NULL,
+  `stok` INT(11) DEFAULT NULL,
+  `id_supplier` INT(11) DEFAULT NULL,
   PRIMARY KEY (`id_produk`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `produk` */
 
@@ -138,12 +125,12 @@ CREATE TABLE `produk` (
 DROP TABLE IF EXISTS `resep`;
 
 CREATE TABLE `resep` (
-  `id_resep` int(11) DEFAULT NULL,
-  `id_stok` int(11) DEFAULT NULL,
-  `jumlah_stok` int(11) DEFAULT NULL,
+  `id_resep` INT(11) DEFAULT NULL,
+  `id_stok` INT(11) DEFAULT NULL,
+  `jumlah_stok` INT(11) DEFAULT NULL,
   KEY `id_stok` (`id_stok`),
   CONSTRAINT `resep_ibfk_1` FOREIGN KEY (`id_stok`) REFERENCES `stok` (`id_stok`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `resep` */
 
@@ -152,11 +139,11 @@ CREATE TABLE `resep` (
 DROP TABLE IF EXISTS `stok`;
 
 CREATE TABLE `stok` (
-  `id_stok` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_stok` varchar(255) DEFAULT NULL,
-  `jumlah_stok` int(11) DEFAULT NULL,
+  `id_stok` INT(11) NOT NULL AUTO_INCREMENT,
+  `nama_stok` VARCHAR(255) DEFAULT NULL,
+  `jumlah_stok` INT(11) DEFAULT NULL,
   PRIMARY KEY (`id_stok`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `stok` */
 
@@ -165,12 +152,12 @@ CREATE TABLE `stok` (
 DROP TABLE IF EXISTS `supplier`;
 
 CREATE TABLE `supplier` (
-  `id_supplier` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_supplier` varchar(255) DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
-  `telp` varchar(225) DEFAULT NULL,
+  `id_supplier` INT(11) NOT NULL AUTO_INCREMENT,
+  `nama_supplier` VARCHAR(255) DEFAULT NULL,
+  `alamat` VARCHAR(255) DEFAULT NULL,
+  `telp` VARCHAR(225) DEFAULT NULL,
   PRIMARY KEY (`id_supplier`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `supplier` */
 
@@ -183,9 +170,8 @@ CREATE TABLE `topping` (
   `nama_topping` varchar(255) DEFAULT NULL,
   `harga_topping` int(50) DEFAULT NULL,
   `image_topping` varchar(255) DEFAULT NULL,
-  `tipe` int(255) DEFAULT NULL,
   PRIMARY KEY (`id_topping`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `topping` */
 
@@ -194,18 +180,18 @@ CREATE TABLE `topping` (
 DROP TABLE IF EXISTS `transaksi`;
 
 CREATE TABLE `transaksi` (
-  `id_transaksi` int(50) NOT NULL AUTO_INCREMENT,
-  `id_user` int(50) DEFAULT NULL,
-  `id_menu` int(50) DEFAULT NULL,
-  `jumlah` int(50) DEFAULT NULL,
-  `tanggal` date DEFAULT NULL,
-  `total_harga` int(50) DEFAULT NULL,
+  `id_transaksi` INT(50) NOT NULL AUTO_INCREMENT,
+  `id_user` INT(50) DEFAULT NULL,
+  `id_menu` INT(50) DEFAULT NULL,
+  `jumlah` INT(50) DEFAULT NULL,
+  `tanggal` DATE DEFAULT NULL,
+  `total_harga` INT(50) DEFAULT NULL,
   PRIMARY KEY (`id_transaksi`),
   KEY `id_user` (`id_user`),
   KEY `id_menu` (`id_menu`),
   CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
   CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `transaksi` */
 
@@ -214,20 +200,20 @@ CREATE TABLE `transaksi` (
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id_user` int(50) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `phone` varbinary(255) DEFAULT NULL,
-  `id_member` int(50) DEFAULT NULL,
-  `img` varchar(255) DEFAULT NULL,
+  `id_user` INT(50) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) DEFAULT NULL,
+  `password` VARCHAR(255) DEFAULT NULL,
+  `nama` VARCHAR(255) DEFAULT NULL,
+  `email` VARCHAR(255) DEFAULT NULL,
+  `phone` VARBINARY(255) DEFAULT NULL,
+  `id_member` INT(50) DEFAULT NULL,
+  `img` VARCHAR(255) DEFAULT NULL,
+  `status` VARCHAR(2) DEFAULT NULL,
   PRIMARY KEY (`id_user`),
   KEY `id_member` (`id_member`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `users` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
