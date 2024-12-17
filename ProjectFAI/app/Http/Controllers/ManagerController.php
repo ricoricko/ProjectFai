@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Pegawai;
 use App\Models\Produk;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -81,10 +82,17 @@ class ManagerController extends Controller
         $kategori = Kategori::all();
         return view('kategori', compact('kategori'));
     }
-
+    
     public function addKategori(Request $request)
     {
         Kategori::create($request->all());
         return redirect()->route('admin.kategori')->with('success', 'Data Produk berhasil ditambahkan.');
+    }
+
+
+
+    public function indexUsers(){
+        $users = User::all();
+        return view('adminusers', compact('users'));
     }
 }

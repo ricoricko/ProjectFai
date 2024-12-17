@@ -4,17 +4,19 @@
 
 @section('content_header')
     <h1>Dashboard</h1>
-    <button class="btn btn-secondary">
-        <a style="color: white"  href="/admin/produk">Produk</a>
-
-    </button>
     <button class="btn btn-primary">
-        <a style="color: white"  href="/admin">Admin</a>
+        <a style="color: white;text-decoration:none;" href="/admin/produk">Produk</a>
 
     </button>
     <button class="btn btn-success">
-        <a style="color: white" href="/admin/kategori">Kategori</a>
+        <a style="color: white;text-decoration:none;" href="/admin">Admin</a>
 
+    </button>
+    <button class="btn btn-success">
+        <a style="color: white;text-decoration:none;" href="/admin/kategori">Kategori</a>
+    </button>
+    <button class="btn btn-success">
+        <a style="color: white;text-decoration:none;" href="/admin/users">Users</a>
     </button>
 @stop
 

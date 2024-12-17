@@ -36,6 +36,7 @@ Route::post('/admin/kategori/add', [ManagerController::class, 'addkategori'])->n
 Route::put('/admin/kategori/update/{id}', [ManagerController::class, 'updateKategori'])->name('admin.updatekategori');
 Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
 
+Route::get('/admin/users', [ManagerController::class, 'indexUsers'])->name('admin.users');
 
 
 Auth::routes();

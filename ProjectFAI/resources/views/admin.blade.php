@@ -5,16 +5,18 @@
 @section('content_header')
     <h1>Dashboard</h1>
     <button class="btn btn-primary">
-        <a style="color: white" href="/admin/produk">Produk</a>
+        <a style="color: white;text-decoration:none;" href="/admin/produk">Produk</a>
 
     </button>
     <button class="btn btn-success">
-        <a style="color: white" href="/admin">Admin</a>
+        <a style="color: white;text-decoration:none;" href="/admin">Admin</a>
 
     </button>
     <button class="btn btn-success">
-        <a style="color: white" href="/admin/kategori">Kategori</a>
-
+        <a style="color: white;text-decoration:none;" href="/admin/kategori">Kategori</a>
+    </button>
+    <button class="btn btn-success">
+        <a style="color: white;text-decoration:none;" href="/admin/users">Users</a>
     </button>
 @stop
 
@@ -46,14 +48,14 @@
                         <td><input type="text" name="status_pegawai" value="{{ $pgw->status_pegawai }}"></td>
                         <td><input type="number" name="gaji_pegawai" value="{{ $pgw->gaji_pegawai }}"></td>
                         <td>
-                            <button type="submit">Update</button>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </td>
                     </form>
                     <td>
                         <form action="{{ route('admin.destroy', $pgw->id_pegawai) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
                         </form>
                     </td>
                 </tr>

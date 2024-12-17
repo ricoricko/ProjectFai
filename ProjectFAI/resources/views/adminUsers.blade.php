@@ -34,27 +34,43 @@
     </div>
 @endif
 
-<h2>Master Produk</h2>
+<h2>List Users</h2>
 <table border="1">
     <thead>
         <tr>
             <th>ID</th>
+            <th>Username</th>
+            <th>password</th>
             <th>Nama</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
             
             <th colspan="2">Action</th>
             
         </tr>
     </thead>
     <tbody>
-        @foreach ($kategori as $pgw)
+        @foreach ($users as $pgw)
             <tr>
                 
                     
-                    <form action="{{ route('admin.updatekategori', $pgw->id_kategori) }}" method="POST">
+                    <form action="{{ route('admin.updatekategori', $pgw->id_user) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <td>{{ $pgw->id_kategori }}</td>
-                        <td><input type="text" name="nama_produk" value="{{ $pgw->nama_kategori }}"></td>
+                        <td>{{ $pgw->id_user }}</td>
+                        <td><input type="text" name="nama_produk" value="{{ $pgw->username }}" disabled></td>
+                        <td><input type="password" name="password" value="{{ $pgw->password }}" disabled></td>
+                        <td><input type="text" name="nama" value="{{ $pgw->nama }}" ></td>
+                        <td><input type="text" name="email" value="{{ $pgw->email }}" disabled></td>
+                        <td><input type="number" name="phone" value="{{ $pgw->phone }}" disabled></td>
+                        @if ($pgw->status=='1')
+                            
+                            <td>Aktif</td>
+                        @else
+                            <td>Inactive</td>
+                            
+                        @endif
                         
                         <td>
                             <button class="btn btn-success" type="submit">Update</button>
@@ -62,10 +78,10 @@
                     </form>
                     
                     <td>
-                        <form action="{{ route('admin.deletekategori', $pgw->id_kategori) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('admin.deletekategori', $pgw->id_user) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-danger" type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">Delete</button>
+                            <button class="btn btn-danger" type="submit" onclick="return confirm('Apakah Anda yakin ingin menonaktifkan user ini?')">Delete</button>
                         </form>
                     </td>
                 
@@ -75,26 +91,6 @@
 </table>
 <br><br>
 
-
-
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-header">
-            <h4>Add Kategori </h4>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('admin.addkategori') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="nama_produk" class="form-label">Nama kategori</label>
-                    <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Add</button>
-            </form>
-        </div>
-    </div>
-</div>
 @stop
 
 @section('css')
