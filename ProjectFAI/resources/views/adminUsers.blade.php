@@ -18,6 +18,9 @@
     <button class="btn btn-success">
         <a style="color: white;text-decoration:none;" href="/admin/users">Users</a>
     </button>
+    <button class="btn btn-success">
+        <a style="color: white;text-decoration:none;" href="/admin/menu">Menu</a>
+    </button>
 @stop
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -45,16 +48,16 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Status</th>
-            
+
             <th colspan="2">Action</th>
-            
+
         </tr>
     </thead>
     <tbody>
         @foreach ($users as $pgw)
             <tr>
-                
-                    
+
+
                     <form action="{{ route('admin.updatekategori', $pgw->id_user) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -65,18 +68,18 @@
                         <td><input type="text" name="email" value="{{ $pgw->email }}" disabled></td>
                         <td><input type="number" name="phone" value="{{ $pgw->phone }}" disabled></td>
                         @if ($pgw->status=='1')
-                            
+
                             <td>Aktif</td>
                         @else
                             <td>Inactive</td>
-                            
+
                         @endif
-                        
+
                         <td>
                             <button class="btn btn-success" type="submit">Update</button>
                         </td>
                     </form>
-                    
+
                     <td>
                         <form action="{{ route('admin.deletekategori', $pgw->id_user) }}" method="POST" style="display:inline;">
                             @csrf
@@ -84,7 +87,7 @@
                             <button class="btn btn-danger" type="submit" onclick="return confirm('Apakah Anda yakin ingin menonaktifkan user ini?')">Delete</button>
                         </form>
                     </td>
-                
+
             </tr>
         @endforeach
     </tbody>

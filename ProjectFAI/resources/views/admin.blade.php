@@ -18,6 +18,9 @@
     <button class="btn btn-success">
         <a style="color: white;text-decoration:none;" href="/admin/users">Users</a>
     </button>
+    <button class="btn btn-success">
+        <a style="color: white;text-decoration:none;" href="/admin/menu">Menu</a>
+    </button>
 @stop
 
 @section('content')
@@ -64,7 +67,7 @@
     </table>
     <a href="{{ route('admin.create') }}"> <button>Tambah Pegawai</button> </a>
 
-    
+
 @stop
 
 @section('css')

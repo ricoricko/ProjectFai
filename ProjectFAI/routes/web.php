@@ -43,7 +43,8 @@ Route::put('/admin/kategori/update/{id}', [ManagerController::class, 'updateKate
 Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
 
 Route::get('/admin/users', [ManagerController::class, 'indexUsers'])->name('admin.users');
-
+Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
+Route::post('/admin-addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
 
 Auth::routes();
 
@@ -57,7 +58,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
-Route::resource('admin', ManagerController::class); 
+Route::resource('admin', ManagerController::class);
 
 Route::get('/admin/create', [ManagerController::class, 'create'])->name('admin.create');
 Route::post('/admin', [ManagerController::class, 'store'])->name('admin.store');
