@@ -4,23 +4,29 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ManagerController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     return view('login');
 });
+Route::middleware('auth')->group(function () {
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+});
 
+Route::get('/payment', [CartController::class, 'payment'])->name('payment');
 
 Route::get('/index', function () {
     return view('index');
 });
-
-Route::get('/menu', function () {
-    return view('menu');
-});
-
+Route::get('/menu', [MenuController::class, 'index']);
 Route::get('/payment', function () {
     return view('payment');
-});
+})->name('payment');
+
 Route::get('/admin', function () {
     return view('admin');
 });
