@@ -15,10 +15,12 @@ class Kategori extends Model
 
 
     protected $fillable = [
-        // Pastikan kamu memiliki kolom 'username' di tabel pegawai
         'nama_kategori',
         
    ];
-
+   public function menus()
+   {
+       return $this->hasMany(Menu::class, 'kategori_menu', 'id_kategori');
+   }
    public $timestamps = false;
 }
