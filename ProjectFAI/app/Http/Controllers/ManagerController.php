@@ -101,8 +101,6 @@ class ManagerController extends Controller
             'kategori_menu' => $request->kategori_menu,
             'image_menu' => $path
         ]);
-
-        // Add entries to the resep table
         foreach ($request->input('produk') as $produkId) {
             Resep::create([
                 'id_menu' => $menu->id_menu,
