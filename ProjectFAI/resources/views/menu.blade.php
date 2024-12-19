@@ -67,7 +67,7 @@
                 @if($menu->kategori_menu == $category->id_kategori)
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
-                        <img src="{{ asset($menu->image_menu) }}" class="card-img-top" alt="{{ $menu->nama_menu }}">
+                        <img src="{{ asset($menu->image_menu)}}" class="card-img-top" alt="{{ $menu->nama_menu }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $menu->nama_menu }}</h5>
                             <p class="card-text">Harga: Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</p>

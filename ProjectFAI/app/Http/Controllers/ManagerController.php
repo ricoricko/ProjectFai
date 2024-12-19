@@ -93,13 +93,14 @@ class ManagerController extends Controller
         if ($request->hasFile('image_menu')) {
             $image = $request->file('image_menu');
             $imageName = time().'.'.$image->getClientOriginalExtension();
-            $path = $image->storeAs('public/storage/menu', $imageName);
+            $path = $image->storeAs('menu', $imageName, 'public');
+            $newpath = 'storage/menu/' . $imageName;
         }
         $menu = Menu::create([
             'nama_menu' => $request->nama_menu,
             'harga_menu' => $request->harga_menu,
             'kategori_menu' => $request->kategori_menu,
-            'image_menu' => $path
+            'image_menu' => $newpath
         ]);
         foreach ($request->input('produk') as $produkId) {
             Resep::create([
