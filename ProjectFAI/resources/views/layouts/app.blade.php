@@ -29,8 +29,15 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+                    <button class="btn btn-primary">
+                        <a style="color: white;text-decoration:none;" href="/admin/produk">Produk</a>
 
+                    </button>
+                    <button class="btn btn-success">
+                        <a style="color: white;text-decoration:none;" href="/admin">Admin</a>
+
+                    </button>
+                    <ul class="navbar-nav me-auto">
                     </ul>
 
                     <!-- Right Side Of Navbar -->

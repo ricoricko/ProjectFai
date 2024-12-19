@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
     .card-img-top {
-        width: 100%;       
-        height: 300px;     
-        object-fit: cover; 
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
     }
 </style>
 

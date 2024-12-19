@@ -93,7 +93,7 @@ class ManagerController extends Controller
         if ($request->hasFile('image_menu')) {
             $image = $request->file('image_menu');
             $imageName = time().'.'.$image->getClientOriginalExtension();
-            $path = $image->storeAs('public/images', $imageName);
+            $path = $image->storeAs('public/storage/menu', $imageName);
         }
         $menu = Menu::create([
             'nama_menu' => $request->nama_menu,
