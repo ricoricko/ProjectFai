@@ -37,104 +37,83 @@
 </head>
 <style>
   .profile-picture {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
       object-fit: cover;
+      border: 2px solid #8b4513;
   }
   .profile-initials {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: orange;
-      text-align: center;
-      line-height: 100px;
-      font-size: 40px;
-      color: white;
+      font-size: 20px;
+      font-weight: bold;
   }
+  .logout-link {
+      color: #8b4513;
+      text-decoration: none;
+      font-weight: 500;
+  }
+  .logout-link:hover {
+      color: #5a3e2b;
+  }
+
 </style>
 
 
 <body class="index-page">
 
   <header id="header" class="header fixed-top">
-    <h1>Welcome, {{ session('username') }}</h1>
-        {{-- ================================================ --}}
-        @php
-        $user = \App\Models\User::find(session('user_id'));
-        $initials = strtoupper(substr(explode(' ', $user->nama)[0], 0, 1)) . (isset(explode(' ', $user->nama)[1]) ? strtoupper(substr(explode(' ', $user->nama)[1], 0, 1)) : strtoupper(substr($user->nama, 1, 1)));
-    @endphp
-
-    <div style="text-align: center;">
-        @if ($user->img)
-            <a href="{{ route('profile') }}">
-                <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture">
-            </a>
-        @else
-            <a href="{{ route('profile') }}">
-                <div class="profile-initials">
-                    {{ $initials }}
-                </div>
-            </a>
-        @endif
-    </div>
-
-{{-- ================================================ --}}
-    <a href="/logout">logout</a>
     <div class="topbar d-flex align-items-center">
-      <div class="container d-flex justify-content-end justify-content-md-between">
-        <div class="contact-info d-flex align-items-center">
-          <i class="bi bi-phone d-flex align-items-center d-none d-lg-block"><span>+62 81234567890</span></i>
-          <i class="bi bi-clock ms-4 d-none d-lg-flex align-items-center"><span>Mon-Sat: 11:00 AM - 23:00 PM</span></i>
+        <div class="container d-flex justify-content-between">
+            <div class="contact-info d-flex align-items-center">
+                <i class="bi bi-phone d-flex align-items-center"><span>+62 81234567890</span></i>
+                <i class="bi bi-clock ms-4 d-flex align-items-center"><span>Mon-Sat: 11:00 AM - 23:00 PM</span></i>
+            </div>
+            <a href="/menu" class="cta-btn">Order</a>
         </div>
-        <a href="/menu" class="cta-btn">Order</a>
-      </div>
     </div>
 
-    <div class="branding d-flex align-items-cente">
+    <div class="branding d-flex align-items-center py-2">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo d-flex align-items-center">
+                <h1 class="sitename">Urban Cafe</h1>
+            </a>
 
-      <div class="container position-relative d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
+            <nav id="navmenu" class="navmenu">
+                <ul class="d-flex align-items-center">
+                    <li><a href="#hero" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#specials">Specials</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#chefs">Chefs</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
 
-          <h1 class="sitename">Urban Cafe</h1>
-        </a>
+            <div class="user-profile d-flex align-items-center">
+                @php
+                $user = \App\Models\User::find(session('user_id'));
+                $initials = strtoupper(substr(explode(' ', $user->nama)[0], 0, 1)) . (isset(explode(' ', $user->nama)[1]) ? strtoupper(substr(explode(' ', $user->nama)[1], 0, 1)) : strtoupper(substr($user->nama, 1, 1)));
+                @endphp
 
-        <nav id="navmenu" class="navmenu">
-          <ul>
-            <li><a href="#hero" class="active">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#specials">Specials</a></li>
-            <li><a href="#events">Events</a></li>
-            <li><a href="#chefs">Chefs</a></li>
-            <li><a href="#gallery">Gallery</a></li>
-            {{-- <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-              <ul>
-                <li><a href="#">Dropdown 1</a></li>
-                <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                  <ul>
-                    <li><a href="#">Deep Dropdown 1</a></li>
-                    <li><a href="#">Deep Dropdown 2</a></li>
-                    <li><a href="#">Deep Dropdown 3</a></li>
-                    <li><a href="#">Deep Dropdown 4</a></li>
-                    <li><a href="#">Deep Dropdown 5</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Dropdown 2</a></li>
-                <li><a href="#">Dropdown 3</a></li>
-                <li><a href="#">Dropdown 4</a></li>
-              </ul>
-            </li> --}}
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-
-      </div>
-
+                <div class="text-center me-3">
+                    @if ($user->img)
+                        <a href="{{ route('profile') }}">
+                            <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture rounded-circle" style="width: 50px; height: 50px;">
+                        </a>
+                    @else
+                        <a href="{{ route('profile') }}">
+                            <div class="profile-initials rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                {{ $initials }}
+                            </div>
+                        </a>
+                    @endif
+                </div>
+                <a href="/logout" class="logout-link">Logout</a>
+            </div>
+        </div>
     </div>
+</header>
 
-  </header>
 
   <main class="main">
 
