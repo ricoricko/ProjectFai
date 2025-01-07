@@ -27,7 +27,7 @@
         #chk {
             display: none;
         }
-        .signup {
+        .signup, .login {
             position: relative;
             width: 100%;
             height: 100%;
@@ -98,7 +98,9 @@
             padding: 15px;
             background-color: #f44336;
             color: white;
-            margin-bottom: 15px;
+            margin: 15px auto;
+            width: 80%;
+            text-align: center;
             border-radius: 4px;
         }
         .alert.success {
@@ -113,12 +115,20 @@
     <div class="main">
         <input type="checkbox" id="chk" aria-hidden="true">
         
-        
-
         <div class="signup">
             <form action="{{ route('register') }}" method="post">
                 @csrf
                 <label for="chk" aria-hidden="true">Sign Up</label>
+                @if(session('success'))
+                    <div class="alert success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if($errors->any())
+                    <div class="alert error">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
                 <input type="text" name="username" id="username" placeholder="username" required>
                 <input type="password" name="password" id="password" placeholder="password" required>
                 <input type="text" name="name" id="name" placeholder="Name" required>
@@ -132,22 +142,21 @@
             <form action="/login" method="post">
                 @csrf
                 <label for="chk" aria-hidden="true">Login</label>
+                @if(session('success'))
+                    <div class="alert success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if($errors->any())
+                    <div class="alert error">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
                 <input type="text" name="username" id="username" placeholder="username" required>
                 <input type="password" name="password" id="password" placeholder="password" required>
                 <button type="submit">Login</button>
             </form>
         </div>
     </div>
-    @if(session('success'))
-            <div class="alert success">
-                {{ session('success') }}
-            </div>
-        @endif
-        
-        @if($errors->any())
-            <div class="alert error">
-                {{ $errors->first() }}
-            </div>
-        @endif
 </body>
 </html>

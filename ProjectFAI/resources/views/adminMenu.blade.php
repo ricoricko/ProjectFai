@@ -3,14 +3,20 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1 class="mb-4">Dashboard</h1>
-    <div class="btn-group mb-4" role="group">
+<h1 class="mb-4">Dashboard</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="btn-group" role="group">
         <a href="/admin/produk" class="btn btn-primary">Produk</a>
         <a href="/admin" class="btn btn-success">Admin</a>
         <a href="/admin/kategori" class="btn btn-warning">Kategori</a>
         <a href="/admin/users" class="btn btn-info">Users</a>
         <a href="/admin/menu" class="btn btn-danger">Menu</a>
     </div>
+    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="btn btn-secondary">Logout</button>
+    </form>
+</div>
 @stop
 
 @section('content')

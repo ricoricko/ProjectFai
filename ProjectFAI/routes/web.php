@@ -34,6 +34,8 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/admin', function () {
         return view('admin');
     });
+
+    
     Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
     Route::post('/admin/produk/add', [ManagerController::class, 'addproduk'])->name('admin.addproduk');
     Route::put('/admin/produk/update/{id}', [ManagerController::class, 'updateProduk'])->name('admin.updateproduk');
@@ -61,7 +63,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::middleware([AdminMiddleware::class])->group(function () {
