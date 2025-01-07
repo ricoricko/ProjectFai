@@ -3,14 +3,20 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1 class="mb-4">Dashboard</h1>
-    <div class="btn-group mb-4" role="group">
+<h1 class="mb-4">Dashboard</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="btn-group" role="group">
         <a href="/admin/produk" class="btn btn-primary">Produk</a>
         <a href="/admin" class="btn btn-success">Admin</a>
         <a href="/admin/kategori" class="btn btn-warning">Kategori</a>
         <a href="/admin/users" class="btn btn-info">Users</a>
         <a href="/admin/menu" class="btn btn-danger">Menu</a>
     </div>
+    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="btn btn-secondary">Logout</button>
+    </form>
+</div>
 @stop
 
 @section('content')
@@ -52,13 +58,13 @@
                         <td>{{ $pgw->id_user }}</td>
                         <td><input type="text" name="nama_produk" class="form-control" value="{{ $pgw->username }}" disabled></td>
                         <td><input type="password" name="password" class="form-control" value="{{ $pgw->password }}" disabled></td>
-                        <td><input type="text" name="nama" class="form-control" value="{{ $pgw->nama }}"></td>
+                        <td><input type="text" name="nama" class="form-control" value="{{ $pgw->nama }}" disabled></td>
                         <td><input type="email" name="email" class="form-control" value="{{ $pgw->email }}" disabled></td>
                         <td><input type="number" name="phone" class="form-control" value="{{ $pgw->phone }}" disabled></td>
                         <td>{{ $pgw->status == '1' ? 'Aktif' : 'Inactive' }}</td>
-                        <td>
+                        {{-- <td>
                             <button class="btn btn-success" type="submit">Update</button>
-                        </td>
+                        </td> --}}
                     </form>
                     <td>
                         <form action="{{ route('admin.deletekategori', $pgw->id_user) }}" method="POST" style="display:inline;">
