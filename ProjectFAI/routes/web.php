@@ -2,28 +2,41 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ManagerController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Middleware\AdminMiddleware;
 
+// Login page
 Route::get('/', function () {
     return view('login');
-});
+})->name('login');
+
+// Auth Routes
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// User Profile Routes
+Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+Route::post('/profile/delete', [AuthController::class, 'deleteAccount'])->name('profile.delete');
+
+// Home page
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+
 Route::middleware('auth')->group(function () {
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
-    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+    Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
+    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
 });
 
-Route::get('/payment', [CartController::class, 'payment'])->name('payment');
-
-Route::get('/index', function () {
-    return view('index');
-});
-Route::get('/menu', [MenuController::class, 'index']);
+// Payment page
 Route::get('/payment', function () {
     return view('payment');
 })->name('payment');
@@ -72,7 +85,9 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
 Route::get('/admin/create', [ManagerController::class, 'create'])->name('admin.create');
 Route::post('/admin', [ManagerController::class, 'store'])->name('admin.store');
+Route::resource('admin', ManagerController::class)->except(['index', 'create', 'store']);
 
-Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
-Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
-Route::post('/profile/delete', [AuthController::class, 'deleteAccount'])->name('profile.delete');
+// Debug Index Page
+Route::get('/index', function () {
+    return view('index');
+});
