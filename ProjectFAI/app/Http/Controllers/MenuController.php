@@ -15,6 +15,7 @@ class MenuController extends Controller
     $menus = DB::select('SELECT * FROM menu');
 
     $username = Session::get('username', null);
+    $id_user = Session::get('id_user', null);
 
     return view('menu', compact('categories', 'menus', 'username'));
 }

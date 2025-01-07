@@ -10,10 +10,7 @@
 <div class="container mt-5">
     <h2>Keranjang Belanja</h2>
 
-    @if($cartItems->isEmpty())
-        <p>Keranjang Anda kosong.</p>
-        <a href="{{ route('menu.index') }}" class="btn btn-primary">Kembali ke Menu</a>
-    @else
+    @if(isset($cartItems) && $cartItems->count() > 0)
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -33,7 +30,7 @@
                             <td>Rp {{ number_format($item->menu->harga_menu, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($item->jumlah * $item->menu->harga_menu, 0, ',', '.') }}</td>
                             <td>
-                                <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display: inline-block;">
+                                <form action="{{ route('cart.remove', $item->id_cart) }}" method="POST" style="display: inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
@@ -55,7 +52,10 @@
             @csrf
             <button type="submit" class="btn btn-success">Checkout</button>
         </form>
-        <a href="{{ route('menu.index') }}" class="btn btn-primary mt-3">Kembali ke Menu</a>
+        <a href="{{ route('menu') }}" class="btn btn-primary mt-3">Kembali ke Menu</a>
+    @else
+        <p>Keranjang Anda kosong.</p>
+        <a href="{{ route('menu') }}" class="btn btn-primary">Kembali ke Menu</a>
     @endif
 </div>
 </body>
