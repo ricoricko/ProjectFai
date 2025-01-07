@@ -59,41 +59,6 @@
 <body class="index-page">
 
   <header id="header" class="header fixed-top">
-  <h1>Welcome, {{ session('username', 'Guest') }}</h1>
-          {{-- ================================================ --}}
-          @php
-        // Cek apakah user_id ada di session
-        $user = session('user_id') ? \App\Models\User::find(session('user_id')) : null;
-        $initials = '';
-
-        // Jika user ditemukan, ambil inisial nama
-        if ($user && $user->nama) {
-            $namaParts = explode(' ', $user->nama);
-            $initials = strtoupper(substr($namaParts[0], 0, 1)); // Inisial nama pertama
-            if (isset($namaParts[1])) {
-                $initials .= strtoupper(substr($namaParts[1], 0, 1)); // Inisial nama kedua (jika ada)
-            }
-        }
-    @endphp
-
-    <div style="text-align: center;">
-        @if ($user && $user->img)
-            {{-- Jika pengguna memiliki foto profil --}}
-            <a href="{{ route('profile') }}">
-                <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture">
-            </a>
-        @else
-            {{-- Jika pengguna tidak memiliki foto profil --}}
-            <a href="{{ route('profile') }}">
-                <div class="profile-initials">
-                    {{ $initials ?: 'NA' }} {{-- Tampilkan inisial, atau 'NA' jika nama kosong --}}
-                </div>
-            </a>
-        @endif
-    </div>
-
-{{-- ================================================ --}}
-    <a href="/logout">logout</a>
     <div class="topbar d-flex align-items-center">
         <div class="container d-flex justify-content-between">
             <div class="contact-info d-flex align-items-center">
@@ -125,10 +90,19 @@
             </nav>
 
             <div class="user-profile d-flex align-items-center">
-                @php
-                $user = \App\Models\User::find(session('user_id'));
-                $initials = strtoupper(substr(explode(' ', $user->nama)[0], 0, 1)) . (isset(explode(' ', $user->nama)[1]) ? strtoupper(substr(explode(' ', $user->nama)[1], 0, 1)) : strtoupper(substr($user->nama, 1, 1)));
-                @endphp
+            @php
+$user = \App\Models\User::find(Session::get('user_id'));
+$initials = '';
+
+if ($user && $user->nama) {
+    $namaParts = explode(' ', $user->nama);
+    $initials = strtoupper(substr($namaParts[0], 0, 1));
+    if (isset($namaParts[1])) {
+        $initials .= strtoupper(substr($namaParts[1], 0, 1));
+    }
+}
+@endphp
+
 
                 <div class="text-center me-3">
                     @if ($user->img)
@@ -1103,4 +1077,4 @@
 
 </body>
 
-</html>
+</html

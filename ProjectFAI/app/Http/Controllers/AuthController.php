@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Pegawai;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -41,40 +40,49 @@ class AuthController extends Controller
         return redirect('/')->with('success', 'Account created successfully! Please login.');
     }
 
-
     public function login(Request $request)
-{
-    $validated = $request->validate([
-        'username' => 'required',
-        'password' => 'required',
-    ]);
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    
+        $user = User::where('username', $request->username)
+                    ->where('password', $request->password)
+                    ->where('status', '1') 
+                    ->first();
+    
+        if ($user) {
+            Session::put('id_user', $user->id_user);
 
-    // Cari user berdasarkan username dan password
-    $user = DB::table('users')
-              ->where('username', $validated['username'])
-              ->where('password', $validated['password']) // Gunakan hashing jika memungkinkan
-              ->first();
-
-    if ($user) {
-        // Simpan id_user ke session
-        Session::put('id_user', $user->id_user);
-        Session::put('username', $user->username);
-
-        // Redirect ke halaman index
-        return redirect()->route('index')->with('success', 'Login berhasil!');
+            Session::put('username', $user->username);
+            return redirect('/index');
+        }
+    
+        // Cek apakah user berada di tabel pegawai
+        $pegawai = Pegawai::where('nama_pegawai', $request->username)
+                         ->where('password_pegawai', $request->password)
+                         ->first();
+    
+        if ($pegawai) {
+            Session::put('pegawai_id', $pegawai->id_pegawai);
+            Session::put('pegawai_name', $pegawai->nama_pegawai);
+            if ($pegawai->status_pegawai == '1') {
+                return redirect('/admin');
+            } else {
+                return redirect('/menu');
+            }
+        } else {
+            return redirect('/')->withErrors(['loginError' => 'Login failed']);
+        }
     }
-
-    return redirect()->back()->with('error', 'Login gagal! Periksa username dan password Anda.');
-}
-
+    
 
     public function logout()
     {
-        Session::flush(); // Hapus semua data session
-        return redirect()->route('login')->with('success', 'Logout berhasil!');
+        Session::flush();
+        return redirect('/');
     }
-
-
     public function profile()
     {
         $user = User::find(Session::get('user_id'));

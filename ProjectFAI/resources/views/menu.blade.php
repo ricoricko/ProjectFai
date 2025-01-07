@@ -37,8 +37,7 @@
                 @if(isset($username))
                     <li class="nav-item">
                         <span class="navbar-text">
-                            Welcome, {{ $username }}
-                        </span>
+                        Welcome, {{ $username ?? 'Guest' }}      <p>Session ID User: {{ Session::get('id_user') }}</p>                   </span>
                     </li>
                 @endif
             </ul>
