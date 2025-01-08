@@ -10,12 +10,9 @@ class MenuController extends Controller
 {
     public function __construct()
     {
-        // Middleware, jika diperlukan
-        // $this->middleware('auth');
-
-        // Atau inisialisasi variabel tertentu
+      
         $this->middleware(function ($request, $next) {
-            Session::put('id_user', Session::get('id_user', null)); // Set default ID user jika session belum ada
+            Session::put('id_user', Session::get('id_user', null)); 
             return $next($request);
         });
     }

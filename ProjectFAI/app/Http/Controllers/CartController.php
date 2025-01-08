@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 
 class CartController extends Controller
@@ -19,15 +21,13 @@ class CartController extends Controller
     $idUser = Session::get('id_user');
 
     if ($idUser) {
-        // Tambahkan ke database jika user sudah login
         DB::table('cart')->insert([
             'id_user' => $idUser,
             'id_menu' => $request->id_menu,
             'jumlah' => $request->jumlah,
-            'status' => 1, // Belum checkout
+            'status' => 1, 
         ]);
     } else {
-        // Tambahkan ke session jika user belum login
         $cart = session()->get('cart', []);
         $menuId = $request->id_menu;
         $jumlah = $request->jumlah;
@@ -45,27 +45,91 @@ class CartController extends Controller
 
 }
 
+// public function checkout()
+//     {
+//         // Ambil data user dari session
+//         $idUser = Session::get('id_user');
+//         if (!$idUser) {
+//             return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
+//         }
 
+//         // Ambil data user
+//         $user = DB::table('users')->where('id_user', $idUser)->first();
+//         if (!$user) {
+//             return redirect()->route('login')->with('error', 'Data pengguna tidak ditemukan.');
+//         }
+
+//         // Pecahkan nama menjadi first_name dan last_name
+//         $nama = $user->nama ?? 'Guest User';
+//         $namaArray = explode(' ', trim($nama));
+//         $firstName = $namaArray[0] ?? 'Guest';
+//         $lastName = isset($namaArray[1]) ? implode(' ', array_slice($namaArray, 1)) : $firstName;
+
+//         // Ambil item dari keranjang
+//         $cartItems = DB::table('cart')
+//             ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
+//             ->where('cart.id_user', $idUser)
+//             ->where('cart.status', 1)
+//             ->get();
+
+//         if ($cartItems->isEmpty()) {
+//             return redirect()->route('cart.view')->with('error', 'Keranjang Anda kosong!');
+//         }
+
+//         $total = $cartItems->sum(fn($item) => $item->jumlah * $item->harga_menu);
+//         $itemDetails = $cartItems->map(function ($item) {
+//             return [
+//                 'id' => $item->id_menu,
+//                 'price' => $item->harga_menu,
+//                 'quantity' => $item->jumlah,
+//                 'name' => $item->nama_menu,
+//             ];
+//         })->toArray();
+
+//         // Buat data transaksi untuk Midtrans
+//         $transactionData = [
+//             'transaction_details' => [
+//                 'order_id' => 'order-' . time(),
+//                 'gross_amount' => $total,
+//             ],
+//             'item_details' => $itemDetails,
+//             'customer_details' => [
+//                 'first_name' => $firstName,
+//                 'last_name' => $lastName,
+//                 'email' => $user->email ?? 'email@example.com',
+//                 'phone' => $user->phone ?? '08123456789',
+//             ],
+//         ];
+
+//         // Konfigurasi Midtrans
+//         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+//         Config::$isProduction = env('MIDTRANS_IS_PRODUCTION') == 'true';
+//         Config::$isSanitized = true;
+//         Config::$is3ds = true;
+
+//         try {
+//             $snapToken = Snap::getSnapToken($transactionData);
+//         } catch (\Exception $e) {
+//             return redirect()->route('cart.view')->with('error', 'Gagal mendapatkan Snap Token: ' . $e->getMessage());
+//         }
+
+//         return view('payment', compact('cartItems', 'total', 'snapToken', 'user'));
+//     }
 public function viewCart()
 {
-    // Ambil data user dari session
     $userId = Session::get('id_user');
 
-    // Pastikan session id_user ada
     if (!$userId) {
-        // Jika tidak ada, redirect ke halaman login
         return redirect()->route('login')->with('error', 'Harap login untuk melihat keranjang.');
     }
 
-    // Ambil data cart berdasarkan id_user dari session
     $cartItems = DB::table('cart')
         ->select('menu.nama_menu', 'menu.harga_menu', 'cart.jumlah', 'menu.image_menu', 'cart.id_cart')
         ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
         ->where('cart.id_user', $userId)
-        ->where('cart.status', 1) // Pastikan hanya menampilkan barang dengan status aktif
+        ->where('cart.status', 1) 
         ->get();
 
-    // Cek jika cartItems kosong
     if ($cartItems->isEmpty()) {
         return view('payment', [
             'cartItems' => [],
@@ -74,12 +138,10 @@ public function viewCart()
         ]);
     }
 
-    // Hitung total harga
     $total = $cartItems->sum(function($item) {
         return $item->jumlah * $item->harga_menu;
     });
 
-    // Kirim data ke view
     return view('payment', [
         'cartItems' => $cartItems,
         'userId' => $userId,
@@ -91,7 +153,6 @@ public function viewCart()
 
 
 
-    // Update jumlah item dalam keranjang
     public function updateCart(Request $request)
 {
     $idUser  = Session::get('id_user');
@@ -113,7 +174,6 @@ public function viewCart()
     return redirect()->back()->with('success', 'Jumlah item di keranjang telah diperbarui!');
 }
 
-    // Hapus item dari keranjang
     public function removeFromCart($id)
     {
         $idUser = Session::get('id_user');
