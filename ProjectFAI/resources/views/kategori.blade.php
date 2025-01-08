@@ -3,64 +3,59 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Dashboard</h1>
-    <button class="btn btn-primary">
-        <a style="color: white;text-decoration:none;" href="/admin/produk">Produk</a>
-
-    </button>
-    <button class="btn btn-success">
-        <a style="color: white;text-decoration:none;" href="/admin">Admin</a>
-
-    </button>
-    <button class="btn btn-success">
-        <a style="color: white;text-decoration:none;" href="/admin/kategori">Kategori</a>
-    </button>
-    <button class="btn btn-success">
-        <a style="color: white;text-decoration:none;" href="/admin/users">Users</a>
-    </button>
+<h1 class="mb-4">Dashboard</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="btn-group" role="group">
+        <a href="/admin/produk" class="btn btn-primary">Produk</a>
+        <a href="/admin" class="btn btn-success">Admin</a>
+        <a href="/admin/kategori" class="btn btn-warning">Kategori</a>
+        <a href="/admin/users" class="btn btn-info">Users</a>
+        <a href="/admin/menu" class="btn btn-danger">Menu</a>
+    </div>
+    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="btn btn-secondary">Logout</button>
+    </form>
+</div>
 @stop
+
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 @if(session('success'))
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
 @if(session('error'))
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
 <h2>Master Produk</h2>
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            
-            <th colspan="2">Action</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($kategori as $pgw)
+<div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
             <tr>
-                
-                    
+                <th>ID</th>
+                <th>Nama</th>
+                <th colspan="2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($kategori as $pgw)
+                <tr>
                     <form action="{{ route('admin.updatekategori', $pgw->id_kategori) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <td>{{ $pgw->id_kategori }}</td>
-                        <td><input type="text" name="nama_produk" value="{{ $pgw->nama_kategori }}"></td>
-                        
+                        <td><input type="text" name="nama_produk" class="form-control" value="{{ $pgw->nama_kategori }}"></td>
                         <td>
                             <button class="btn btn-success" type="submit">Update</button>
                         </td>
                     </form>
-                    
                     <td>
                         <form action="{{ route('admin.deletekategori', $pgw->id_kategori) }}" method="POST" style="display:inline;">
                             @csrf
@@ -68,40 +63,27 @@
                             <button class="btn btn-danger" type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">Delete</button>
                         </form>
                     </td>
-                
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-<br><br>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
-
-
-<div class="col-md-6">
+<div class="col-md-6 mt-5">
     <div class="card">
-        <div class="card-header">
-            <h4>Add Kategori </h4>
+        <div class="card-header bg-primary text-white">
+            <h4>Add Kategori</h4>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.addkategori') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="nama_produk" class="form-label">Nama kategori</label>
+                    <label for="nama_kategori" class="form-label">Nama Kategori</label>
                     <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required>
                 </div>
-                
                 <button type="submit" class="btn btn-primary">Add</button>
             </form>
         </div>
     </div>
 </div>
-@stop
-
-@section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-@stop
-
-@section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
 @stop

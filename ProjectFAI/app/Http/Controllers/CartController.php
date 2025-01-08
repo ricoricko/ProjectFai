@@ -2,86 +2,160 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use App\Models\Menu;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+
 
 class CartController extends Controller
 {
     public function add(Request $request)
-{
-    if (!Auth::check()) {
-        return response()->json(['success' => false, 'message' => 'Silakan login terlebih dahulu.'], 401);
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'id_menu' => 'required|integer',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        // Ambil id_user dari sesi (jika ada)
+        $idUser = Session::get('id_user'); // Ambil session yang benar
+if ($idUser) {
+    DB::table('cart')->insert([
+        'id_user' => $idUser,
+        'id_menu' => $validated['id_menu'],
+        'jumlah' => $validated['jumlah'],
+        'status' => 1, // 1 berarti belum checkout
+    ]);
+        } else {
+            // Jika user tidak login, simpan ke sesi
+            $cart = session()->get('cart', []);
+
+            $menuId = $validated['id_menu'];
+            $jumlah = $validated['jumlah'];
+
+            if (isset($cart[$menuId])) {
+                $cart[$menuId]['jumlah'] += $jumlah;
+            } else {
+                $cart[$menuId] = [
+                    'id_menu' => $menuId,
+                    'jumlah' => $jumlah,
+                ];
+            }
+
+            // Simpan data kembali ke sesi
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->back()->with('success', 'Item added to cart!');
     }
 
-    $validated = $request->validate([
-        'id_menu' => 'required|exists:menu,id_menu',
-        'jumlah' => 'required|integer|min:1',
-    ]);
+    public function viewCart()
+{
+    // Ambil data user dari session
+    $user = session('user');
 
-    $userId = Auth::id();
+    // Debug untuk memastikan session user
+    if (!$user || !isset($user['id_user'])) {
+        // Jika user belum login, redirect ke halaman login
+        return redirect()->route('login')->with('error', 'Harap login untuk melihat keranjang.');
+    }
 
-    $existingCart = Cart::where('id_user', $userId)
-                        ->where('id_menu', $validated['id_menu'])
-                        ->first();
+    $userId = $user['id_user'] ?? null;
 
-    if ($existingCart) {
-        $existingCart->jumlah += $validated['jumlah'];
-        $existingCart->save();
-    } else {
-        Cart::create([
-            'id_user' => $userId,
-            'id_menu' => $validated['id_menu'],
-            'jumlah' => $validated['jumlah'],
-            'status' => 1,
+    // Debug untuk memastikan $userId valid
+    if (!$userId) {
+        return redirect()->route('login')->with('error', 'ID User tidak valid.');
+    }
+
+    // Ambil data cart berdasarkan id_user dari session
+    $cartItems = DB::table('cart')
+        ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
+        ->where('cart.id_user', $userId)
+        ->where('cart.status', 1) // Filter cart dengan status aktif
+        ->select('menu.nama_menu', 'menu.harga_menu', 'cart.jumlah', 'menu.image_menu', 'cart.id_cart')
+        ->get();
+
+    // Debug untuk memastikan data $cartItems
+    if ($cartItems->isEmpty()) {
+        return view('payment', [
+            'cartItems' => [],
+            'message' => 'Keranjang Anda kosong.',
+            'userId' => $userId,
         ]);
     }
 
-    return response()->json(['success' => true, 'message' => 'Item berhasil ditambahkan ke keranjang.']);
+    // Kirim data ke view
+    return view('payment', [
+        'cartItems' => $cartItems,
+        'userId' => $userId,
+    ]);
 }
 
 
-    public function show()
+    
+    // Update jumlah item dalam keranjang
+    public function updateCart(Request $request)
     {
-        $userId = Auth::id();
+        $idUser = Session::get('id_user');
 
-        $cartItems = Cart::where('id_user', $userId)
-                         ->with('menu') 
-                         ->get();
+        if (!$idUser) {
+            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
 
-        return view('cart.index', ['cartItems' => $cartItems]);
-    }
-
-    public function update(Request $request)
-    {
-        $validated = $request->validate([
+        $request->validate([
             'id_cart' => 'required|exists:cart,id_cart',
             'jumlah' => 'required|integer|min:1',
         ]);
 
-        $cart = Cart::find($validated['id_cart']);
-        $cart->jumlah = $validated['jumlah'];
-        $cart->save();
+        DB::table('cart')
+            ->where('id_cart', $request->id_cart)
+            ->where('id_user', $idUser)
+            ->update(['jumlah' => $request->jumlah]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Jumlah item berhasil diperbarui',
-        ]);
+        return redirect()->back()->with('success', 'Cart updated!');
     }
 
-    public function remove(Request $request)
+    // Hapus item dari keranjang
+    public function removeFromCart($id)
     {
-        $validated = $request->validate([
-            'id_cart' => 'required|exists:cart,id_cart',
-        ]);
+        $idUser = Session::get('id_user');
 
-        $cart = Cart::find($validated['id_cart']);
-        $cart->delete();
+        if (!$idUser) {
+            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Item berhasil dihapus dari keranjang',
-        ]);
+        DB::table('cart')
+            ->where('id_cart', $id)
+            ->where('id_user', $idUser)
+            ->delete();
+
+        return redirect()->back()->with('success', 'Item removed from cart!');
+    }
+
+    // Checkout keranjang
+    public function checkout()
+    {
+        $idUser = Session::get('id_user');
+
+        if (!$idUser) {
+            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        $cartItems = DB::table('cart')
+            ->where('id_user', $idUser)
+            ->where('status', 1)
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.view')->with('error', 'Keranjang Anda kosong!');
+        }
+
+        // Tandai item sebagai checkout
+        DB::table('cart')
+            ->where('id_user', $idUser)
+            ->where('status', 1)
+            ->update(['status' => 0]);
+
+        return redirect()->route('cart.view')->with('success', 'Checkout berhasil!');
     }
 }
