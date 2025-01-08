@@ -90,37 +90,37 @@
             </nav>
 
             <div class="user-profile d-flex align-items-center">
-            @php
-$user = \App\Models\User::find(Session::get('id_user'));
-$initials = '';
+                @php
+                $user = \App\Models\User::find(Session::get('id_user'));
+                $initials = '';
+                if ($user && $user->nama) {
+                    $namaParts = explode(' ', trim($user->nama));
+                    $initials = strtoupper(substr($namaParts[0], 0, 1));
+                    if (isset($namaParts[1])) {
+                        $initials .= strtoupper(substr($namaParts[1], 0, 1));
+                    }
+                }
+                @endphp
 
-if ($user && $user->nama) {
-    $namaParts = explode(' ', trim($user->nama));
-    $initials = strtoupper(substr($namaParts[0], 0, 1));
-    if (isset($namaParts[1])) {
-        $initials .= strtoupper(substr($namaParts[1], 0, 1));
-    }
-}
-@endphp
-
-<div class="text-center me-3">
-    @if ($user && $user->img)
-        <a href="{{ route('profile') }}">
-            <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture rounded-circle" style="width: 50px; height: 50px;">
-        </a>
-    @else
-        <a href="{{ route('profile') }}">
-            <div class="profile-initials rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                {{ $initials ?: 'N/A' }}
+                <div class="text-center me-3">
+                    @if ($user && $user->img)
+                        <a href="{{ route('profile') }}">
+                            <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture rounded-circle" style="width: 50px; height: 50px;">
+                        </a>
+                    @else
+                        <a href="{{ route('profile') }}">
+                            <div class="profile-initials rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                {{ $initials ?: 'N/A' }}
+                            </div>
+                        </a>
+                    @endif
+                    <a href="{{ route('logout') }}" class="logout-link">Logout</a>
+                </div>
             </div>
-        </a>
-    @endif
-</div>
-
-
         </div>
     </div>
 </header>
+
 
 
   <main class="main">
