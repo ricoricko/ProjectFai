@@ -52,47 +52,49 @@ if ($idUser) {
     public function viewCart()
 {
     // Ambil data user dari session
-    $user = session('user');
+    $user = Session::get('id_user');
+    // dd($user);
 
     // Debug untuk memastikan session user
-    if (!$user || !isset($user['id_user'])) {
-        // Jika user belum login, redirect ke halaman login
-        return redirect()->route('login')->with('error', 'Harap login untuk melihat keranjang.');
-    }
+    // if (!$user || !isset($user['id_user'])) {
+    //     // Jika user belum login, redirect ke halaman login
+    //     return redirect()->route('login')->with('error', 'Harap login untuk melihat keranjang.');
+    // }
 
-    $userId = $user['id_user'] ?? null;
-
+    // $userId = $user['id_user'] ?? null;
+    // dd($userId);
     // Debug untuk memastikan $userId valid
-    if (!$userId) {
-        return redirect()->route('login')->with('error', 'ID User tidak valid.');
-    }
+    // if (!$userId) {
+    //     return redirect()->route('login')->with('error', 'ID User tidak valid.');
+    // }
 
     // Ambil data cart berdasarkan id_user dari session
     $cartItems = DB::table('cart')
-        ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
-        ->where('cart.id_user', $userId)
-        ->where('cart.status', 1) // Filter cart dengan status aktif
-        ->select('menu.nama_menu', 'menu.harga_menu', 'cart.jumlah', 'menu.image_menu', 'cart.id_cart')
-        ->get();
-
+    ->select('menu.nama_menu', 'menu.harga_menu', 'cart.jumlah', 'menu.image_menu', 'cart.id_cart')
+    ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
+    ->where('cart.id_user', $user)
+    ->where('cart.status', 1)
+    ->get();
+    // dd($cartItems);
     // Debug untuk memastikan data $cartItems
     if ($cartItems->isEmpty()) {
         return view('payment', [
             'cartItems' => [],
-            'message' => 'Keranjang Anda kosong.',
-            'userId' => $userId,
+            'message' => 'Keranjang martin kosong.',
+            'userId' => $user,
         ]);
     }
 
     // Kirim data ke view
     return view('payment', [
         'cartItems' => $cartItems,
-        'userId' => $userId,
+        'userId' => $user,
+        'total'=>0,
     ]);
 }
 
 
-    
+
     // Update jumlah item dalam keranjang
     public function updateCart(Request $request)
     {
