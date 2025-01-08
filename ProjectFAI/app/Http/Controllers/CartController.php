@@ -130,30 +130,5 @@ public function viewCart()
         return redirect()->back()->with('success', 'Item removed from cart!');
     }
 
-    // Checkout keranjang
-    public function checkout()
-    {
-        $idUser = Session::get('id_user');
-
-        if (!$idUser) {
-            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
-        }
-
-        $cartItems = DB::table('cart')
-            ->where('id_user', $idUser)
-            ->where('status', 1)
-            ->get();
-
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.view')->with('error', 'Keranjang Anda kosong!');
-        }
-
-        // Tandai item sebagai checkout
-        DB::table('cart')
-            ->where('id_user', $idUser)
-            ->where('status', 1)
-            ->update(['status' => 0]);
-
-        return redirect()->route('cart.view')->with('success', 'Checkout berhasil!');
-    }
+    
 }

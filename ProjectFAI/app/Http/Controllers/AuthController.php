@@ -41,25 +41,47 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-{
-    $request->validate([
-        'username' => 'required|string',
-        'password' => 'required|string',
-    ]);
-
-    $user = User::where('username', $request->username)
-                ->where('password', $request->password)
-                ->where('status', '1')
-                ->first();
-
-    if ($user) {
-        Session::put('id_user', $user->id_user); // Konsisten dengan nama session
-        Session::put('username', $user->username);
-        return redirect('/index');
+    {
+        // Validasi input
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    
+        // Cek apakah username milik user atau pegawai
+        $user = User::where('username', $request->username)
+                    ->where('password', $request->password)
+                    ->where('status', '1')
+                    ->first();
+    
+        // Jika user ditemukan
+        if ($user) {
+            Session::put('id_user', $user->id_user); // Menyimpan session untuk user
+            Session::put('username', $user->username);
+            return redirect('/index');
+        }
+    
+        // Cek jika username milik pegawai
+        $pegawai = Pegawai::where('nama_pegawai', $request->username)
+                          ->where('password_pegawai', $request->password)
+                          ->first();
+        
+        // Jika pegawai ditemukan
+        if ($pegawai) {
+            Session::put('pegawai_id', $pegawai->id_pegawai); // Menyimpan session untuk pegawai
+            Session::put('pegawai_name', $pegawai->nama_pegawai);
+    
+            if ($pegawai->status_pegawai == '1') {
+                return redirect('/admin'); // Jika status pegawai aktif, arahkan ke admin
+            } else {
+                return redirect('/menu'); // Jika status pegawai tidak aktif, arahkan ke menu
+            }
+        }
+    
+        // Jika tidak ada yang ditemukan, tampilkan pesan gagal login
+        return redirect('/')->withErrors(['loginError' => 'Login failed']);
     }
-
-    return redirect('/')->withErrors(['loginError' => 'Login failed']);
-}
+    
 
     
     

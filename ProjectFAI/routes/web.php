@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Middleware\AdminMiddleware;
-
+use App\Http\Controllers\PaymentController;
 // Halaman Login
 Route::get('/', function () {
     return view('login');
@@ -38,7 +38,10 @@ Route::middleware(['web'])->group(function () {
 
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+Route::get('/payment-success', function () {
+    return view('payment-success');
+})->name('payment.success');
 
 // Halaman Pembayaran
 Route::get('/payment', function () {
@@ -48,17 +51,28 @@ Route::get('/payment', function () {
 // Panel Admin Tanpa Middleware sessionCheck
 Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
 
-// Manajemen Produk
-Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
-Route::post('/admin/produk/add', [ManagerController::class, 'addproduk'])->name('admin.addproduk');
-Route::put('/admin/produk/update/{id}', [ManagerController::class, 'updateProduk'])->name('admin.updateproduk');
-Route::delete('/admin/produk/delete/{id}', [ManagerController::class, 'deleteProduk'])->name('admin.deleteproduk');
+Route::middleware([AdminMiddleware::class])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin');
+    });
 
-// Manajemen Kategori
-Route::get('/admin/kategori', [ManagerController::class, 'indexkategori'])->name('admin.kategori');
-Route::post('/admin/kategori/add', [ManagerController::class, 'addkategori'])->name('admin.addkategori');
-Route::put('/admin/kategori/update/{id}', [ManagerController::class, 'updateKategori'])->name('admin.updatekategori');
-Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
+    
+    Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
+    Route::post('/admin/produk/add', [ManagerController::class, 'addproduk'])->name('admin.addproduk');
+    Route::put('/admin/produk/update/{id}', [ManagerController::class, 'updateProduk'])->name('admin.updateproduk');
+    Route::delete('/admin/produk/delete/{id}', [ManagerController::class, 'deleteProduk'])->name('admin.deleteproduk');
+    
+    
+    
+    Route::get('/admin/kategori', [ManagerController::class, 'indexkategori'])->name('admin.kategori');
+    Route::post('/admin/kategori/add', [ManagerController::class, 'addkategori'])->name('admin.addkategori');
+    Route::put('/admin/kategori/update/{id}', [ManagerController::class, 'updateKategori'])->name('admin.updatekategori');
+    Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
+    
+    Route::get('/admin/users', [ManagerController::class, 'indexUsers'])->name('admin.users');
+    Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
+    Route::post('/admin-addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
+});
 
 // Debug Halaman Index
 Route::get('/index', function () {
