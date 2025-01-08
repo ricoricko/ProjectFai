@@ -24,11 +24,12 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4">Carts with Status 0</h1>
+        <h1 class="my-4">Welcome, {{ $logged_in_employee }}</h1> <!-- Display the employee's name -->
         <form action="{{ route('logout') }}" method="POST" class="d-inline">
             @csrf
             <button type="submit" class="btn btn-secondary">Logout</button>
         </form>
+        <h2 class="my-4">Carts with Status 0</h2>
         @if($cart->isEmpty())
             <p>No carts found with status 0.</p>
         @else

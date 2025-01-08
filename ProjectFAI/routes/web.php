@@ -84,7 +84,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 Route::middleware([PegawaiMiddleware::class])->group(function () {
     Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai.index');
     Route::post('/pegawai/confirm', [App\Http\Controllers\PegawaiController::class, 'confirm'])->name('pegawai.confirm');
-
+    
 
 });
 
