@@ -41,53 +41,47 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-    
-        $user = User::where('username', $request->username)
-                    ->where('password', $request->password)
-                    ->where('status', '1') 
-                    ->first();
-    
-        if ($user) {
-            Session::put('id_user', $user->id_user);
+{
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-            Session::put('username', $user->username);
-            return redirect('/index');
-        }
-    
-        // Cek apakah user berada di tabel pegawai
-        $pegawai = Pegawai::where('nama_pegawai', $request->username)
-                         ->where('password_pegawai', $request->password)
-                         ->first();
-    
-        if ($pegawai) {
-            Session::put('pegawai_id', $pegawai->id_pegawai);
-            Session::put('pegawai_name', $pegawai->nama_pegawai);
-            if ($pegawai->status_pegawai == '1') {
-                return redirect('/admin');
-            } else {
-                return redirect('/menu');
-            }
-        } else {
-            return redirect('/')->withErrors(['loginError' => 'Login failed']);
-        }
+    $user = User::where('username', $request->username)
+                ->where('password', $request->password)
+                ->where('status', '1')
+                ->first();
+
+    if ($user) {
+        Session::put('id_user', $user->id_user); // Konsisten dengan nama session
+        Session::put('username', $user->username);
+        return redirect('/index');
     }
+
+    return redirect('/')->withErrors(['loginError' => 'Login failed']);
+}
+
+    
     
 
     public function logout()
-    {
-        Session::flush();
-        return redirect('/');
+{
+    Session::flush(); // Hapus semua session
+    return redirect('/');
+}
+
+public function profile()
+{
+    $user = User::find(Session::get('id_user')); // Konsisten dengan 'id_user'
+
+    if (!$user) {
+        return redirect('/')->with('error', 'Session expired. Please login again.');
     }
-    public function profile()
-    {
-        $user = User::find(Session::get('user_id'));
-        return view('ProfileUser', compact('user'));
-    }
+
+    return view('ProfileUser', compact('user'));
+}
+
+
 
     public function updateProfile(Request $request)
     {

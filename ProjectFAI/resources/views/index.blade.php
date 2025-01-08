@@ -91,11 +91,11 @@
 
             <div class="user-profile d-flex align-items-center">
             @php
-$user = \App\Models\User::find(Session::get('user_id'));
+$user = \App\Models\User::find(Session::get('id_user'));
 $initials = '';
 
 if ($user && $user->nama) {
-    $namaParts = explode(' ', $user->nama);
+    $namaParts = explode(' ', trim($user->nama));
     $initials = strtoupper(substr($namaParts[0], 0, 1));
     if (isset($namaParts[1])) {
         $initials .= strtoupper(substr($namaParts[1], 0, 1));
@@ -103,22 +103,21 @@ if ($user && $user->nama) {
 }
 @endphp
 
-
-                <div class="text-center me-3">
-                    @if ($user->img)
-                        <a href="{{ route('profile') }}">
-                            <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture rounded-circle" style="width: 50px; height: 50px;">
-                        </a>
-                    @else
-                        <a href="{{ route('profile') }}">
-                            <div class="profile-initials rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                {{ $initials }}
-                            </div>
-                        </a>
-                    @endif
-                </div>
-                <a href="/logout" class="logout-link">Logout</a>
+<div class="text-center me-3">
+    @if ($user && $user->img)
+        <a href="{{ route('profile') }}">
+            <img src="{{ asset('images/' . $user->img) }}" alt="Profile Picture" class="profile-picture rounded-circle" style="width: 50px; height: 50px;">
+        </a>
+    @else
+        <a href="{{ route('profile') }}">
+            <div class="profile-initials rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                {{ $initials ?: 'N/A' }}
             </div>
+        </a>
+    @endif
+</div>
+
+
         </div>
     </div>
 </header>

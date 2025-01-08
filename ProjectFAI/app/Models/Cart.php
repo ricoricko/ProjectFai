@@ -24,5 +24,6 @@ class Cart extends Model
     return $this->belongsTo(Menu::class, 'id_menu', 'id_menu');
 }
 
+
 }
 

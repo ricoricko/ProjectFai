@@ -18,16 +18,14 @@ class CartController extends Controller
         ]);
 
         // Ambil id_user dari sesi (jika ada)
-        $idUser = Session::get('id_user');
-
-        if ($idUser) {
-            // Jika user login, simpan ke database
-            DB::table('cart')->insert([
-                'id_user' => $idUser,
-                'id_menu' => $validated['id_menu'],
-                'jumlah' => $validated['jumlah'],
-                'status' => 1, // 1 berarti belum checkout
-            ]);
+        $idUser = Session::get('id_user'); // Ambil session yang benar
+if ($idUser) {
+    DB::table('cart')->insert([
+        'id_user' => $idUser,
+        'id_menu' => $validated['id_menu'],
+        'jumlah' => $validated['jumlah'],
+        'status' => 1, // 1 berarti belum checkout
+    ]);
         } else {
             // Jika user tidak login, simpan ke sesi
             $cart = session()->get('cart', []);
@@ -53,27 +51,48 @@ class CartController extends Controller
 
     public function viewCart()
 {
-    $idUser = Session::get('id_user'); // Pastikan session ini sudah diset saat login
+    // Ambil data user dari session
+    $user = session('user');
 
-    if (!$idUser) {
-        return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
+    // Debug untuk memastikan session user
+    if (!$user || !isset($user['id_user'])) {
+        // Jika user belum login, redirect ke halaman login
+        return redirect()->route('login')->with('error', 'Harap login untuk melihat keranjang.');
     }
 
-    $cartItems = Cart::with('menu')
-        ->where('id_user', $idUser)
-        ->where('status', 1)
+    $userId = $user['id_user'] ?? null;
+
+    // Debug untuk memastikan $userId valid
+    if (!$userId) {
+        return redirect()->route('login')->with('error', 'ID User tidak valid.');
+    }
+
+    // Ambil data cart berdasarkan id_user dari session
+    $cartItems = DB::table('cart')
+        ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
+        ->where('cart.id_user', $userId)
+        ->where('cart.status', 1) // Filter cart dengan status aktif
+        ->select('menu.nama_menu', 'menu.harga_menu', 'cart.jumlah', 'menu.image_menu', 'cart.id_cart')
         ->get();
 
-    $total = $cartItems->sum(function ($item) {
-        return $item->jumlah * ($item->menu->harga_menu ?? 0);
-    });
+    // Debug untuk memastikan data $cartItems
+    if ($cartItems->isEmpty()) {
+        return view('payment', [
+            'cartItems' => [],
+            'message' => 'Keranjang Anda kosong.',
+            'userId' => $userId,
+        ]);
+    }
 
-    return view('payment', compact('cartItems', 'total', 'idUser')); // Pastikan $idUser dikirim ke view
+    // Kirim data ke view
+    return view('payment', [
+        'cartItems' => $cartItems,
+        'userId' => $userId,
+    ]);
 }
 
+
     
-
-
     // Update jumlah item dalam keranjang
     public function updateCart(Request $request)
     {

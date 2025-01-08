@@ -31,7 +31,11 @@ Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
 // Rute Keranjang Tanpa Middleware sessionCheck
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
+Route::middleware(['web'])->group(function () {
+    Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
+});
+
+
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
