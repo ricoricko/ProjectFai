@@ -10,7 +10,7 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        $cart = Cart::where('cart.status', 1)
+        $cart = Cart::where('cart.status', 0)
                     ->join('users', 'cart.id_user', '=', 'users.id_user')
                     ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
                     ->select('cart.*', 'users.nama as user_name', 'menu.nama_menu as product_name')
@@ -23,8 +23,8 @@ class PegawaiController extends Controller
     public function confirm(Request $request)
     {
         Cart::where('id_user', $request->user_id)
-            ->where('status', 1)
-            ->update(['status' => 0]); // Mark all as confirmed for the user
+            ->where('status', 0)
+            ->update(['status' => 2]); // Mark all as confirmed for the user
 
         return redirect()->route('pegawai.index');
     }
