@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{{ route('index') }}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Menu</a>
@@ -37,11 +37,11 @@
                     <li class="nav-item">
                         <span class="navbar-text">
                             Welcome, {{ $username ?? 'Guest' }}
-                            <p>Session ID User: {{ Session::get('id_user') }}</p>
                         </span>
                     </li>
-                @endif
-            </ul>
+                    @endif
+                </ul>
+            <br>
         </div>
     </div>
 </nav>
@@ -67,23 +67,22 @@
                     <div class="card h-100">
                         <img src="{{ asset($menu->image_menu) }}" class="card-img-top" alt="{{ $menu->nama_menu }}">
                         <div class="card-body">
-    <h5 class="card-title">{{ $menu->nama_menu }}</h5>
-    <p class="card-text">Harga: Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</p>
-    <form method="POST" action="{{ route('cart.add') }}">
-        @csrf
-        <input type="hidden" name="id_menu" value="{{ $menu->id_menu }}">
-        
-        <!-- Input Jumlah -->
-        <div class="mb-3">
-            <label for="jumlah-{{ $menu->id_menu }}" class="form-label">Jumlah:</label>
-            <input type="number" id="jumlah-{{ $menu->id_menu }}" name="jumlah" class="form-control" value="1" min="1" required>
-        </div>
-        
-        <!-- Tombol Add to Cart -->
-        <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
-    </form>
-</div>
-
+                            <h5 class="card-title">{{ $menu->nama_menu }}</h5>
+                            <p class="card-text">Harga: Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</p>
+                            <form method="POST" action="{{ route('cart.add') }}">
+                                @csrf
+                                <input type="hidden" name="id_menu" value="{{ $menu->id_menu }}">
+                                
+                                <!-- Input Jumlah -->
+                                <div class="mb-3">
+                                    <label for="jumlah-{{ $menu->id_menu }}" class="form-label">Jumlah:</label>
+                                    <input type="number" id="jumlah-{{ $menu->id_menu }}" name="jumlah" class="form-control" value="1" min="1" required>
+                                </div>
+                                
+                                <!-- Tombol Add to Cart -->
+                                <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 @endif
@@ -95,7 +94,7 @@
 </div>
 
 <div class="cart-button" style="position: fixed; bottom: 20px; right: 20px;">
-    <a href="{{ route('payment') }}" class="btn btn-danger">
+    <a href="{{ route('cart.view') }}" class="btn btn-danger">
         <i class="bi bi-cart"></i> Keranjang
     </a>
 </div>
