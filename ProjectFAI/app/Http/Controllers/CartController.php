@@ -10,46 +10,43 @@ use Illuminate\Support\Facades\Session;
 class CartController extends Controller
 {
     public function add(Request $request)
-    {
-        // Validasi input
-        $validated = $request->validate([
-            'id_menu' => 'required|integer',
-            'jumlah' => 'required|integer|min:1',
-        ]);
-
-        // Ambil id_user dari sesi (jika ada)
-        $idUser = Session::get('id_user'); // Ambil session yang benar
-if ($idUser) {
-    DB::table('cart')->insert([
-        'id_user' => $idUser,
-        'id_menu' => $validated['id_menu'],
-        'jumlah' => $validated['jumlah'],
-        'status' => 1, // 1 berarti belum checkout
+{
+    $request->validate([
+        'id_menu' => 'required|integer',
+        'jumlah' => 'required|integer|min:1',
     ]);
+
+    $idUser = Session::get('id_user');
+
+    if ($idUser) {
+        // Tambahkan ke database jika user sudah login
+        DB::table('cart')->insert([
+            'id_user' => $idUser,
+            'id_menu' => $request->id_menu,
+            'jumlah' => $request->jumlah,
+            'status' => 1, // Belum checkout
+        ]);
+    } else {
+        // Tambahkan ke session jika user belum login
+        $cart = session()->get('cart', []);
+        $menuId = $request->id_menu;
+        $jumlah = $request->jumlah;
+
+        if (isset($cart[$menuId])) {
+            $cart[$menuId]['jumlah'] += $jumlah;
         } else {
-            // Jika user tidak login, simpan ke sesi
-            $cart = session()->get('cart', []);
-
-            $menuId = $validated['id_menu'];
-            $jumlah = $validated['jumlah'];
-
-            if (isset($cart[$menuId])) {
-                $cart[$menuId]['jumlah'] += $jumlah;
-            } else {
-                $cart[$menuId] = [
-                    'id_menu' => $menuId,
-                    'jumlah' => $jumlah,
-                ];
-            }
-
-            // Simpan data kembali ke sesi
-            session()->put('cart', $cart);
+            $cart[$menuId] = ['id_menu' => $menuId, 'jumlah' => $jumlah];
         }
 
-        return redirect()->back()->with('success', 'Item added to cart!');
+        session()->put('cart', $cart);
     }
 
-    public function viewCart()
+    return redirect()->back()->with('success', 'Menu berhasil ditambahkan ke keranjang!');
+
+}
+
+
+public function viewCart()
 {
     // Ambil data user dari session
     $user = Session::get('id_user');
@@ -92,6 +89,7 @@ if ($idUser) {
         'total'=>0,
     ]);
 }
+
 
 
 

@@ -29,8 +29,7 @@
                     <a class="nav-link" href="#">Menu</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{{ route('cart.view') }}">Cart</a>
-
+                    <a class="nav-link" href="{{ route('cart.view') }}">Cart</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
@@ -66,54 +65,31 @@
                 @if($menu->kategori_menu == $category->id_kategori)
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
-                        <img src="{{ asset($menu->image_menu)}}" class="card-img-top" alt="{{ $menu->nama_menu }}">
+                        <img src="{{ asset($menu->image_menu) }}" class="card-img-top" alt="{{ $menu->nama_menu }}">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $menu->nama_menu }}</h5>
-                            <p class="card-text">Harga: Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</p>
-                            <div class="d-flex align-items-center mb-3">
-                                <button class="btn btn-outline-secondary btn-sm me-2" onclick="decreaseQuantity({{ $menu->id_menu }})">-</button>
-                                <span id="quantity-{{ $menu->id_menu }}" class="me-2">0</span>
-                                <button class="btn btn-outline-secondary btn-sm" onclick="increaseQuantity({{ $menu->id_menu }})">+</button>
-                            </div>
-                            <button class="btn btn-primary add-to-cart"
-                                    data-id="{{ $menu->id_menu }}"
-                                    data-nama="{{ $menu->nama_menu }}"
-                                    data-harga="{{ $menu->harga_menu }}">
-                                Add to Cart
-                            </button>
-                        </div>
+    <h5 class="card-title">{{ $menu->nama_menu }}</h5>
+    <p class="card-text">Harga: Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</p>
+    <form method="POST" action="{{ route('cart.add') }}">
+        @csrf
+        <input type="hidden" name="id_menu" value="{{ $menu->id_menu }}">
+        
+        <!-- Input Jumlah -->
+        <div class="mb-3">
+            <label for="jumlah-{{ $menu->id_menu }}" class="form-label">Jumlah:</label>
+            <input type="number" id="jumlah-{{ $menu->id_menu }}" name="jumlah" class="form-control" value="1" min="1" required>
+        </div>
+        
+        <!-- Tombol Add to Cart -->
+        <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+    </form>
+</div>
+
                     </div>
                 </div>
                 @endif
                 @endforeach
             </div>
         </div>
-            <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="kategori-{{ $category->id_kategori }}" role="tabpanel" aria-labelledby="tab-{{ $category->id_kategori }}">
-                <div class="row">
-                    @foreach($menus as $menu)
-                        @if($menu->kategori_menu == $category->id_kategori)
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100">
-                                    <img src="{{ asset($menu->image_menu) }}" class="card-img-top" alt="{{ $menu->nama_menu }}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $menu->nama_menu }}</h5>
-                                        <p class="card-text">Harga: Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</p>
-                                        <form method="POST" action="{{ route('cart.add') }}">
-                                            @csrf
-                                            <input type="hidden" name="id_menu" value="{{ $menu->id_menu }}">
-                                            <input type="number" name="jumlah" class="form-control me-2" placeholder="Jumlah" min="1" required>
-                                            <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
-                                        </form>
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
         @endforeach
     </div>
 </div>
