@@ -5,6 +5,9 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\WeatherController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\PegawaiMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
