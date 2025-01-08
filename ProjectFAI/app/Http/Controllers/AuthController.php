@@ -74,7 +74,7 @@ class AuthController extends Controller
             if ($pegawai->status_pegawai == '1') {
                 return redirect('/admin'); // Jika status pegawai aktif, arahkan ke admin
             } else {
-                return redirect('/menu'); // Jika status pegawai tidak aktif, arahkan ke menu
+                return redirect('/pegawai'); // Jika status pegawai tidak aktif, arahkan ke menu
             }
         }
     

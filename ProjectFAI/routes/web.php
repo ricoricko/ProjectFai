@@ -8,6 +8,9 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PegawaiController;
+use App\Http\Middleware\PegawaiMiddleware;
+
 // Halaman Login
 Route::get('/', function () {
     return view('login');
@@ -49,12 +52,16 @@ Route::get('/payment', function () {
 })->name('payment');
 
 // Panel Admin Tanpa Middleware sessionCheck
-Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
+// Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
+
 
 Route::middleware([AdminMiddleware::class])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin');
-    });
+    Route::get('/admin', [ManagerController::class, 'index']);
+    Route::post('/admin/update', [ManagerController::class, 'update'])->name('admin.update');
+    Route::delete('/admin/delete', [ManagerController::class, 'destroy'])->name('admin.destroy');
+    Route::post('/admin/store', [ManagerController::class, 'store'])->name('admin.store');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     
     Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
@@ -73,6 +80,16 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
     Route::post('/admin-addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
 });
+
+Route::middleware([PegawaiMiddleware::class])->group(function () {
+    Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai.index');
+    Route::post('/pegawai/confirm', [App\Http\Controllers\PegawaiController::class, 'confirm'])->name('pegawai.confirm');
+
+
+});
+
+
+
 
 // Debug Halaman Index
 Route::get('/index', function () {
