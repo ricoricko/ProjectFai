@@ -39,6 +39,7 @@
                         <th>User Name</th>
                         <th>Product Names</th>
                         <th>Total Quantity</th>
+                        <th>Total Price</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -57,6 +58,14 @@
                                 @endphp
                                 {{ $total_quantity }}
                             </td>
+                            <td>Rp. 
+                                @php
+                                    $total_price = $items->sum(function($item) {
+                                        return $item->jumlah * $item->product_price;
+                                    });
+                                @endphp
+                                {{ $total_price }}
+                            </td>
                             <td>
                                 <form action="{{ route('pegawai.confirm') }}" method="POST">
                                     @csrf
@@ -72,6 +81,6 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

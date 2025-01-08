@@ -17,7 +17,7 @@ class PegawaiController extends Controller
         $cart = Cart::where('cart.status', 0)
                     ->join('users', 'cart.id_user', '=', 'users.id_user')
                     ->join('menu', 'cart.id_menu', '=', 'menu.id_menu')
-                    ->select('cart.*', 'users.nama as user_name', 'menu.nama_menu as product_name')
+                    ->select('cart.*', 'users.nama as user_name', 'menu.nama_menu as product_name', 'menu.harga_menu as product_price')
                     ->get()
                     ->groupBy('user_name'); // Group by user_name in the controller
         $produk = Produk::all();
