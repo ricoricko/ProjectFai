@@ -49,7 +49,6 @@ DROP TABLE IF EXISTS `resep`;
 CREATE TABLE `resep` (
   `id_resep` INT(11) DEFAULT NULL,
   `id_stok` INT(11) DEFAULT NULL,
-  `jumlah_stok` INT(11) DEFAULT NULL,
   KEY `id_stok` (`id_stok`),
   CONSTRAINT `resep_ibfk_1` FOREIGN KEY (`id_stok`) REFERENCES `stok` (`id_stok`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -162,7 +161,7 @@ DROP TABLE IF EXISTS `resep`;
 CREATE TABLE `resep` (
   `id_resep` INT(11) DEFAULT NULL,
   `id_stok` INT(11) DEFAULT NULL,
-  `jumlah_stok` INT(11) DEFAULT NULL,
+
   KEY `id_stok` (`id_stok`),
   CONSTRAINT `resep_ibfk_1` FOREIGN KEY (`id_stok`) REFERENCES `stok` (`id_stok`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -181,7 +180,29 @@ CREATE TABLE `stok` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `stok` */
-
+INSERT INTO `stok` (`nama_stok`, `jumlah_stok`) VALUES
+('Susu', 100),
+('Biji Kopi', 50),
+('Cocoa Powder', 30),
+('Daun Teh', 70),
+('Air', 1000),
+('Es Batu', 200),
+('Lemon', 50),
+('Alpukat', 30),
+('Es Krim', 40),
+('Bubuk Matcha', 25),
+('Kentang', 100),
+('Garam', 500),
+('Sosis', 80),
+('Pretzel', 40),
+('Croissant', 30),
+('Baguette', 20),
+('Tartar Sauce', 50),
+('Tomato Sauce', 60),
+('Chili Sauce', 70),
+('Keju', 50),
+('Nasi', 100),
+('Sauce-saucean', 70);
 /*Table structure for table `supplier` */
 
 DROP TABLE IF EXISTS `supplier`;
@@ -284,41 +305,41 @@ INSERT INTO `produk` (`nama_produk`, `id_kategori`, `harga`, `stok`, `id_supplie
 ('Sauce-saucean', 4, '8000', 70, NULL, 1);
 
 
-INSERT INTO `resep` (`id_resep`, `id_stok`, `jumlah_stok`) VALUES 
-(1, 1, 1), 
-(1, 2, 1), 
-(2, 2, 1), 
-(3, 1, 1), 
-(3, 2, 1), 
-(4, 2, 1), 
-(5, 1, 1), 
-(5, 2, 1), 
-(6, 10, 1), 
-(6, 1, 1), 
-(7, 10, 1), 
-(7, 2, 1), 
-(8, 8, 1), 
-(8, 9, 1), 
-(9, 7, 1), 
-(9, 4, 1), 
-(10, 4, 1), 
-(10, 6, 1), 
-(11, 3, 1), 
-(11, 1, 1), 
-(12, 11, 2), 
-(12, 12, 1), 
-(13, 13, 1), 
-(14, 14, 1), 
-(15, 15, 1), 
-(16, 16, 1), 
-(17, 17, 1), 
-(18, 18, 1), 
-(19, 19, 1), 
-(20, 20, 1), 
-(21, 17, 1), 
-(22, 20, 1), 
-(23, 19, 1), 
-(24, 17, 1);
+INSERT INTO `resep` (`id_resep`, `id_stok`) VALUES 
+(1, 1), 
+(1, 2), 
+(2, 2), 
+(3, 1), 
+(3, 2), 
+(4, 2), 
+(5, 1), 
+(5, 2), 
+(6, 10), 
+(6, 1), 
+(7, 10), 
+(7, 2), 
+(8, 8), 
+(8, 9), 
+(9, 7), 
+(9, 4), 
+(10, 4), 
+(10, 6), 
+(11, 3), 
+(11, 1), 
+(12, 11), 
+(12, 12), 
+(13, 13), 
+(14, 14), 
+(15, 15), 
+(16, 16), 
+(17, 17), 
+(18, 18), 
+(19, 19), 
+(20, 20), 
+(21, 17), 
+(22, 20), 
+(23, 19), 
+(24, 17);
 INSERT  INTO `users`(`id_user`,`username`,`password`,`nama`,`email`,`phone`,`id_member`,`img`,`status`) VALUES 
 (4,'qwe','qwe','qwe','qwe@gmail.com','22',NULL,NULL,1),
 (5,'zxc','zxc','zxc','zxc@gmail.com','222',NULL,NULL,1);
