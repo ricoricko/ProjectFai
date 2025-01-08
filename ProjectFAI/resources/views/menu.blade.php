@@ -6,13 +6,6 @@
     <title>Menu</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
-    .card-img-top {
-        width: 100%;
-        height: 300px;
-        object-fit: cover;
-    }
-</style>
-
         .card-img-top {
             width: 100%;
             height: 300px;
