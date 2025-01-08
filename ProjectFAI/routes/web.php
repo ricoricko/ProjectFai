@@ -31,8 +31,24 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->n
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
 Route::get('/payment-success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
 
-Route::middleware(['admin'])->group(function () {
-    Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
+// Halaman Pembayaran
+Route::get('/payment', function () {
+    return view('payment');
+})->name('payment');
+
+// Panel Admin Tanpa Middleware sessionCheck
+// Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
+
+
+Route::middleware([AdminMiddleware::class])->group(function () {
+    Route::get('/admin', [ManagerController::class, 'index']);
+    Route::post('/admin/update', [ManagerController::class, 'update'])->name('admin.update');
+    Route::delete('/admin/delete', [ManagerController::class, 'destroy'])->name('admin.destroy');
+    Route::post('/admin/store', [ManagerController::class, 'store'])->name('admin.store');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    
     Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
     Route::post('/admin/produk/add', [ManagerController::class, 'addproduk'])->name('admin.addproduk');
     Route::put('/admin/produk/update/{id}', [ManagerController::class, 'updateProduk'])->name('admin.updateproduk');
@@ -44,6 +60,31 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
 });
 
+Route::middleware([PegawaiMiddleware::class])->group(function () {
+    Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai.index');
+    Route::post('/pegawai/confirm', [App\Http\Controllers\PegawaiController::class, 'confirm'])->name('pegawai.confirm');
+    
+
+});
+
+Route::middleware([PegawaiMiddleware::class])->group(function () {
+    Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai.index');
+    Route::post('/pegawai/confirm', [App\Http\Controllers\PegawaiController::class, 'confirm'])->name('pegawai.confirm');
+    
+
+});
+
+
+
+
+
+
+
 Route::get('/index', function () {
     return view('index');
 })->name('index');
+
+Route::get('/map', function () {
+    return view('map');
+});
+Route::get('/weather', [WeatherController::class, 'showWeather']);
