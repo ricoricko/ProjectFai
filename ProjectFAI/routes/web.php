@@ -95,3 +95,8 @@ Route::middleware([PegawaiMiddleware::class])->group(function () {
 Route::get('/index', function () {
     return view('index');
 })->name('index');
+
+Route::get('/map', function () {
+    return view('map');
+});
+Route::get('/weather', [WeatherController::class, 'showWeather']);
