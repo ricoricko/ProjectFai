@@ -64,6 +64,12 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
     Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
     Route::post('/admin/menu/addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
+
+    Route::get('/admin/cash', [ManagerController::class, 'indexCash'])->name('admin.cash');
+    Route::post('/admin/addCash', [ManagerController::class, 'addCash'])->name('admin.addCash');
+    
+    Route::get('/admin/cashIn', [ManagerController::class, 'indexCashIn'])->name('admin.cashIn');
+    Route::get('/admin/cashOut', [ManagerController::class, 'indexCashOut'])->name('admin.cashOut');
 });
 
 Route::middleware([PegawaiMiddleware::class])->group(function () {

@@ -923,69 +923,65 @@
         <iframe style="width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31628.436850317626!2d112.7463348!3d-7.2891675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fbb0c9c31d5d%3A0x96de1b308d7b4a76!2sInstitut%20Sains%20dan%20Teknologi%20Terpadu%20Surabaya%20(ISTTS)!5e0!3m2!1sen!2sid!4v1702296932890" frameborder="0" allowfullscreen=""></iframe>
 
       </div><!-- End Google Maps -->
-
-      <div class="container" data-aos="fade">
-
-        <div class="row gy-5 gx-lg-5">
-
-          <div class="col-lg-4">
-
-            <div class="info">
-              <h3>Get in touch</h3>
-              <p>We’d love to hear from you! Whether you have questions, feedback, or inquiries about events and collaborations, feel free to reach out to us.</p>
-
-              <div class="info-item d-flex">
-                <i class="bi bi-geo-alt flex-shrink-0"></i>
-                <div>
-                  <h4>Location:</h4>
-                  <p>A108 Adam Street, New York, NY 535022</p>
-                </div>
-              </div><!-- End Info Item -->
-
-              <div class="info-item d-flex">
-                <i class="bi bi-envelope flex-shrink-0"></i>
-                <div>
-                  <h4>Email:</h4>
-                  <p>info@example.com</p>
-                </div>
-              </div><!-- End Info Item -->
-
-              <div class="info-item d-flex">
-                <i class="bi bi-phone flex-shrink-0"></i>
-                <div>
-                  <h4>Call:</h4>
-                  <p>+1 5589 55488 55</p>
-                </div>
-              </div><!-- End Info Item -->
-
-            </div>
-
+      <center><h1>Weather in Our Place, Surabaya</h1></center>
+      @if(isset($weatherData))
+          <div class="d-flex justify-content-between" style="gap: 1rem; margin-left: 5rem; margin-right: 5rem;">
+              <!-- Temperature Card -->
+              <div class="card text-center" style="width: 12rem; background-color: orange">
+                  <div class="card-body">
+                      <h1 style="margin-top:30px">{{ $weatherData['main']['temp'] }}°C</h3>
+                      <p class="card-text" style="margin-top:20px">Temperature</p>
+                  </div>
+              </div>
+              <!-- Weather Description Card -->
+              <div class="card text-center" style="width: 12rem; background-color: orange">
+                  <div class="card-body">
+                      <h3 style="margin-top:30px">{{ $weatherData['weather'][0]['description'] }}</h3>
+                      <p class="card-text"style="margin-top:20px">Weather</p>
+                  </div>
+              </div>
+              <!-- Humidity Card -->
+              <div class="card text-center" style="width: 12rem; background-color: orange">
+                  <div class="card-body">
+                      <h3 style="margin-top:30px">{{ $weatherData['main']['humidity'] }}%</h3>
+                      <p class="card-text" style="margin-top:20px">Humidity</p>
+                  </div>
+              </div>
+              <!-- Wind Speed Card -->
+              <div class="card text-center" style="width: 12rem; background-color: orange">
+                  <div class="card-body">
+                      <h3 style="margin-top:30px">{{ $weatherData['wind']['speed'] }} m/s</h3>
+                      <p class="card-text" style="margin-top:20px">Wind Speed</p>
+                  </div>
+              </div>
+              <!-- Weather Icon and Suggestion Card -->
+              <div class="card text-center" style="width: 12rem; background-color: orange">
+                  <div class="card-body">
+                      <img src="http://openweathermap.org/img/wn/{{ $weatherData['weather'][0]['icon'] }}@2x.png" alt="Weather icon">
+                      <p class="card-text mt-2">
+                          @if(str_contains($weatherData['weather'][0]['description'], 'rain') ||
+                             str_contains($weatherData['weather'][0]['description'], 'shower rain') ||
+                             str_contains($weatherData['weather'][0]['description'], 'thunderstorm') ||
+                             str_contains($weatherData['weather'][0]['description'], 'light rain') ||
+                             str_contains($weatherData['weather'][0]['description'], 'moderate rain') ||
+                             str_contains($weatherData['weather'][0]['description'], 'heavy rain'))
+                              Bring an umbrella!
+                          @elseif(str_contains($weatherData['weather'][0]['description'], 'scattered clouds') ||
+                                 str_contains($weatherData['weather'][0]['description'], 'broken clouds') ||
+                                 str_contains($weatherData['weather'][0]['description'], 'overcast clouds'))
+                              Prepare an umbrella!
+                          @elseif(str_contains($weatherData['weather'][0]['description'], 'clear sky') ||
+                                 str_contains($weatherData['weather'][0]['description'], 'few clouds'))
+                              What a lovely day!
+                          @endif
+                      </p>
+                  </div>
+              </div>
           </div>
-
-          <div class="col-lg-8">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required="">
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required="">
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required="">
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="message" placeholder="Message" required=""></textarea>
-              </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
-            </form>
-          </div><!-- End Contact Form -->
+      @else
+          <p>Unable to retrieve weather data.</p>
+      @endif
+      <!-- End Contact Form -->
 
         </div>
 
@@ -1044,33 +1040,7 @@
 
       </div>
     </div>
-    <h1>Weather in Kertajaya, Surabaya</h1>
-    @if(isset($weatherData))
-        <p>Temperature: {{ $weatherData['main']['temp'] }}°C</p>
-        <p>Weather: {{ $weatherData['weather'][0]['description'] }}</p>
-        <p>Humidity: {{ $weatherData['main']['humidity'] }}%</p>
-        <p>Wind Speed: {{ $weatherData['wind']['speed'] }} m/s</p>
-        <p><img src="http://openweathermap.org/img/wn/{{ $weatherData['weather'][0]['icon'] }}@2x.png" alt="Weather icon"></p>
 
-        @if(str_contains($weatherData['weather'][0]['description'], 'rain') ||
-           str_contains($weatherData['weather'][0]['description'], 'shower rain') ||
-           str_contains($weatherData['weather'][0]['description'], 'thunderstorm') ||
-           str_contains($weatherData['weather'][0]['description'], 'light rain') ||
-           str_contains($weatherData['weather'][0]['description'], 'moderate rain') ||
-           str_contains($weatherData['weather'][0]['description'], 'heavy rain'))
-            <p>Bring umbrella!</p>
-        @elseif(str_contains($weatherData['weather'][0]['description'], 'scattered clouds') ||
-               str_contains($weatherData['weather'][0]['description'], 'broken clouds') ||
-               str_contains($weatherData['weather'][0]['description'], 'overcast clouds'))
-            <p>Prepare umbrella!</p>
-        @elseif(str_contains($weatherData['weather'][0]['description'], 'clear sky') ||
-               str_contains($weatherData['weather'][0]['description'], 'few clouds'))
-            <p>What a lovely day!</p>
-        @endif
-
-    @else
-        <p>Unable to retrieve weather data.</p>
-    @endif
     <div class="container copyright text-center mt-4">
       <p>© <span>Copyright</span> <strong class="px-1 sitename">UrbanCafe</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
