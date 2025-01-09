@@ -5,7 +5,9 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PegawaiMiddleware;
+use App\Http\Controllers\WeatherController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -84,13 +86,13 @@ Route::middleware([PegawaiMiddleware::class])->group(function () {
 
 
 
-// Route::get('/index', function () {
-//     return view('index');
-// })->name('index');
+    // Route::get('/index', function () {
+    //     return view('index');
+    // })->name('index');
 
 Route::get('/map', function () {
     return view('map');
 });
-Route::get('/index', [WeatherController::class, 'showWeather']);
+Route::get('/index', [WeatherController::class, 'showWeather'])->name('index');
 Route::get('/best-pegawai', [ManagerController::class, 'bestPegawai'])->name('best.pegawai');
 Route::get('/best-seller', [ManagerController::class, 'bestSeller'])->name('best.seller');
