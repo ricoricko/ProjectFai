@@ -46,20 +46,38 @@ INSERT  INTO `cart`(`id_cart`,`id_user`,`id_menu`,`jumlah`,`status`) VALUES
 (9,4,3,2,2),
 (10,5,3,122,2),
 (11,5,2,12,2);
+
+-- Membuat tabel baru bernama `jenis_member`
+CREATE TABLE `jenis_member` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `nama` VARCHAR(255) NOT NULL,
+    `minimum_transaksi` INT NOT NULL,
+    `potongan` DECIMAL(5, 2) NOT NULL
+);
+
+
+-- Menambahkan data ke dalam tabel `jenis_member`
+INSERT INTO `jenis_member` (`id`, `nama`, `minimum_transaksi`, `potongan`)
+VALUES
+  (1, 'Rakyat Kopinesia', 300000, 8.00),
+  (2, 'Kesatria Latte', 600000, 10.00),
+  (3, 'Pahlawan Espresso', 900000, 15.00),
+  (4, 'Maharaja Mocha', 1200000, 20.00);
+
 /*Table structure for table `cash` */
 
 DROP TABLE IF EXISTS `cash`;
 
 CREATE TABLE `cash` (
-  `id_cash` int(255) NOT NULL AUTO_INCREMENT,
-  `jumlah_cash` int(255) DEFAULT NULL,
-  `tanggal` date DEFAULT NULL,
+  `id_cash` INT(255) NOT NULL AUTO_INCREMENT,
+  `jumlah_cash` INT(255) DEFAULT NULL,
+  `tanggal` DATE DEFAULT NULL,
   PRIMARY KEY (`id_cash`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash` */
 
-insert  into `cash`(`id_cash`,`jumlah_cash`,`tanggal`) values 
+INSERT  INTO `cash`(`id_cash`,`jumlah_cash`,`tanggal`) VALUES 
 (1,49670000,'2025-01-09');
 
 /*Table structure for table `cash_in` */
@@ -67,11 +85,11 @@ insert  into `cash`(`id_cash`,`jumlah_cash`,`tanggal`) values
 DROP TABLE IF EXISTS `cash_in`;
 
 CREATE TABLE `cash_in` (
-  `id_cashin` int(255) NOT NULL AUTO_INCREMENT,
-  `cash_in` int(255) DEFAULT NULL,
-  `tanggal` date DEFAULT NULL,
+  `id_cashin` INT(255) NOT NULL AUTO_INCREMENT,
+  `cash_in` INT(255) DEFAULT NULL,
+  `tanggal` DATE DEFAULT NULL,
   PRIMARY KEY (`id_cashin`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash_in` */
 
@@ -80,15 +98,15 @@ CREATE TABLE `cash_in` (
 DROP TABLE IF EXISTS `cash_out`;
 
 CREATE TABLE `cash_out` (
-  `id_cashout` int(255) NOT NULL AUTO_INCREMENT,
-  `cash_out` int(255) DEFAULT NULL,
-  `tanggal` date DEFAULT NULL,
+  `id_cashout` INT(255) NOT NULL AUTO_INCREMENT,
+  `cash_out` INT(255) DEFAULT NULL,
+  `tanggal` DATE DEFAULT NULL,
   PRIMARY KEY (`id_cashout`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash_out` */
 
-insert  into `cash_out`(`id_cashout`,`cash_out`,`tanggal`) values 
+INSERT  INTO `cash_out`(`id_cashout`,`cash_out`,`tanggal`) VALUES 
 (1,10000,'2025-01-09'),
 (2,120000,'2025-01-09'),
 (3,30000,'2025-01-09'),
@@ -134,11 +152,12 @@ DROP TABLE IF EXISTS `member`;
 
 CREATE TABLE `member` (
   `id_member` INT(50) NOT NULL AUTO_INCREMENT,
-  `nama_member` VARCHAR(255) DEFAULT NULL,
-  `potongan_member` INT(50) DEFAULT NULL,
-  `minTrans_member` INT(50) DEFAULT NULL,
-  PRIMARY KEY (`id_member`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id_user` INT(50) NOT NULL,
+  `id_jenismember` INT(50) NOT NULL,
+  PRIMARY KEY (`id_member`),
+  KEY `fk_member_jenismember` (`id_jenismember`),
+  CONSTRAINT `fk_member_jenismember` FOREIGN KEY (`id_jenismember`) REFERENCES `jenis_member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `member` */
 
@@ -382,20 +401,18 @@ CREATE TABLE `users` (
   `password` VARCHAR(255) DEFAULT NULL,
   `nama` VARCHAR(255) DEFAULT NULL,
   `email` VARCHAR(255) DEFAULT NULL,
-  `phone` VARBINARY(255) DEFAULT NULL,
+  `phone` VARCHAR(15) DEFAULT NULL,
   `id_member` INT(50) DEFAULT NULL,
   `img` VARCHAR(255) DEFAULT NULL,
-  `status` TINYINT(1) DEFAULT 1,
-  PRIMARY KEY (`id_user`),
-  KEY `id_member` (`id_member`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`)
+  `status` TINYINT(1) DEFAULT NULL,
+  PRIMARY KEY (`id_user`)
 ) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `users` */
+INSERT INTO `users`(`id_user`, `username`, `password`, `nama`, `email`, `phone`, `id_member`, `img`, `status`)
+VALUES
+  (4, 'qwe', 'qwe', 'qwe', 'qwe@example.com', '1234567890', 1, 'img1.jpg', 1),
+  (5, 'asd', 'asd', 'asd', 'asd@example.com', '0987654321', 2, 'img2.jpg', 0);
 
-INSERT  INTO `users`(`id_user`,`username`,`password`,`nama`,`email`,`phone`,`id_member`,`img`,`status`) VALUES 
-(4,'qwe','qwe','qwe','qwe@gmail.com','22',NULL,NULL,1),
-(5,'zxc','zxc','zxc','zxc@gmail.com','222',NULL,NULL,1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
