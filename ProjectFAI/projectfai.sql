@@ -410,8 +410,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users`(`id_user`, `username`, `password`, `nama`, `email`, `phone`, `id_member`, `img`, `status`)
 VALUES
-  (4, 'qwe', 'qwe', 'qwe', 'qwe@example.com', '1234567890', 1, 'img1.jpg', 1),
-  (5, 'asd', 'asd', 'asd', 'asd@example.com', '0987654321', 2, 'img2.jpg', 0);
+  (4, 'qwe', 'qwe', 'qwe', 'qwe@example.com', '1234567890', NULL, NULL, 1),
+  (5, 'asd', 'asd', 'asd', 'asd@example.com', '0987654321', NULL, NULL, 0);
 
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
