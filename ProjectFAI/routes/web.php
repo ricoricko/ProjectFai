@@ -5,13 +5,11 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\WeatherController;
-use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PegawaiMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\WeatherController;
+
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\PegawaiMiddleware;
-use App\Http\Controllers\WeatherController;
 Route::get('/', function () {
     return view('login');
 })->name('login');
