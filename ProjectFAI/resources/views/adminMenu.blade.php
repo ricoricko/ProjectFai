@@ -44,17 +44,17 @@
     <div class="card-body">
         <form action="{{route('admin.addMenu')}}" method="post" enctype="multipart/form-data">
             @csrf
-            
+
             <div class="mb-3">
                 <label for="nama_menu" class="form-label">Nama Menu</label>
                 <input type="text" name="nama_menu" id="nama_menu" class="form-control" placeholder="Masukkan Nama Menu">
             </div>
-            
+
             <div class="mb-3">
                 <label for="harga_menu" class="form-label">Harga</label>
                 <input type="text" name="harga_menu" id="harga_menu" class="form-control" placeholder="Masukkan Harga">
             </div>
-            
+
             <div class="mb-3">
                 <label for="image_menu" class="form-label">Photo Menu</label>
                 <input type="file" name="image_menu" id="image_menu" class="form-control">
@@ -77,6 +77,7 @@
                         <label class="form-check-label" for="produk{{$item->id_produk}}">
                             {{$item->nama_produk}}
                         </label>
+                        <input type="number" name="stok_produk[{{$item->id_produk}}]" class="form-control form-control-sm w-25" placeholder="Stok" min="0" disabled>
                     </div>
                 @endforeach
             </div>
@@ -93,5 +94,18 @@
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <script>
+    console.log("Hi, I'm using the Laravel-AdminLTE package!");
+    document.querySelectorAll('.form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const stockInput = this.parentElement.querySelector('input[type="number"]');
+            if (this.checked) {
+                stockInput.disabled = false;
+            } else {
+                stockInput.disabled = true;
+                stockInput.value = '';
+            }
+        });
+    });
+    </script>
 @stop

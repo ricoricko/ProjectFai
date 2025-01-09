@@ -102,10 +102,12 @@ class ManagerController extends Controller
             'kategori_menu' => $request->kategori_menu,
             'image_menu' => $newpath
         ]);
+
         foreach ($request->input('produk') as $produkId) {
             Resep::create([
-                'id_menu' => $menu->id_menu,
-                'id_produk' => $produkId
+                'id_resep' => $menu->id_menu,
+                'id_stok' => $produkId,
+                // 'jumlah_stok' => $request->'stok_produk'[$produkId]
             ]);
         }
 

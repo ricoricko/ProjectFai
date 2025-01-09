@@ -6,7 +6,9 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\PegawaiMiddleware;
+use App\Http\Controllers\WeatherController;
 Route::get('/', function () {
     return view('login');
 })->name('login');
@@ -48,7 +50,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    
+
     Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
     Route::post('/admin/produk/add', [ManagerController::class, 'addproduk'])->name('admin.addproduk');
     Route::put('/admin/produk/update/{id}', [ManagerController::class, 'updateProduk'])->name('admin.updateproduk');
@@ -58,19 +60,22 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::post('/admin/kategori/add', [ManagerController::class, 'addkategori'])->name('admin.addkategori');
     Route::put('/admin/kategori/update/{id}', [ManagerController::class, 'updateKategori'])->name('admin.updatekategori');
     Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
+
+    Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
+    Route::post('/admin/menu/addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
 });
 
 Route::middleware([PegawaiMiddleware::class])->group(function () {
     Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai.index');
     Route::post('/pegawai/confirm', [App\Http\Controllers\PegawaiController::class, 'confirm'])->name('pegawai.confirm');
-    
+
 
 });
 
 Route::middleware([PegawaiMiddleware::class])->group(function () {
     Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai.index');
     Route::post('/pegawai/confirm', [App\Http\Controllers\PegawaiController::class, 'confirm'])->name('pegawai.confirm');
-    
+
 
 });
 
