@@ -16,7 +16,10 @@ class WeatherController extends Controller
         $response = Http::get($url);
         $weatherData = $response->json();
 
-        return view('weather', ['weatherData' => $weatherData]);
+        return view('index', ['weatherData' => $weatherData]);
+    }
+    public function index(){
+        return view('index');
     }
 }
 ?>

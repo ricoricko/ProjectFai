@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Kategori;
 use App\Models\Menu;
 use App\Models\Pegawai;
@@ -9,7 +10,7 @@ use App\Models\Produk;
 use App\Models\User;
 use App\Models\Resep;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class ManagerController extends Controller
 {
     public function index()
@@ -143,5 +144,29 @@ class ManagerController extends Controller
     public function indexUsers(){
         $users = User::all();
         return view('adminusers', compact('users'));
+    }
+    public function bestPegawai() {
+        $bestPegawai = Pegawai::orderBy('jumlah_confirm', 'desc')->get();
+         return view('bestPegawai', ['pegawai' => $bestPegawai]);
+    }
+    public function bestSeller()
+    {
+        $bestSellers = Cart::select('id_menu', \DB::raw('SUM(jumlah) as total_jumlah'))
+                            ->where('status', 2)
+                            ->groupBy('id_menu')
+                            ->orderBy('total_jumlah', 'desc')
+                            ->get();
+
+        $bestSellerData = $bestSellers->map(function($item) {
+            $menu = Menu::find($item->id_menu);
+            return [
+                'nama_menu' => $menu->nama_menu,
+                'harga_menu' => $menu->harga_menu,
+                'jumlah_dipesan' => $item->total_jumlah,
+                'total' => $item->total_jumlah * $menu->harga_menu,
+            ];
+        });
+
+        return view('bestSeller', ['bestSellers' => $bestSellerData]);
     }
 }

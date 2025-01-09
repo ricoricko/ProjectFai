@@ -9,9 +9,7 @@ use App\Http\Controllers\WeatherController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PegawaiMiddleware;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\PegawaiMiddleware;
-use App\Http\Controllers\WeatherController;
+
 Route::get('/', function () {
     return view('login');
 })->name('login');
@@ -25,7 +23,7 @@ Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile
 Route::post('/profile/delete', [AuthController::class, 'deleteAccount'])->name('profile.delete');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/index',[WeatherController::class,'showWeather']);
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
@@ -88,11 +86,13 @@ Route::middleware([PegawaiMiddleware::class])->group(function () {
 
 
 
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
+// Route::get('/index', function () {
+//     return view('index');
+// })->name('index');
 
 Route::get('/map', function () {
     return view('map');
 });
-Route::get('/weather', [WeatherController::class, 'showWeather']);
+Route::get('/index', [WeatherController::class, 'showWeather']);
+Route::get('/best-pegawai', [ManagerController::class, 'bestPegawai'])->name('best.pegawai');
+Route::get('/best-seller', [ManagerController::class, 'bestSeller'])->name('best.seller');
