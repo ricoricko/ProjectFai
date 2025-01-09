@@ -46,7 +46,54 @@ INSERT  INTO `cart`(`id_cart`,`id_user`,`id_menu`,`jumlah`,`status`) VALUES
 (9,4,3,2,2),
 (10,5,3,122,2),
 (11,5,2,12,2);
+/*Table structure for table `cash` */
 
+DROP TABLE IF EXISTS `cash`;
+
+CREATE TABLE `cash` (
+  `id_cash` int(255) NOT NULL AUTO_INCREMENT,
+  `jumlah_cash` int(255) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  PRIMARY KEY (`id_cash`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `cash` */
+
+insert  into `cash`(`id_cash`,`jumlah_cash`,`tanggal`) values 
+(1,49670000,'2025-01-09');
+
+/*Table structure for table `cash_in` */
+
+DROP TABLE IF EXISTS `cash_in`;
+
+CREATE TABLE `cash_in` (
+  `id_cashin` int(255) NOT NULL AUTO_INCREMENT,
+  `cash_in` int(255) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  PRIMARY KEY (`id_cashin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `cash_in` */
+
+/*Table structure for table `cash_out` */
+
+DROP TABLE IF EXISTS `cash_out`;
+
+CREATE TABLE `cash_out` (
+  `id_cashout` int(255) NOT NULL AUTO_INCREMENT,
+  `cash_out` int(255) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  PRIMARY KEY (`id_cashout`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `cash_out` */
+
+insert  into `cash_out`(`id_cashout`,`cash_out`,`tanggal`) values 
+(1,10000,'2025-01-09'),
+(2,120000,'2025-01-09'),
+(3,30000,'2025-01-09'),
+(4,20000,'2025-01-09'),
+(5,150000,'2025-01-09');
 /*Table structure for table `history` */
 
 DROP TABLE IF EXISTS `history`;
