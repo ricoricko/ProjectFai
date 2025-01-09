@@ -11,6 +11,9 @@
         <a href="/admin/kategori" class="btn btn-warning">Kategori</a>
         <a href="/admin/users" class="btn btn-info">Users</a>
         <a href="/admin/menu" class="btn btn-danger">Menu</a>
+        <a href="/admin/cash" class="btn btn-danger">Cash</a>
+        <a href="/admin/cashIn" class="btn btn-danger">Cash In</a>
+        <a href="/admin/cashOut" class="btn btn-danger">Cash Out</a>
     </div>
     <form action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf

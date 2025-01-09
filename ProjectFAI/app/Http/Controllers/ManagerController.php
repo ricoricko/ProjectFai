@@ -44,13 +44,69 @@ class ManagerController extends Controller
         Pegawai::create($request->all());
         return redirect()->route('admin.index')->with('success', 'Data Pegawai berhasil ditambahkan.');
     }
-
-
     public function addProduk(Request $request)
     {
-        Produk::create($request->all());
-        return redirect()->route('admin.produk')->with('success', 'Data Produk berhasil ditambahkan.');
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
+    
+        try {
+            \DB::transaction(function () use ($request) {
+                $hargaTotal = $request->input('harga') * $request->input('stok');
+    
+                $latestCash = \DB::table('cash')->latest('id_cash')->first();
+    
+                if ($latestCash->jumlah_cash < $hargaTotal) {
+                    throw new \Exception('Jumlah cash tidak mencukupi.');
+                }
+    
+                $newCashAmount = $latestCash->jumlah_cash - $hargaTotal;
+                \DB::table('cash')->where('id_cash', $latestCash->id_cash)->update(['jumlah_cash' => $newCashAmount]);
+    
+                \DB::table('cash_out')->insert([
+                    'cash_out' => $hargaTotal,
+                    'tanggal' => now(),
+                ]);
+    
+                \DB::table('produk')->insert([
+                    'nama_produk' => $request->input('nama_produk'),
+                    'harga' => $request->input('harga'),
+                    'stok' => $request->input('stok'),
+                    'status' => 1,
+                ]);
+            });
+    
+            return redirect()->route('admin.produk')->with('success', 'Produk berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.produk')->with('error', $e->getMessage());
+        }
     }
+
+
+    // public function addProduk(Request $request)
+    // {
+    //     Produk::create($request->all());
+    //     return redirect()->route('admin.produk')->with('success', 'Data Produk berhasil ditambahkan.');
+    // }
+    // public function updateProduk(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'nama_produk' => 'required|string|max:255',
+    //         'harga' => 'required|numeric',
+    //         'stok' => 'required|numeric',
+    //     ]);
+
+    //     $produk = Produk::findOrFail($id);
+    //     $produk->update([
+    //         'nama_produk' => $request->input('nama_produk'),
+    //         'harga' => $request->input('harga'),
+    //         'stok' => $request->input('stok'),
+    //     ]);
+
+    //     return redirect()->route('admin.produk')->with('success', 'Data Produk berhasil diupdate.');
+    // }
     public function updateProduk(Request $request, $id)
     {
         $request->validate([
@@ -58,15 +114,47 @@ class ManagerController extends Controller
             'harga' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
-
-        $produk = Produk::findOrFail($id);
-        $produk->update([
-            'nama_produk' => $request->input('nama_produk'),
-            'harga' => $request->input('harga'),
-            'stok' => $request->input('stok'),
-        ]);
-
-        return redirect()->route('admin.produk')->with('success', 'Data Produk berhasil diupdate.');
+    
+        try {
+            \DB::transaction(function () use ($request, $id) {
+                $produk = \DB::table('produk')->where('id_produk', $id)->first();
+                $stokSekarang = $produk->stok;
+                $stokBaru = $request->input('stok');
+                $hargaBaru = $request->input('harga');
+    
+                // Calculate the stock difference
+                $stokDifference = $stokBaru - $stokSekarang;
+    
+                // Check if adding more stock
+                if ($stokDifference > 0) {
+                    $hargaTotal = $stokDifference * $hargaBaru;
+    
+                    $latestCash = \DB::table('cash')->latest('id_cash')->first();
+    
+                    if ($latestCash->jumlah_cash < $hargaTotal) {
+                        throw new \Exception('Jumlah cash tidak mencukupi.');
+                    }
+    
+                    $newCashAmount = $latestCash->jumlah_cash - $hargaTotal;
+                    \DB::table('cash')->where('id_cash', $latestCash->id_cash)->update(['jumlah_cash' => $newCashAmount]);
+    
+                    \DB::table('cash_out')->insert([
+                        'cash_out' => $hargaTotal,
+                        'tanggal' => now(),
+                    ]);
+                }
+    
+                \DB::table('produk')->where('id_produk', $id)->update([
+                    'nama_produk' => $request->input('nama_produk'),
+                    'harga' => $hargaBaru,
+                    'stok' => $stokBaru,
+                ]);
+            });
+    
+            return redirect()->route('admin.produk')->with('success', 'Data Produk berhasil diupdate.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.produk')->with('error', $e->getMessage());
+        }
     }
 
     public function indexProduk(){
@@ -168,5 +256,53 @@ class ManagerController extends Controller
         });
 
         return view('bestSeller', ['bestSellers' => $bestSellerData]);
+    }
+    public function indexCash()
+    {
+        $cashData = \DB::table('cash')->orderBy('tanggal', 'desc')->get();
+        return view('adminCash', compact('cashData'));
+    }
+    public function addCash(Request $request)
+    {
+        $request->validate([
+            'jumlah_cash' => 'required|numeric|min:0',
+        ]);
+
+        \DB::transaction(function () use ($request) {
+            $jumlahCash = $request->input('jumlah_cash');
+
+
+            $latestCash = \DB::table('cash')->latest('id_cash')->first();
+
+            if (!$latestCash) {
+                abort(404, 'Cash record not found.');
+            }
+
+
+            $newCashAmount = $latestCash->jumlah_cash + $jumlahCash;
+            \DB::table('cash')->where('id_cash', $latestCash->id_cash)->update([
+                'jumlah_cash' => $newCashAmount,
+                'tanggal' => now(),
+            ]);
+
+    
+            \DB::table('cash_in')->insert([
+                'cash_in' => $jumlahCash,
+                'tanggal' => now(),
+            ]);
+        });
+
+        return redirect()->route('admin.cash')->with('success', 'Cash berhasil ditambahkan.');
+    }
+    public function indexCashIn()
+    {
+        $cashInData = \DB::table('cash_in')->get();
+        return view('adminCashIn', compact('cashInData'));
+    }
+
+    public function indexCashOut()
+    {
+        $cashOutData = \DB::table('cash_out')->get();
+        return view('adminCashOut', compact('cashOutData'));
     }
 }
