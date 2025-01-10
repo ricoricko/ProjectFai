@@ -9,6 +9,7 @@ use App\Models\Pegawai;
 use App\Models\Produk;
 use App\Models\User;
 use App\Models\Resep;
+use App\Models\TransaksiPegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class ManagerController extends Controller
@@ -27,6 +28,7 @@ class ManagerController extends Controller
         $pegawai->update($request->all());
         return redirect()->route('admin.index')->with('success', 'Data Pegawai berhasil diupdate.');
     }
+    
 
 
     public function destroy($id)
@@ -35,6 +37,7 @@ class ManagerController extends Controller
         $pegawai->delete();
         return redirect()->route('admin.index')->with('success', 'Data Pegawai berhasil dihapus.');
     }
+    
     public function create()
     {
         return view('CreatePegawai');
@@ -305,4 +308,55 @@ class ManagerController extends Controller
         $cashOutData = \DB::table('cash_out')->get();
         return view('adminCashOut', compact('cashOutData'));
     }
+
+    public function updatekategori(Request $request, $id)
+    {
+        $kategori = Kategori::find($id);
+    
+        if ($kategori) {
+            $updateData = $request->all();
+            // logger()->info('Update Data: ', $updateData); 
+            $kategori->update($updateData);
+    
+            return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil diupdate.');
+        }
+    
+        return redirect()->route('admin.kategori')->with('error', 'Kategori tidak ditemukan.');
+    }
+    
+
+    public function deletekategori($id)
+    {
+        $kategori = Kategori::find($id);
+        $kategori->delete();
+        return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil dihapus.');
+    }
+
+
+    public function gajiPegawai(Request $request)
+    {
+        $request->validate([
+            'id_pegawai' => 'required',
+            'jumlah_gaji' => 'required|numeric'
+        ]);
+
+        DB::table('cash_out')->insert([
+            'cash_out' => $request->jumlah_gaji,
+            'tanggal' => now()
+        ]);
+
+        $id_cashout = DB::getPdo()->lastInsertId();
+
+        DB::table('cash')->update([
+            'jumlah_cash' => DB::raw('jumlah_cash - ' . $request->jumlah_gaji)
+        ]);
+
+        TransaksiPegawai::create([
+            'id_pegawai' => $request->id_pegawai,
+            'id_cashout' => $id_cashout
+        ]);
+
+        return redirect()->route('admin.index')->with('success', 'Gaji Pegawai berhasil ditambahkan.');
+    }
+
 }

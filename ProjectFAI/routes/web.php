@@ -44,13 +44,14 @@ Route::get('/payment', function () {
 
 
 Route::middleware([AdminMiddleware::class])->group(function () {
-    Route::get('/admin', [ManagerController::class, 'index']);
-    Route::post('/admin/update', [ManagerController::class, 'update'])->name('admin.update');
-    Route::delete('/admin/delete', [ManagerController::class, 'destroy'])->name('admin.destroy');
+    Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
+    Route::put('/admin/{id}', [ManagerController::class, 'update'])->name('admin.update');
+    Route::delete('/admin/{id}', [ManagerController::class, 'destroy'])->name('admin.destroy');
     Route::post('/admin/store', [ManagerController::class, 'store'])->name('admin.store');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::post('/admin/gajiPegawai', [ManagerController::class, 'gajiPegawai'])->name('admin.gajiPegawai');
 
     Route::get('/admin/produk', [ManagerController::class, 'indexproduk'])->name('admin.produk');
     Route::post('/admin/produk/add', [ManagerController::class, 'addproduk'])->name('admin.addproduk');
@@ -59,11 +60,16 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
     Route::get('/admin/kategori', [ManagerController::class, 'indexkategori'])->name('admin.kategori');
     Route::post('/admin/kategori/add', [ManagerController::class, 'addkategori'])->name('admin.addkategori');
-    Route::put('/admin/kategori/update/{id}', [ManagerController::class, 'updateKategori'])->name('admin.updatekategori');
-    Route::delete('/admin/kategori/delete/{id}', [ManagerController::class, 'deleteKategori'])->name('admin.deletekategori');
+    Route::put('/admin/kategori/{id}', [ManagerController::class, 'updatekategori'])->name('admin.updatekategori');
+    Route::delete('/admin/kategori/{id}', [ManagerController::class, 'deletekategori'])->name('admin.deletekategori');
+    
+    
 
     Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
     Route::post('/admin/menu/addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
+
+    Route::get('/admin/users', [ManagerController::class, 'indexUsers'])->name('admin.users');
+
 
     Route::get('/admin/cash', [ManagerController::class, 'indexCash'])->name('admin.cash');
     Route::post('/admin/addCash', [ManagerController::class, 'addCash'])->name('admin.addCash');
