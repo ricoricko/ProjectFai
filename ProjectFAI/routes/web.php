@@ -65,6 +65,9 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
     Route::post('/admin/menu/addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
 
+    Route::get('/admin/users', [ManagerController::class, 'indexUsers'])->name('admin.users');
+
+
     Route::get('/admin/cash', [ManagerController::class, 'indexCash'])->name('admin.cash');
     Route::post('/admin/addCash', [ManagerController::class, 'addCash'])->name('admin.addCash');
     
