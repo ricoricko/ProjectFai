@@ -58,11 +58,12 @@
                         @csrf
                         @method('PUT')
                         <td>{{ $pgw->id_kategori }}</td>
-                        <td><input type="text" name="nama_produk" class="form-control" value="{{ $pgw->nama_kategori }}"></td>
+                        <td><input type="text" name="nama_kategori" class="form-control" value="{{ $pgw->nama_kategori }}"></td>
                         <td>
                             <button class="btn btn-success" type="submit">Update</button>
                         </td>
                     </form>
+                    
                     <td>
                         <form action="{{ route('admin.deletekategori', $pgw->id_kategori) }}" method="POST" style="display:inline;">
                             @csrf

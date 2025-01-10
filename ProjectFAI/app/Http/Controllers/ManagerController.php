@@ -312,9 +312,18 @@ class ManagerController extends Controller
     public function updatekategori(Request $request, $id)
     {
         $kategori = Kategori::find($id);
-        $kategori->update($request->all());
-        return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil diupdate.');
+    
+        if ($kategori) {
+            $updateData = $request->all();
+            // logger()->info('Update Data: ', $updateData); 
+            $kategori->update($updateData);
+    
+            return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil diupdate.');
+        }
+    
+        return redirect()->route('admin.kategori')->with('error', 'Kategori tidak ditemukan.');
     }
+    
 
     public function deletekategori($id)
     {

@@ -63,6 +63,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::put('/admin/kategori/{id}', [ManagerController::class, 'updatekategori'])->name('admin.updatekategori');
     Route::delete('/admin/kategori/{id}', [ManagerController::class, 'deletekategori'])->name('admin.deletekategori');
     
+    
 
     Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
     Route::post('/admin/menu/addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
