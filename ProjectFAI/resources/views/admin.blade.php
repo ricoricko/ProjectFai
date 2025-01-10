@@ -15,6 +15,8 @@
         <a href="/admin/cashIn" class="btn btn-danger">Cash In</a>
         <a href="/admin/cashOut" class="btn btn-danger">Cash Out</a>
     </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPegawaiModal">Add Pegawai</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gajiPegawaiModal">Gaji Pegawai</button>
     <form action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf
         <button type="submit" class="btn btn-secondary">Logout</button>
@@ -50,77 +52,121 @@
         </thead>
         <tbody>
             @foreach ($pegawai as $pgw)
-                <tr>
-                    <form action="{{ route('admin.update', $pgw->id_pegawai) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <td>{{ $pgw->id_pegawai }}</td>
-                        <td><input type="text" name="nama_pegawai" class="form-control" value="{{ $pgw->nama_pegawai }}"></td>
-                        <td><input type="text" name="alamat_pegawai" class="form-control" value="{{ $pgw->alamat_pegawai }}"></td>
-                        <td><input type="text" name="status_pegawai" class="form-control" value="{{ $pgw->status_pegawai }}"></td>
-                        <td><input type="number" name="gaji_pegawai" class="form-control" value="{{ $pgw->gaji_pegawai }}"></td>
-                        <td class="text-center">
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </td>
-                    </form>
+            <tr>
+                <form action="{{ route('admin.update', $pgw->id_pegawai) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <td>{{ $pgw->id_pegawai }}</td>
+                    <td><input type="text" name="nama_pegawai" class="form-control" value="{{ $pgw->nama_pegawai }}"></td>
+                    <td><input type="text" name="alamat_pegawai" class="form-control" value="{{ $pgw->alamat_pegawai }}"></td>
+                    <td><input type="text" name="status_pegawai" class="form-control" value="{{ $pgw->status_pegawai }}"></td>
+                    <td><input type="number" name="gaji_pegawai" class="form-control" value="{{ $pgw->gaji_pegawai }}"></td>
                     <td class="text-center">
-                        <form action="{{ route('admin.destroy', $pgw->id_pegawai) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
-                        </form>
+                        <button type="submit" class="btn btn-success">Update</button>
                     </td>
-                </tr>
-            @endforeach
+                </form>
+                <td class="text-center">
+                    <form action="{{ route('admin.destroy', $pgw->id_pegawai) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+        
         </tbody>
     </table>
 </div>
 
-{{-- Form Tambah Pegawai --}}
-<div class="col-md-6 mt-5">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h4>Tambah Pegawai</h4>
+{{-- add pegawai --}}
+<div class="modal fade" id="addPegawaiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Pegawai</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="nama_pegawai" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="alamat_pegawai" class="form-label">Alamat</label>
+                        <input type="text" class="form-control" id="alamat_pegawai" name="alamat_pegawai" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status_pegawai" class="form-label">Status</label>
+                        <select class="form-control" name="status_pegawai" required>
+                            <option value="0">Pegawai biasa</option>
+                            <option value="1">Manager</option>
+                        </select><br>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password_pegawai" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password_pegawai" name="password_pegawai" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gaji_pegawai" class="form-label">Gaji</label>
+                        <input type="number" class="form-control" id="gaji_pegawai" name="gaji_pegawai" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </form>
+            </div>
         </div>
-        <div class="card-body">
-            <form action="{{ route('admin.store') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="nama_pegawai" class="form-label">Nama</label>
-                    <input type="text" class="form-control" id="nama_pegawai" name="nama_pegawai" required>
-                </div>
-                <div class="mb-3">
-                    <label for="alamat_pegawai" class="form-label">Alamat</label>
-                    <input type="text" class="form-control" id="alamat_pegawai" name="alamat_pegawai" required>
-                </div>
-                <div class="mb-3">
-                    <label for="status_pegawai" class="form-label">Status</label>
-                    {{-- <input type="text" class="form-control" id="status_pegawai" name="status_pegawai" required> --}}
-                    <label for="status_pegawai" class="form-label">Status</label>
-                    <select class="form-control" name="status_pegawai" required>
-                        <option value="0">Pegawai biasa</option>
-                        <option value="1">Manager</option>
-                    </select><br>
-                </div>
-                <div class="mb-3">
-                    <label for="password_pegawai" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password_pegawai" name="password_pegawai" required>
-                </div>
-                <div class="mb-3">
-                    <label for="gaji_pegawai" class="form-label">Gaji</label>
-                    <input type="number" class="form-control" id="gaji_pegawai" name="gaji_pegawai" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Tambah</button>
-            </form>
+    </div>
+</div>
+
+{{-- Gaji --}}
+<div class="modal fade" id="gajiPegawaiModal" tabindex="-1" aria-labelledby="gajiPegawaiLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="gajiPegawaiLabel">Gaji Pegawai</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.gajiPegawai') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="id_pegawai" class="form-label">Pilih Pegawai</label>
+                        <select class="form-control" id="id_pegawai" name="id_pegawai" required>
+                            @foreach($pegawai as $pgw)
+                                <option value="{{ $pgw->id_pegawai }}">{{ $pgw->nama_pegawai }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jumlah_gaji" class="form-label">Jumlah Gaji</label>
+                        <input type="number" class="form-control" id="jumlah_gaji" name="jumlah_gaji" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gaji</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 @stop
 
 @section('css')
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+<script>
+    console.log("Hi, I'm using the Laravel-AdminLTE package!");
+    document.querySelectorAll('.form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const stockInput = this.parentElement.querySelector('input[type="number"]');
+            if (this.checked) {
+                stockInput.disabled = false;
+            } else {
+                stockInput.disabled = true;
+                stockInput.value = '';
+            }
+        });
+    });
+</script>
 @stop

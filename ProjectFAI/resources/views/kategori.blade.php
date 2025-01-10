@@ -15,6 +15,7 @@
         <a href="/admin/cashIn" class="btn btn-danger">Cash In</a>
         <a href="/admin/cashOut" class="btn btn-danger">Cash Out</a>
     </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKategoriModal">Add Kategori</button>
     <form action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf
         <button type="submit" class="btn btn-secondary">Logout</button>
@@ -23,6 +24,9 @@
 @stop
 
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -72,21 +76,34 @@
     </table>
 </div>
 
-<div class="col-md-6 mt-5">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h4>Add Kategori</h4>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('admin.addkategori') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="nama_kategori" class="form-label">Nama Kategori</label>
-                    <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Add</button>
-            </form>
+{{-- Modal for Add Kategori --}}
+<div class="modal fade" id="addKategoriModal" tabindex="-1" aria-labelledby="addKategoriLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addKategoriLabel">Tambah Kategori</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.addkategori') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="nama_kategori" class="form-label">Nama Kategori</label>
+                        <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+@stop
+
+@section('css')
+    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+@stop
+
+@section('js')
+    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 @stop

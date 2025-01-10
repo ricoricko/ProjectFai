@@ -15,6 +15,7 @@
         <a href="/admin/cashIn" class="btn btn-danger">Cash In</a>
         <a href="/admin/cashOut" class="btn btn-danger">Cash Out</a>
     </div>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProdukModal">Add Produk</button>
     <form action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf
         <button type="submit" class="btn btn-secondary">Logout</button>
@@ -83,29 +84,32 @@
     </table>
 </div>
 
-{{-- Form Tambah Produk --}}
-<div class="col-md-6 mt-5">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h4>Tambah Produk / Bahan</h4>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('admin.addproduk') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="nama_produk" class="form-label">Nama Produk</label>
-                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                </div>
-                <div class="mb-3">
-                    <label for="harga" class="form-label">Harga</label>
-                    <input type="number" class="form-control" id="harga" name="harga" required>
-                </div>
-                <div class="mb-3">
-                    <label for="stok" class="form-label">Stok (Gram)</label>
-                    <input type="number" class="form-control" id="stok" name="stok" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Tambah</button>
-            </form>
+{{-- Modal for Add Produk --}}
+<div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('admin.addproduk') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="nama_produk" class="form-label">Nama Produk</label>
+                        <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="harga" class="form-label">Harga</label>
+                        <input type="number" class="form-control" id="harga" name="harga" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stok" class="form-label">Stok (Gram)</label>
+                        <input type="number" class="form-control" id="stok" name="stok" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -117,4 +121,5 @@
 
 @section('js')
     <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 @stop
