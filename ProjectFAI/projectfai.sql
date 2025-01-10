@@ -49,7 +49,7 @@ INSERT  INTO `cart`(`id_cart`,`id_user`,`id_menu`,`jumlah`,`status`) VALUES
 
 -- Membuat tabel baru bernama `jenis_member`
 CREATE TABLE `jenis_member` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `id_jenismember` INT AUTO_INCREMENT PRIMARY KEY,
     `nama` VARCHAR(255) NOT NULL,
     `minimum_transaksi` INT NOT NULL,
     `potongan` DECIMAL(5, 2) NOT NULL
@@ -57,7 +57,7 @@ CREATE TABLE `jenis_member` (
 
 
 -- Menambahkan data ke dalam tabel `jenis_member`
-INSERT INTO `jenis_member` (`id`, `nama`, `minimum_transaksi`, `potongan`)
+INSERT INTO `jenis_member` (`id_jenismember`, `nama`, `minimum_transaksi`, `potongan`)
 VALUES
   (1, 'Rakyat Kopinesia', 300000, 8.00),
   (2, 'Kesatria Latte', 600000, 10.00),
@@ -156,7 +156,7 @@ CREATE TABLE `member` (
   `id_jenismember` INT(50) NOT NULL,
   PRIMARY KEY (`id_member`),
   KEY `fk_member_jenismember` (`id_jenismember`),
-  CONSTRAINT `fk_member_jenismember` FOREIGN KEY (`id_jenismember`) REFERENCES `jenis_member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_member_jenismember` FOREIGN KEY (`id_jenismember`) REFERENCES `jenis_member` (`id_jenismember`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `member` */
