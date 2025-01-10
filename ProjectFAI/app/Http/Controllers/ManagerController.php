@@ -68,16 +68,20 @@ class ManagerController extends Controller
                 $newCashAmount = $latestCash->jumlah_cash - $hargaTotal;
                 \DB::table('cash')->where('id_cash', $latestCash->id_cash)->update(['jumlah_cash' => $newCashAmount]);
     
-                \DB::table('cash_out')->insert([
-                    'cash_out' => $hargaTotal,
-                    'tanggal' => now(),
-                ]);
-    
-                \DB::table('produk')->insert([
+             
+                $id_produk = \DB::table('produk')->insertGetId([
                     'nama_produk' => $request->input('nama_produk'),
                     'harga' => $request->input('harga'),
                     'stok' => $request->input('stok'),
                     'status' => 1,
+                ]);
+    
+                \DB::table('cash_out')->insert([
+                    'cash_out' => $hargaTotal,
+                    'tanggal' => now(),
+                    'id_produk' => $id_produk, 
+                    'jumlah' => $request->input('stok'), 
+                    'harga' => $request->input('harga'), 
                 ]);
             });
     
@@ -86,6 +90,7 @@ class ManagerController extends Controller
             return redirect()->route('admin.produk')->with('error', $e->getMessage());
         }
     }
+    
 
 
     // public function addProduk(Request $request)
@@ -125,10 +130,10 @@ class ManagerController extends Controller
                 $stokBaru = $request->input('stok');
                 $hargaBaru = $request->input('harga');
     
-                // Calculate the stock difference
+      
                 $stokDifference = $stokBaru - $stokSekarang;
     
-                // Check if adding more stock
+
                 if ($stokDifference > 0) {
                     $hargaTotal = $stokDifference * $hargaBaru;
     
@@ -144,6 +149,9 @@ class ManagerController extends Controller
                     \DB::table('cash_out')->insert([
                         'cash_out' => $hargaTotal,
                         'tanggal' => now(),
+                        'id_produk' => $id, 
+                        'jumlah' => $stokDifference, 
+                        'harga' => $hargaBaru, 
                     ]);
                 }
     
@@ -159,6 +167,8 @@ class ManagerController extends Controller
             return redirect()->route('admin.produk')->with('error', $e->getMessage());
         }
     }
+    
+    
 
     public function indexProduk(){
         $produk = Produk::all();
@@ -305,9 +315,15 @@ class ManagerController extends Controller
 
     public function indexCashOut()
     {
-        $cashOutData = \DB::table('cash_out')->get();
+        $cashOutData = \DB::table('cash_out')
+            ->join('produk', 'cash_out.id_produk', '=', 'produk.id_produk')
+            ->select('cash_out.*', 'produk.nama_produk')
+            ->get();
+    
         return view('adminCashOut', compact('cashOutData'));
     }
+    
+    
 
     public function updatekategori(Request $request, $id)
     {
