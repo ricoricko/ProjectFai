@@ -280,31 +280,29 @@ class ManagerController extends Controller
         $request->validate([
             'jumlah_cash' => 'required|numeric|min:0',
         ]);
-
+    
         \DB::transaction(function () use ($request) {
             $jumlahCash = $request->input('jumlah_cash');
-
-
+    
             $latestCash = \DB::table('cash')->latest('id_cash')->first();
-
+    
             if (!$latestCash) {
                 abort(404, 'Cash record not found.');
             }
-
-
+    
             $newCashAmount = $latestCash->jumlah_cash + $jumlahCash;
             \DB::table('cash')->where('id_cash', $latestCash->id_cash)->update([
                 'jumlah_cash' => $newCashAmount,
                 'tanggal' => now(),
             ]);
-
     
             \DB::table('cash_in')->insert([
                 'cash_in' => $jumlahCash,
                 'tanggal' => now(),
+                'status' => 'top up', 
             ]);
         });
-
+    
         return redirect()->route('admin.cash')->with('success', 'Cash berhasil ditambahkan.');
     }
     public function indexCashIn()
