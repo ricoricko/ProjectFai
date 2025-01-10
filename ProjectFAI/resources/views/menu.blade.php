@@ -6,15 +6,42 @@
     <title>Menu</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
+        body {
+            background-color: #f8f5f2;
+        }
+        .navbar {
+            background-color: #d2b48c;
+        }
+        .nav-link, .navbar-brand {
+            color: #000 !important; /* Changed text color to black */
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
         .card-img-top {
             width: 100%;
-            height: 300px;
+            height: 200px;
             object-fit: cover;
+        }
+        .card-title {
+            color: #8b4513;
+        }
+        .btn-primary {
+            background-color: #8b4513;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #a0522d;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #8b4513;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Restaurant</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +50,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ route('index') }}">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{{ route('index') }}">Back</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Menu</a>
@@ -39,9 +66,8 @@
                             Welcome, {{ $username ?? 'Guest' }}
                         </span>
                     </li>
-                    @endif
-                </ul>
-            <br>
+                @endif
+            </ul>
         </div>
     </div>
 </nav>
@@ -72,14 +98,10 @@
                             <form method="POST" action="{{ route('cart.add') }}">
                                 @csrf
                                 <input type="hidden" name="id_menu" value="{{ $menu->id_menu }}">
-                                
-                               
                                 <div class="mb-3">
                                     <label for="jumlah-{{ $menu->id_menu }}" class="form-label">Jumlah:</label>
                                     <input type="number" id="jumlah-{{ $menu->id_menu }}" name="jumlah" class="form-control" value="0" min="1" required>
                                 </div>
-                                
-                             
                                 <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
                             </form>
                         </div>
