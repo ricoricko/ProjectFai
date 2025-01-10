@@ -13,9 +13,9 @@ class Resep extends Model
 
     protected $fillable = [
         // Pastikan kamu memiliki kolom 'username' di tabel pegawai
-        'id_menu',
-        'id_produk',
-        'stok',
+        'id_resep',
+        'id_stok',
+        // 'jumlah_stok',
 
    ];
 
