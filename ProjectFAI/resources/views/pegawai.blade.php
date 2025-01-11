@@ -29,9 +29,9 @@
             @csrf
             <button type="submit" class="btn btn-secondary">Logout</button>
         </form>
-        <h2 class="my-4">Carts with Status 0</h2>
+        <h2 class="my-4">Pesanan yang belum di konfirmasi</h2>
         @if($cart->isEmpty())
-            <p>No carts found with status 0.</p>
+            <p>Tidak ada pesanan</p>
         @else
             <table class="table table-hover">
                 <thead>

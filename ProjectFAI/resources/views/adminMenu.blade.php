@@ -74,15 +74,21 @@
 
             <div class="mb-3">
                 <label for="produk" class="form-label">Produk</label><br>
-                @foreach ($produk as $item)
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="produk[]" value="{{$item->id_produk}}" id="produk{{$item->id_produk}}">
-                        <label class="form-check-label" for="produk{{$item->id_produk}}">
-                            {{$item->nama_produk}}
-                        </label>
-                        <input type="number" name="stok_produk[{{$item->id_produk}}]" class="form-control form-control-sm w-25" placeholder="Stok" min="0" disabled>
-                    </div>
-                @endforeach
+                <div class="row">
+                    @foreach ($produk as $index => $item)
+                        <div class="col-md-2 mb-2"> <!-- Adjust width for 5 items per row -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="produk[]" value="{{$item->id_produk}}" id="produk{{$item->id_produk}}">
+                                <label class="form-check-label" for="produk{{$item->id_produk}}">
+                                    {{$item->nama_produk}}
+                                </label>
+                            </div>
+                        </div>
+                        @if (($index + 1) % 5 == 0)
+                            </div><div class="row">
+                        @endif
+                    @endforeach
+                </div>
             </div>
 
             <div class="text-end">

@@ -46,6 +46,7 @@
             <tr>
                 <th>Cash In Amount</th>
                 <th>Date</th>
+                <th>Status</th> <!-- New column for status -->
             </tr>
         </thead>
         <tbody>
@@ -53,6 +54,7 @@
             <tr>
                 <td>{{ $cashIn->cash_in }}</td>
                 <td>{{ $cashIn->tanggal }}</td>
+                <td>{{ $cashIn->status }}</td> <!-- Displaying the status -->
             </tr>
             @endforeach
         </tbody>

@@ -44,13 +44,21 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Cash Out Amount</th>
+                <th>No</th>
+                <th>Nama Produk</th>
+                <th>Jumlah</th>
+                <th>Harga</th>
+                <th>Amount (Cash Out)</th>
                 <th>Date</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($cashOutData as $cashOut)
+            @foreach($cashOutData as $index => $cashOut)
             <tr>
+                <td>{{ $index + 1 }}</td> 
+                <td>{{ $cashOut->nama_produk }}</td> 
+                <td>{{ $cashOut->jumlah }}</td>
+                <td>{{ $cashOut->harga }}</td>
                 <td>{{ $cashOut->cash_out }}</td>
                 <td>{{ $cashOut->tanggal }}</td>
             </tr>
