@@ -22,6 +22,10 @@ class Menu extends Model
     {
         return $this->belongsTo(Kategori::class, 'kategori_menu', 'id_kategori');
     }
+    public function dtrans()
+    {
+        return $this->belongsTo(Dtrans::class, 'id_menu', 'id_menu');
+    }
     public function Resep()
     {
         return $this->belongsTo(Resep::class, 'id_menu', 'id_menu');

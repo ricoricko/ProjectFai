@@ -14,6 +14,7 @@
         <a href="/admin/cash" class="btn btn-danger">Cash</a>
         <a href="/admin/cashIn" class="btn btn-danger">Cash In</a>
         <a href="/admin/cashOut" class="btn btn-danger">Cash Out</a>
+        <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
     </div>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPegawaiModal">Add Pegawai</button>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gajiPegawaiModal">Gaji Pegawai</button>
@@ -74,7 +75,7 @@
                 </td>
             </tr>
         @endforeach
-        
+
         </tbody>
     </table>
 </div>
