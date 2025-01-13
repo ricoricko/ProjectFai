@@ -41,6 +41,7 @@ Route::get('/payment', function () {
 
 // Panel Admin Tanpa Middleware sessionCheck
 // Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
+//halaman return food
 
 
 Route::middleware([AdminMiddleware::class])->group(function () {
@@ -62,8 +63,10 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::post('/admin/kategori/add', [ManagerController::class, 'addkategori'])->name('admin.addkategori');
     Route::put('/admin/kategori/{id}', [ManagerController::class, 'updatekategori'])->name('admin.updatekategori');
     Route::delete('/admin/kategori/{id}', [ManagerController::class, 'deletekategori'])->name('admin.deletekategori');
-    
-    
+
+    Route::get('/admin/returnfood',[ManagerController::class,'viewReturn'])->name('admin.returnfood');
+    Route::post('admin/returnfood/add',[ManagerController::class,'viewAdd'])->name('return.add');
+
 
     Route::get('/admin/menu', [ManagerController::class, 'indexMenu'])->name('admin.menu');
     Route::post('/admin/menu/addMenu', [ManagerController::class, 'addMenu'])->name('admin.addMenu');
@@ -73,7 +76,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
     Route::get('/admin/cash', [ManagerController::class, 'indexCash'])->name('admin.cash');
     Route::post('/admin/addCash', [ManagerController::class, 'addCash'])->name('admin.addCash');
-    
+
     Route::get('/admin/cashIn', [ManagerController::class, 'indexCashIn'])->name('admin.cashIn');
     Route::get('/admin/cashOut', [ManagerController::class, 'indexCashOut'])->name('admin.cashOut');
 });

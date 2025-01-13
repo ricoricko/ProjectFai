@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Dtrans;
 use App\Models\Kategori;
 use App\Models\Menu;
 use App\Models\Pegawai;
 use App\Models\Produk;
 use App\Models\User;
 use App\Models\Resep;
+use App\Models\Returnfood;
 use App\Models\TransaksiPegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Return_;
+
 class ManagerController extends Controller
 {
     public function index()
@@ -28,7 +32,7 @@ class ManagerController extends Controller
         $pegawai->update($request->all());
         return redirect()->route('admin.index')->with('success', 'Data Pegawai berhasil diupdate.');
     }
-    
+
 
 
     public function destroy($id)
@@ -37,7 +41,7 @@ class ManagerController extends Controller
         $pegawai->delete();
         return redirect()->route('admin.index')->with('success', 'Data Pegawai berhasil dihapus.');
     }
-    
+
     public function create()
     {
         return view('CreatePegawai');
@@ -54,25 +58,25 @@ class ManagerController extends Controller
             'harga' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
-    
+
         try {
             \DB::transaction(function () use ($request) {
                 $hargaTotal = $request->input('harga') * $request->input('stok');
-    
+
                 $latestCash = \DB::table('cash')->latest('id_cash')->first();
-    
+
                 if ($latestCash->jumlah_cash < $hargaTotal) {
                     throw new \Exception('Jumlah cash tidak mencukupi.');
                 }
-    
+
                 $newCashAmount = $latestCash->jumlah_cash - $hargaTotal;
                 \DB::table('cash')->where('id_cash', $latestCash->id_cash)->update(['jumlah_cash' => $newCashAmount]);
-    
+
                 \DB::table('cash_out')->insert([
                     'cash_out' => $hargaTotal,
                     'tanggal' => now(),
                 ]);
-    
+
                 \DB::table('produk')->insert([
                     'nama_produk' => $request->input('nama_produk'),
                     'harga' => $request->input('harga'),
@@ -80,7 +84,7 @@ class ManagerController extends Controller
                     'status' => 1,
                 ]);
             });
-    
+
             return redirect()->route('admin.produk')->with('success', 'Produk berhasil ditambahkan.');
         } catch (\Exception $e) {
             return redirect()->route('admin.produk')->with('error', $e->getMessage());
@@ -117,43 +121,43 @@ class ManagerController extends Controller
             'harga' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
-    
+
         try {
             \DB::transaction(function () use ($request, $id) {
                 $produk = \DB::table('produk')->where('id_produk', $id)->first();
                 $stokSekarang = $produk->stok;
                 $stokBaru = $request->input('stok');
                 $hargaBaru = $request->input('harga');
-    
+
                 // Calculate the stock difference
                 $stokDifference = $stokBaru - $stokSekarang;
-    
+
                 // Check if adding more stock
                 if ($stokDifference > 0) {
                     $hargaTotal = $stokDifference * $hargaBaru;
-    
+
                     $latestCash = \DB::table('cash')->latest('id_cash')->first();
-    
+
                     if ($latestCash->jumlah_cash < $hargaTotal) {
                         throw new \Exception('Jumlah cash tidak mencukupi.');
                     }
-    
+
                     $newCashAmount = $latestCash->jumlah_cash - $hargaTotal;
                     \DB::table('cash')->where('id_cash', $latestCash->id_cash)->update(['jumlah_cash' => $newCashAmount]);
-    
+
                     \DB::table('cash_out')->insert([
                         'cash_out' => $hargaTotal,
                         'tanggal' => now(),
                     ]);
                 }
-    
+
                 \DB::table('produk')->where('id_produk', $id)->update([
                     'nama_produk' => $request->input('nama_produk'),
                     'harga' => $hargaBaru,
                     'stok' => $stokBaru,
                 ]);
             });
-    
+
             return redirect()->route('admin.produk')->with('success', 'Data Produk berhasil diupdate.');
         } catch (\Exception $e) {
             return redirect()->route('admin.produk')->with('error', $e->getMessage());
@@ -288,7 +292,7 @@ class ManagerController extends Controller
                 'tanggal' => now(),
             ]);
 
-    
+
             \DB::table('cash_in')->insert([
                 'cash_in' => $jumlahCash,
                 'tanggal' => now(),
@@ -312,18 +316,18 @@ class ManagerController extends Controller
     public function updatekategori(Request $request, $id)
     {
         $kategori = Kategori::find($id);
-    
+
         if ($kategori) {
             $updateData = $request->all();
-            // logger()->info('Update Data: ', $updateData); 
+            // logger()->info('Update Data: ', $updateData);
             $kategori->update($updateData);
-    
+
             return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil diupdate.');
         }
-    
+
         return redirect()->route('admin.kategori')->with('error', 'Kategori tidak ditemukan.');
     }
-    
+
 
     public function deletekategori($id)
     {
@@ -357,6 +361,34 @@ class ManagerController extends Controller
         ]);
 
         return redirect()->route('admin.index')->with('success', 'Gaji Pegawai berhasil ditambahkan.');
+    }
+    public function viewReturn(){
+        $dtrans = Dtrans::with('menu')->get();
+        // dd($dtrans);
+        return view('returnfood',compact('dtrans'));
+    }
+    public function viewAdd(Request $request){
+        $returnfood =Returnfood::create([
+            'id_nota' => $request->id,
+            'id_menu' => $request->id_menu,
+            'jumlah' => $request->jumlah,
+            'harga' => $request->harga,
+            'alasan' => $request->alasan
+        ]);
+        DB::table('cash_out')->insert([
+            'cash_out' => $request->harga,
+            'id_produk' => $request->id_menu,
+            'jumlah' => $request->jumlah,
+            'harga' => $request->harga,
+            'tanggal' => now()
+        ]);
+        DB::table('cash')->update([
+            'jumlah_cash' => DB::raw('jumlah_cash - ' . $request->harga)
+        ]);
+        $dtrans = Dtrans::with('menu')->get();
+        // dd($dtrans);
+        return view('returnfood',compact('dtrans'));
+
     }
 
 }
