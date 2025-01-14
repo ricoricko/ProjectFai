@@ -1,5 +1,5 @@
 /*
-SQLyog Community v13.3.0 (64 bit)
+SQLyog Community v13.2.1 (64 bit)
 MySQL - 10.4.32-MariaDB : Database - projectfai
 *********************************************************************
 */
@@ -31,7 +31,7 @@ CREATE TABLE `cart` (
   KEY `id_menu` (`id_menu`),
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`)
-) ENGINE=INNODB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cart` */
 
@@ -45,24 +45,13 @@ INSERT  INTO `cart`(`id_cart`,`id_user`,`id_menu`,`jumlah`,`status`) VALUES
 (8,4,2,2,2),
 (9,4,3,2,2),
 (10,5,3,122,2),
-(11,5,2,12,2);
-
--- Membuat tabel baru bernama `jenis_member`
-CREATE TABLE `jenis_member` (
-    `id_jenismember` INT AUTO_INCREMENT PRIMARY KEY,
-    `nama` VARCHAR(255) NOT NULL,
-    `minimum_transaksi` INT NOT NULL,
-    `potongan` DECIMAL(5, 2) NOT NULL
-);
-
-
--- Menambahkan data ke dalam tabel `jenis_member`
-INSERT INTO `jenis_member` (`id_jenismember`, `nama`, `minimum_transaksi`, `potongan`)
-VALUES
-  (1, 'Rakyat Kopinesia', 300000, 8.00),
-  (2, 'Kesatria Latte', 600000, 10.00),
-  (3, 'Pahlawan Espresso', 900000, 15.00),
-  (4, 'Maharaja Mocha', 1200000, 20.00);
+(11,5,2,12,2),
+(12,4,2,20,0),
+(13,4,5,10,0),
+(14,4,6,11,0),
+(15,4,9,2,0),
+(16,4,18,7,0),
+(17,4,1,2,1);
 
 /*Table structure for table `cash` */
 
@@ -78,7 +67,7 @@ CREATE TABLE `cash` (
 /*Data for the table `cash` */
 
 INSERT  INTO `cash`(`id_cash`,`jumlah_cash`,`tanggal`) VALUES 
-(1,49670000,'2025-01-09');
+(1,50000000,'2025-01-10');
 
 /*Table structure for table `cash_in` */
 
@@ -88,10 +77,15 @@ CREATE TABLE `cash_in` (
   `id_cashin` INT(255) NOT NULL AUTO_INCREMENT,
   `cash_in` INT(255) DEFAULT NULL,
   `tanggal` DATE DEFAULT NULL,
+  `status` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id_cashin`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash_in` */
+
+INSERT  INTO `cash_in`(`id_cashin`,`cash_in`,`tanggal`,`status`) VALUES 
+(1,400000,'2025-01-10','top up'),
+(2,10000,'2025-01-10','top up');
 
 /*Table structure for table `cash_out` */
 
@@ -101,17 +95,19 @@ CREATE TABLE `cash_out` (
   `id_cashout` INT(255) NOT NULL AUTO_INCREMENT,
   `cash_out` INT(255) DEFAULT NULL,
   `tanggal` DATE DEFAULT NULL,
+  `id_produk` INT(11) DEFAULT NULL,
+  `jumlah` INT(11) DEFAULT NULL,
+  `harga` INT(11) DEFAULT NULL,
   PRIMARY KEY (`id_cashout`)
-) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash_out` */
 
-INSERT  INTO `cash_out`(`id_cashout`,`cash_out`,`tanggal`) VALUES 
-(1,10000,'2025-01-09'),
-(2,120000,'2025-01-09'),
-(3,30000,'2025-01-09'),
-(4,20000,'2025-01-09'),
-(5,150000,'2025-01-09');
+INSERT  INTO `cash_out`(`id_cashout`,`cash_out`,`tanggal`,`id_produk`,`jumlah`,`harga`) VALUES 
+(1,10000,'2025-01-10',1,1,10000),
+(2,20000,'2025-01-10',1,2,10000),
+(3,40000,'2025-01-10',23,2,20000);
+
 /*Table structure for table `history` */
 
 DROP TABLE IF EXISTS `history`;
@@ -127,6 +123,26 @@ CREATE TABLE `history` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `history` */
+
+/*Table structure for table `jenis_member` */
+
+DROP TABLE IF EXISTS `jenis_member`;
+
+CREATE TABLE `jenis_member` (
+  `id_jenismember` INT(11) NOT NULL AUTO_INCREMENT,
+  `nama` VARCHAR(255) NOT NULL,
+  `minimum_transaksi` INT(11) NOT NULL,
+  `potongan` DECIMAL(5,2) NOT NULL,
+  PRIMARY KEY (`id_jenismember`)
+) ENGINE=INNODB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `jenis_member` */
+
+INSERT  INTO `jenis_member`(`id_jenismember`,`nama`,`minimum_transaksi`,`potongan`) VALUES 
+(1,'Rakyat Kopinesia',300000,8.00),
+(2,'Kesatria Latte',600000,10.00),
+(3,'Pahlawan Espresso',900000,15.00),
+(4,'Maharaja Mocha',1200000,20.00);
 
 /*Table structure for table `kategori` */
 
@@ -157,9 +173,12 @@ CREATE TABLE `member` (
   PRIMARY KEY (`id_member`),
   KEY `fk_member_jenismember` (`id_jenismember`),
   CONSTRAINT `fk_member_jenismember` FOREIGN KEY (`id_jenismember`) REFERENCES `jenis_member` (`id_jenismember`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `member` */
+
+INSERT  INTO `member`(`id_member`,`id_user`,`id_jenismember`) VALUES 
+(1,4,4);
 
 /*Table structure for table `menu` */
 
@@ -245,12 +264,12 @@ CREATE TABLE `produk` (
   `id_supplier` INT(11) DEFAULT NULL,
   `status` TINYINT(1) DEFAULT 1,
   PRIMARY KEY (`id_produk`)
-) ENGINE=INNODB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `produk` */
 
 INSERT  INTO `produk`(`id_produk`,`nama_produk`,`id_kategori`,`harga`,`stok`,`id_supplier`,`status`) VALUES 
-(1,'Susu',1,'10000',1001,NULL,1),
+(1,'Susu',1,'10000',1005,NULL,1),
 (2,'Biji Kopi',1,'120000',50,NULL,1),
 (3,'Cocoa Powder',1,'30000',80,NULL,1),
 (4,'Daun Teh',1,'15000',70,NULL,1),
@@ -271,7 +290,8 @@ INSERT  INTO `produk`(`id_produk`,`nama_produk`,`id_kategori`,`harga`,`stok`,`id
 (19,'Chili Sauce',3,'6000',70,NULL,1),
 (20,'Keju',4,'15000',50,NULL,1),
 (21,'Nasi',4,'5000',100,NULL,1),
-(22,'Sauce-saucean',4,'8000',70,NULL,1);
+(22,'Sauce-saucean',4,'8000',70,NULL,1),
+(23,'Coklat',NULL,'20000',2,NULL,1);
 
 /*Table structure for table `resep` */
 
@@ -286,41 +306,41 @@ CREATE TABLE `resep` (
 
 /*Data for the table `resep` */
 
-INSERT INTO `resep` (`id_resep`, `id_stok`) VALUES 
-(1, 1), 
-(1, 2), 
-(2, 2), 
-(3, 1), 
-(3, 2), 
-(4, 2), 
-(5, 1), 
-(5, 2), 
-(6, 10), 
-(6, 1), 
-(7, 10), 
-(7, 2), 
-(8, 8), 
-(8, 9), 
-(9, 7), 
-(9, 4), 
-(10, 4), 
-(10, 6), 
-(11, 3), 
-(11, 1), 
-(12, 11), 
-(12, 12), 
-(13, 13), 
-(14, 14), 
-(15, 15), 
-(16, 16), 
-(17, 17), 
-(18, 18), 
-(19, 19), 
-(20, 20), 
-(21, 17), 
-(22, 20), 
-(23, 19), 
-(24, 17);
+INSERT  INTO `resep`(`id_resep`,`id_stok`) VALUES 
+(1,1),
+(1,2),
+(2,2),
+(3,1),
+(3,2),
+(4,2),
+(5,1),
+(5,2),
+(6,10),
+(6,1),
+(7,10),
+(7,2),
+(8,8),
+(8,9),
+(9,7),
+(9,4),
+(10,4),
+(10,6),
+(11,3),
+(11,1),
+(12,11),
+(12,12),
+(13,13),
+(14,14),
+(15,15),
+(16,16),
+(17,17),
+(18,18),
+(19,19),
+(20,20),
+(21,17),
+(22,20),
+(23,19),
+(24,17);
 
 /*Table structure for table `stok` */
 
@@ -331,32 +351,34 @@ CREATE TABLE `stok` (
   `nama_stok` VARCHAR(255) DEFAULT NULL,
   `jumlah_stok` INT(11) DEFAULT NULL,
   PRIMARY KEY (`id_stok`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `stok` */
-INSERT INTO `stok` (`nama_stok`, `jumlah_stok`) VALUES
-('Susu', 100),
-('Biji Kopi', 50),
-('Cocoa Powder', 30),
-('Daun Teh', 70),
-('Air', 1000),
-('Es Batu', 200),
-('Lemon', 50),
-('Alpukat', 30),
-('Es Krim', 40),
-('Bubuk Matcha', 25),
-('Kentang', 100),
-('Garam', 500),
-('Sosis', 80),
-('Pretzel', 40),
-('Croissant', 30),
-('Baguette', 20),
-('Tartar Sauce', 50),
-('Tomato Sauce', 60),
-('Chili Sauce', 70),
-('Keju', 50),
-('Nasi', 100),
-('Sauce-saucean', 70);
+
+INSERT  INTO `stok`(`id_stok`,`nama_stok`,`jumlah_stok`) VALUES 
+(1,'Susu',100),
+(2,'Biji Kopi',30),
+(3,'Cocoa Powder',30),
+(4,'Daun Teh',70),
+(5,'Air',990),
+(6,'Es Batu',189),
+(7,'Lemon',50),
+(8,'Alpukat',30),
+(9,'Es Krim',38),
+(10,'Bubuk Matcha',25),
+(11,'Kentang',100),
+(12,'Garam',500),
+(13,'Sosis',80),
+(14,'Pretzel',40),
+(15,'Croissant',30),
+(16,'Baguette',20),
+(17,'Tartar Sauce',50),
+(18,'Tomato Sauce',53),
+(19,'Chili Sauce',70),
+(20,'Keju',50),
+(21,'Nasi',100),
+(22,'Sauce-saucean',70);
+
 /*Table structure for table `supplier` */
 
 DROP TABLE IF EXISTS `supplier`;
@@ -387,9 +409,16 @@ CREATE TABLE `transaksi` (
   KEY `id_menu` (`id_menu`),
   CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
   CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `transaksi` */
+
+INSERT  INTO `transaksi`(`id_transaksi`,`id_user`,`id_menu`,`jumlah`,`tanggal`,`total_harga`) VALUES 
+(1,4,2,20,'2025-01-10',400000),
+(2,4,5,10,'2025-01-10',240000),
+(3,4,6,11,'2025-01-10',308000),
+(4,4,9,2,'2025-01-10',30000),
+(5,4,18,7,'2025-01-10',350000);
 
 /*Table structure for table `users` */
 
@@ -408,11 +437,18 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id_user`)
 ) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `users`(`id_user`, `username`, `password`, `nama`, `email`, `phone`, `id_member`, `img`, `status`)
-VALUES
-  (4, 'qwe', 'qwe', 'qwe', 'qwe@example.com', '1234567890', NULL, NULL, 1),
-  (5, 'asd', 'asd', 'asd', 'asd@example.com', '0987654321', NULL, NULL, 0);
+/*Data for the table `users` */
 
+INSERT  INTO `users`(`id_user`,`username`,`password`,`nama`,`email`,`phone`,`id_member`,`img`,`status`) VALUES 
+(4,'qwe','qwe','qwe','qwe@example.com','1234567890',NULL,NULL,1),
+(5,'asd','asd','asd','asd@example.com','0987654321',NULL,NULL,0);
+
+CREATE TABLE `transaksi_pegawai` (
+  `id_transaksi` INT(10) NOT NULL AUTO_INCREMENT,
+  `id_cashout` INT(10) DEFAULT NULL,
+  `id_pegawai` INT(10) DEFAULT NULL,
+  PRIMARY KEY (`id_transaksi`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
