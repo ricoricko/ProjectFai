@@ -10,33 +10,34 @@ use Illuminate\Support\Facades\Session;
 class AuthController extends Controller
 {
     public function register(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string|unique:users',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:2',
-            'phone' => 'required|string',
-            'name' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'username' => 'required|string|unique:users',
+        'email' => 'required|string|email|unique:users',
+        'password' => 'required|string|min:2',
+        'phone' => 'required|string',
+        'name' => 'required|string',
+    ]);
 
-        $username = $request->input('username');
+    $username = $request->input('username');
 
-        $pegawaiExists = Pegawai::where('nama_pegawai', $username)->exists();
-        if ($pegawaiExists) {
-            return redirect('/')->with('error', 'Username already exists in pegawai!');
-        }
-
-        User::create([
-            'username' => $request->input('username'),
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-            'phone' => $request->input('phone'),
-            'nama' => $request->input('name'),
-            
-        ]);
-
-        return redirect('/')->with('success', 'Account created successfully! Please login.');
+    $pegawaiExists = Pegawai::where('nama_pegawai', $username)->exists();
+    if ($pegawaiExists) {
+        return redirect('/')->with('error', 'Username already exists in pegawai!');
     }
+
+    User::create([
+        'username' => $request->input('username'),
+        'email' => $request->input('email'),
+        'password' => $request->input('password'),
+        'phone' => $request->input('phone'),
+        'nama' => $request->input('name'),
+        'status' => 1, 
+    ]);
+
+    return redirect('/')->with('success', 'Account created successfully! Please login.');
+}
+
 
     public function login(Request $request)
     {
