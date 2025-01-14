@@ -97,6 +97,7 @@ Route::middleware([PegawaiMiddleware::class])->group(function () {
 
 
 
+Route::post('/midtrans/callback', [PaymentController::class, 'midtransCallback']);
 
     // Route::get('/index', function () {
     //     return view('index');

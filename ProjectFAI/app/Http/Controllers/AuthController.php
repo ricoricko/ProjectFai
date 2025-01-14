@@ -21,13 +21,11 @@ class AuthController extends Controller
 
         $username = $request->input('username');
 
-        // Pengecekan apakah username ada di tabel pegawai
         $pegawaiExists = Pegawai::where('nama_pegawai', $username)->exists();
         if ($pegawaiExists) {
             return redirect('/')->with('error', 'Username already exists in pegawai!');
         }
 
-        // Simpan data
         User::create([
             'username' => $request->input('username'),
             'email' => $request->input('email'),
@@ -42,43 +40,37 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi input
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
     
-        // Cek apakah username milik user atau pegawai
         $user = User::where('username', $request->username)
                     ->where('password', $request->password)
                     ->where('status', '1')
                     ->first();
     
-        // Jika user ditemukan
         if ($user) {
-            Session::put('id_user', $user->id_user); // Menyimpan session untuk user
+            Session::put('id_user', $user->id_user); 
             Session::put('username', $user->username);
             return redirect('/index');
         }
     
-        // Cek jika username milik pegawai
         $pegawai = Pegawai::where('nama_pegawai', $request->username)
                           ->where('password_pegawai', $request->password)
                           ->first();
         
-        // Jika pegawai ditemukan
         if ($pegawai) {
-            Session::put('pegawai_id', $pegawai->id_pegawai); // Menyimpan session untuk pegawai
+            Session::put('pegawai_id', $pegawai->id_pegawai);
             Session::put('pegawai_name', $pegawai->nama_pegawai);
     
             if ($pegawai->status_pegawai == '1') {
-                return redirect('/admin'); // Jika status pegawai aktif, arahkan ke admin
+                return redirect('/admin'); 
             } else {
-                return redirect('/pegawai'); // Jika status pegawai tidak aktif, arahkan ke menu
+                return redirect('/pegawai');
             }
         }
     
-        // Jika tidak ada yang ditemukan, tampilkan pesan gagal login
         return redirect('/')->withErrors(['loginError' => 'Login failed']);
     }
     
@@ -88,13 +80,13 @@ class AuthController extends Controller
 
     public function logout()
 {
-    Session::flush(); // Hapus semua session
+    Session::flush(); 
     return redirect('/');
 }
 
 public function profile()
 {
-    $user = User::find(Session::get('id_user')); // Konsisten dengan 'id_user'
+    $user = User::find(Session::get('id_user')); 
 
     if (!$user) {
         return redirect('/')->with('error', 'Session expired. Please login again.');
