@@ -22,7 +22,8 @@ Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
 Route::post('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
 Route::post('/profile/delete', [AuthController::class, 'deleteAccount'])->name('profile.delete');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware([\App\Http\Middleware\CheckSessionMiddleware::class])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/index',[WeatherController::class,'showWeather']);
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 
@@ -38,6 +39,7 @@ Route::get('/payment-success', [PaymentController::class, 'paymentSuccess'])->na
 Route::get('/payment', function () {
     return view('payment');
 })->name('payment');
+});
 
 // Panel Admin Tanpa Middleware sessionCheck
 // Route::get('/admin', [ManagerController::class, 'index'])->name('admin.index');
