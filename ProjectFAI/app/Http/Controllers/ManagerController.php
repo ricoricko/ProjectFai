@@ -259,11 +259,33 @@ class ManagerController extends Controller
                 'nama_menu' => $menu->nama_menu,
                 'harga_menu' => $menu->harga_menu,
                 'jumlah_dipesan' => $item->total_jumlah,
+                'kategori_menu'=>$menu->kategori_menu,
                 'total' => $item->total_jumlah * $menu->harga_menu,
             ];
         });
 
         return view('bestSeller', ['bestSellers' => $bestSellerData]);
+    }
+    public function bestFood()
+    {
+        $bestSellers = Cart::select('id_menu', \DB::raw('SUM(jumlah) as total_jumlah'))
+                            ->where('status', 2)
+                            ->groupBy('id_menu')
+                            ->orderBy('total_jumlah', 'desc')
+                            ->get();
+
+        $bestSellerData = $bestSellers->map(function($item) {
+            $menu = Menu::find($item->id_menu);
+            return [
+                'nama_menu' => $menu->nama_menu,
+                'harga_menu' => $menu->harga_menu,
+                'jumlah_dipesan' => $item->total_jumlah,
+                'kategori_menu'=>$menu->kategori_menu,
+                'total' => $item->total_jumlah * $menu->harga_menu,
+            ];
+        });
+
+        return view('bestFood', ['bestSellers' => $bestSellerData]);
     }
     public function indexCash()
     {
@@ -312,9 +334,9 @@ class ManagerController extends Controller
     {
         $cashOutData = \DB::table('cash_out')
             ->join('produk', 'cash_out.id_produk', '=', 'produk.id_produk')
-            ->select('cash_out.*', 'produk.nama_produk') 
+            ->select('cash_out.*', 'produk.nama_produk')
             ->get();
-    
+
         return view('adminCashOut', compact('cashOutData'));
     }
 

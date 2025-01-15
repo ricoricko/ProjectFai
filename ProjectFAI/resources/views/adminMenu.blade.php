@@ -14,6 +14,10 @@
         <a href="/admin/cash" class="btn btn-danger">Cash</a>
         <a href="/admin/cashIn" class="btn btn-danger">Cash In</a>
         <a href="/admin/cashOut" class="btn btn-danger">Cash Out</a>
+        <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
+        <a href="/admin/best-seller" class="btn btn-danger">Best Drink</a>
+        <a href="/admin/best-food" class="btn btn-danger">Best Food</a>
+        <a href="/admin/best-pegawai" class="btn btn-danger">Best Pegawai</a>
     </div>
     <form action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf

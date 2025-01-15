@@ -79,6 +79,10 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
     Route::get('/admin/cashIn', [ManagerController::class, 'indexCashIn'])->name('admin.cashIn');
     Route::get('/admin/cashOut', [ManagerController::class, 'indexCashOut'])->name('admin.cashOut');
+
+    Route::get('/admin/best-pegawai', [ManagerController::class, 'bestPegawai'])->name('best.pegawai');
+    Route::get('/admin/best-seller', [ManagerController::class, 'bestSeller'])->name('best.seller');
+    Route::get('/admin/best-food', [ManagerController::class, 'bestFood'])->name('best.food');
 });
 
 Route::middleware([PegawaiMiddleware::class])->group(function () {
@@ -110,5 +114,3 @@ Route::get('/map', function () {
     return view('map');
 });
 Route::get('/index', [WeatherController::class, 'showWeather'])->name('index');
-Route::get('/best-pegawai', [ManagerController::class, 'bestPegawai'])->name('best.pegawai');
-Route::get('/best-seller', [ManagerController::class, 'bestSeller'])->name('best.seller');

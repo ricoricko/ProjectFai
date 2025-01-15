@@ -26,7 +26,7 @@
 </div>
 @stop
 @section('content')
-    <h1>Best Seller Drink</h1>
+    <h1>Best Seller Food</h1>
     <table border="1" class="table">
         <thead>
             <tr>
@@ -38,7 +38,7 @@
         </thead>
         <tbody>
             @foreach($bestSellers as $item)
-            @if ($item['kategori_menu']==1)
+            @if ($item['kategori_menu']==2)
             <tr>
                 <td>{{ $item['nama_menu'] }}</td>
                 <td>{{ $item['harga_menu'] }}</td>
