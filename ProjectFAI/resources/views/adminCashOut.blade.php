@@ -68,6 +68,26 @@
             </tr>
             @endforeach
         </tbody>
+    </table><br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Keterangan</th>
+                <th>Amount (Cash Out)</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($cashOutPegawai as $index => $cashOut)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>Gaji Pegawai {{ $cashOut->nama_pegawai }}</td>
+                <td>{{ $cashOut->cash_out }}</td>
+                <td>{{ $cashOut->tanggal }}</td>
+            </tr>
+            @endforeach
+        </tbody>
     </table>
 </div>
 @stop

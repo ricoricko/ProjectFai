@@ -333,11 +333,18 @@ class ManagerController extends Controller
     public function indexCashOut()
     {
         $cashOutData = \DB::table('cash_out')
-            ->join('produk', 'cash_out.id_produk', '=', 'produk.id_produk')
-            ->select('cash_out.*', 'produk.nama_produk')
-            ->get();
+        ->join('produk', 'cash_out.id_produk', '=', 'produk.id_produk')
+        ->select('cash_out.*', 'produk.nama_produk')
+        ->get();
+        
+        
+        $cashOutPegawai = \DB::table('cash_out')
+        ->leftJoin('pegawai', 'cash_out.id_pegawai', '=', 'pegawai.id_pegawai') 
+        ->select('cash_out.*', 'pegawai.nama_pegawai') 
+        ->whereNull('cash_out.id_produk') 
+        ->get();
 
-        return view('adminCashOut', compact('cashOutData'));
+        return view('adminCashOut', compact('cashOutData','cashOutPegawai'));
     }
 
     public function updatekategori(Request $request, $id)
@@ -370,25 +377,27 @@ class ManagerController extends Controller
             'id_pegawai' => 'required',
             'jumlah_gaji' => 'required|numeric'
         ]);
-
+    
         DB::table('cash_out')->insert([
             'cash_out' => $request->jumlah_gaji,
-            'tanggal' => now()
+            'tanggal' => now(),
+            'id_pegawai' => $request->id_pegawai // Menambahkan id_pegawai ke dalam tabel cash_out
         ]);
-
+    
         $id_cashout = DB::getPdo()->lastInsertId();
-
+    
         DB::table('cash')->update([
             'jumlah_cash' => DB::raw('jumlah_cash - ' . $request->jumlah_gaji)
         ]);
-
+    
         TransaksiPegawai::create([
             'id_pegawai' => $request->id_pegawai,
             'id_cashout' => $id_cashout
         ]);
-
+    
         return redirect()->route('admin.index')->with('success', 'Gaji Pegawai berhasil ditambahkan.');
     }
+    
     public function viewReturn(){
         $dtrans = Dtrans::with('menu')->get();
         // dd($dtrans);
