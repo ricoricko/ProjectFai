@@ -310,7 +310,11 @@ class ManagerController extends Controller
 
     public function indexCashOut()
     {
-        $cashOutData = \DB::table('cash_out')->get();
+        $cashOutData = \DB::table('cash_out')
+            ->join('produk', 'cash_out.id_produk', '=', 'produk.id_produk')
+            ->select('cash_out.*', 'produk.nama_produk') 
+            ->get();
+    
         return view('adminCashOut', compact('cashOutData'));
     }
 

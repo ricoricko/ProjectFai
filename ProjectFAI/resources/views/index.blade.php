@@ -86,7 +86,7 @@
                     <li><a href="#gallery">Gallery</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="/map">Navigation</a></li>
-                    <li><a href="/weather">Weather</a></li>
+        
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
