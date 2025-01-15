@@ -1,5 +1,5 @@
 /*
-SQLyog Community v13.2.1 (64 bit)
+SQLyog Community
 MySQL - 10.4.32-MariaDB : Database - projectfai
 *********************************************************************
 */
@@ -21,21 +21,21 @@ USE `projectfai`;
 DROP TABLE IF EXISTS `cart`;
 
 CREATE TABLE `cart` (
-  `id_cart` INT(50) NOT NULL AUTO_INCREMENT,
-  `id_user` INT(50) NOT NULL,
-  `id_menu` INT(50) NOT NULL,
-  `jumlah` INT(50) NOT NULL,
-  `status` TINYINT(1) DEFAULT 1,
+  `id_cart` int(50) NOT NULL AUTO_INCREMENT,
+  `id_user` int(50) NOT NULL,
+  `id_menu` int(50) NOT NULL,
+  `jumlah` int(50) NOT NULL,
+  `status` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`id_cart`),
   KEY `id_user` (`id_user`),
   KEY `id_menu` (`id_menu`),
   CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
   CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`)
-) ENGINE=INNODB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cart` */
 
-INSERT  INTO `cart`(`id_cart`,`id_user`,`id_menu`,`jumlah`,`status`) VALUES 
+insert  into `cart`(`id_cart`,`id_user`,`id_menu`,`jumlah`,`status`) values 
 (1,4,3,2,2),
 (2,4,1,2,2),
 (3,4,2,3,2),
@@ -58,32 +58,32 @@ INSERT  INTO `cart`(`id_cart`,`id_user`,`id_menu`,`jumlah`,`status`) VALUES
 DROP TABLE IF EXISTS `cash`;
 
 CREATE TABLE `cash` (
-  `id_cash` INT(255) NOT NULL AUTO_INCREMENT,
-  `jumlah_cash` INT(255) DEFAULT NULL,
-  `tanggal` DATE DEFAULT NULL,
+  `id_cash` int(255) NOT NULL AUTO_INCREMENT,
+  `jumlah_cash` int(255) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
   PRIMARY KEY (`id_cash`)
-) ENGINE=INNODB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash` */
 
-INSERT  INTO `cash`(`id_cash`,`jumlah_cash`,`tanggal`) VALUES 
-(1,50000000,'2025-01-10');
+insert  into `cash`(`id_cash`,`jumlah_cash`,`tanggal`) values 
+(1,49990000,'2025-01-10');
 
 /*Table structure for table `cash_in` */
 
 DROP TABLE IF EXISTS `cash_in`;
 
 CREATE TABLE `cash_in` (
-  `id_cashin` INT(255) NOT NULL AUTO_INCREMENT,
-  `cash_in` INT(255) DEFAULT NULL,
-  `tanggal` DATE DEFAULT NULL,
-  `status` VARCHAR(255) DEFAULT NULL,
+  `id_cashin` int(255) NOT NULL AUTO_INCREMENT,
+  `cash_in` int(255) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_cashin`)
-) ENGINE=INNODB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash_in` */
 
-INSERT  INTO `cash_in`(`id_cashin`,`cash_in`,`tanggal`,`status`) VALUES 
+insert  into `cash_in`(`id_cashin`,`cash_in`,`tanggal`,`status`) values 
 (1,400000,'2025-01-10','top up'),
 (2,10000,'2025-01-10','top up');
 
@@ -92,53 +92,108 @@ INSERT  INTO `cash_in`(`id_cashin`,`cash_in`,`tanggal`,`status`) VALUES
 DROP TABLE IF EXISTS `cash_out`;
 
 CREATE TABLE `cash_out` (
-  `id_cashout` INT(255) NOT NULL AUTO_INCREMENT,
-  `cash_out` INT(255) DEFAULT NULL,
-  `tanggal` DATE DEFAULT NULL,
-  `id_produk` INT(11) DEFAULT NULL,
-  `jumlah` INT(11) DEFAULT NULL,
-  `harga` INT(11) DEFAULT NULL,
+  `id_cashout` int(255) NOT NULL AUTO_INCREMENT,
+  `cash_out` int(255) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `id_produk` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_cashout`)
-) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `cash_out` */
 
-INSERT  INTO `cash_out`(`id_cashout`,`cash_out`,`tanggal`,`id_produk`,`jumlah`,`harga`) VALUES 
+insert  into `cash_out`(`id_cashout`,`cash_out`,`tanggal`,`id_produk`,`jumlah`,`harga`) values 
 (1,10000,'2025-01-10',1,1,10000),
 (2,20000,'2025-01-10',1,2,10000),
-(3,40000,'2025-01-10',23,2,20000);
+(3,40000,'2025-01-10',23,2,20000),
+(4,5000,'2025-01-13',2,2,5000),
+(5,5000,'2025-01-13',2,2,5000);
+
+/*Table structure for table `cash_out_order` */
+
+DROP TABLE IF EXISTS `cash_out_order`;
+
+CREATE TABLE `cash_out_order` (
+  `id_cashout` int(255) NOT NULL AUTO_INCREMENT,
+  `cash_out` int(255) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `id_menu` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_cashout`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `cash_out_order` */
+
+/*Table structure for table `dtrans_order` */
+
+DROP TABLE IF EXISTS `dtrans_order`;
+
+CREATE TABLE `dtrans_order` (
+  `id_htrans` int(11) DEFAULT NULL,
+  `id_menu` int(11) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `total` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `dtrans_order` */
+
+insert  into `dtrans_order`(`id_htrans`,`id_menu`,`harga`,`jumlah`,`total`,`status`) values 
+(1,2,5000,2,10000,0),
+(1,3,4000,2,8000,0);
 
 /*Table structure for table `history` */
 
 DROP TABLE IF EXISTS `history`;
 
 CREATE TABLE `history` (
-  `nota_pesanan` INT(11) NOT NULL,
-  `id_produk` INT(11) DEFAULT NULL,
-  `waktu` DATE DEFAULT NULL,
-  `id_pelanggan` INT(11) DEFAULT NULL,
-  `id_pegawai` INT(11) DEFAULT NULL,
-  `status_nota` INT(11) DEFAULT NULL,
+  `nota_pesanan` int(11) NOT NULL,
+  `id_produk` int(11) DEFAULT NULL,
+  `waktu` date DEFAULT NULL,
+  `id_pelanggan` int(11) DEFAULT NULL,
+  `id_pegawai` int(11) DEFAULT NULL,
+  `status_nota` int(11) DEFAULT NULL,
   PRIMARY KEY (`nota_pesanan`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `history` */
+
+/*Table structure for table `htrans_order` */
+
+DROP TABLE IF EXISTS `htrans_order`;
+
+CREATE TABLE `htrans_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) DEFAULT NULL,
+  `subtotal` int(11) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `htrans_order` */
+
+insert  into `htrans_order`(`id`,`id_user`,`subtotal`,`tanggal`) values 
+(1,4,10000,'2025-01-14'),
+(2,NULL,NULL,NULL);
 
 /*Table structure for table `jenis_member` */
 
 DROP TABLE IF EXISTS `jenis_member`;
 
 CREATE TABLE `jenis_member` (
-  `id_jenismember` INT(11) NOT NULL AUTO_INCREMENT,
-  `nama` VARCHAR(255) NOT NULL,
-  `minimum_transaksi` INT(11) NOT NULL,
-  `potongan` DECIMAL(5,2) NOT NULL,
+  `id_jenismember` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `minimum_transaksi` int(11) NOT NULL,
+  `potongan` decimal(5,2) NOT NULL,
   PRIMARY KEY (`id_jenismember`)
-) ENGINE=INNODB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `jenis_member` */
 
-INSERT  INTO `jenis_member`(`id_jenismember`,`nama`,`minimum_transaksi`,`potongan`) VALUES 
+insert  into `jenis_member`(`id_jenismember`,`nama`,`minimum_transaksi`,`potongan`) values 
 (1,'Rakyat Kopinesia',300000,8.00),
 (2,'Kesatria Latte',600000,10.00),
 (3,'Pahlawan Espresso',900000,15.00),
@@ -149,14 +204,14 @@ INSERT  INTO `jenis_member`(`id_jenismember`,`nama`,`minimum_transaksi`,`potonga
 DROP TABLE IF EXISTS `kategori`;
 
 CREATE TABLE `kategori` (
-  `id_kategori` INT(50) NOT NULL AUTO_INCREMENT,
-  `nama_kategori` VARCHAR(255) DEFAULT NULL,
+  `id_kategori` int(50) NOT NULL AUTO_INCREMENT,
+  `nama_kategori` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_kategori`)
-) ENGINE=INNODB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `kategori` */
 
-INSERT  INTO `kategori`(`id_kategori`,`nama_kategori`) VALUES 
+insert  into `kategori`(`id_kategori`,`nama_kategori`) values 
 (1,'Minuman'),
 (2,'Heavy Food'),
 (3,'Snack'),
@@ -167,17 +222,17 @@ INSERT  INTO `kategori`(`id_kategori`,`nama_kategori`) VALUES
 DROP TABLE IF EXISTS `member`;
 
 CREATE TABLE `member` (
-  `id_member` INT(50) NOT NULL AUTO_INCREMENT,
-  `id_user` INT(50) NOT NULL,
-  `id_jenismember` INT(50) NOT NULL,
+  `id_member` int(50) NOT NULL AUTO_INCREMENT,
+  `id_user` int(50) NOT NULL,
+  `id_jenismember` int(50) NOT NULL,
   PRIMARY KEY (`id_member`),
   KEY `fk_member_jenismember` (`id_jenismember`),
   CONSTRAINT `fk_member_jenismember` FOREIGN KEY (`id_jenismember`) REFERENCES `jenis_member` (`id_jenismember`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=INNODB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `member` */
 
-INSERT  INTO `member`(`id_member`,`id_user`,`id_jenismember`) VALUES 
+insert  into `member`(`id_member`,`id_user`,`id_jenismember`) values 
 (1,4,4);
 
 /*Table structure for table `menu` */
@@ -185,19 +240,19 @@ INSERT  INTO `member`(`id_member`,`id_user`,`id_jenismember`) VALUES
 DROP TABLE IF EXISTS `menu`;
 
 CREATE TABLE `menu` (
-  `id_menu` INT(50) NOT NULL AUTO_INCREMENT,
-  `nama_menu` VARCHAR(255) DEFAULT NULL,
-  `kategori_menu` INT(50) DEFAULT NULL,
-  `harga_menu` INT(50) DEFAULT NULL,
-  `image_menu` VARCHAR(255) DEFAULT NULL,
+  `id_menu` int(50) NOT NULL AUTO_INCREMENT,
+  `nama_menu` varchar(255) DEFAULT NULL,
+  `kategori_menu` int(50) DEFAULT NULL,
+  `harga_menu` int(50) DEFAULT NULL,
+  `image_menu` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_menu`),
   KEY `kategori_menu` (`kategori_menu`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`kategori_menu`) REFERENCES `kategori` (`id_kategori`)
-) ENGINE=INNODB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `menu` */
 
-INSERT  INTO `menu`(`id_menu`,`nama_menu`,`kategori_menu`,`harga_menu`,`image_menu`) VALUES 
+insert  into `menu`(`id_menu`,`nama_menu`,`kategori_menu`,`harga_menu`,`image_menu`) values 
 (1,'Oat Latte',1,25000,'storage/menu/OatMilkLatte.jpg'),
 (2,'Americano',1,20000,'storage/menu/americano.jpg'),
 (3,'Cafe Latte',1,23000,'storage/menu/cafelatte.jpg'),
@@ -234,19 +289,19 @@ INSERT  INTO `menu`(`id_menu`,`nama_menu`,`kategori_menu`,`harga_menu`,`image_me
 DROP TABLE IF EXISTS `pegawai`;
 
 CREATE TABLE `pegawai` (
-  `id_pegawai` INT(50) NOT NULL AUTO_INCREMENT,
-  `nama_pegawai` VARCHAR(255) DEFAULT NULL,
-  `alamat_pegawai` VARCHAR(255) DEFAULT NULL,
-  `status_pegawai` TINYINT(1) DEFAULT 0,
-  `password_pegawai` VARCHAR(255) DEFAULT NULL,
-  `gaji_pegawai` VARCHAR(255) DEFAULT NULL,
-  `jumlah_confirm` INT(10) DEFAULT NULL,
+  `id_pegawai` int(50) NOT NULL AUTO_INCREMENT,
+  `nama_pegawai` varchar(255) DEFAULT NULL,
+  `alamat_pegawai` varchar(255) DEFAULT NULL,
+  `status_pegawai` tinyint(1) DEFAULT 0,
+  `password_pegawai` varchar(255) DEFAULT NULL,
+  `gaji_pegawai` varchar(255) DEFAULT NULL,
+  `jumlah_confirm` int(10) DEFAULT NULL,
   PRIMARY KEY (`id_pegawai`)
-) ENGINE=INNODB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `pegawai` */
 
-INSERT  INTO `pegawai`(`id_pegawai`,`nama_pegawai`,`alamat_pegawai`,`status_pegawai`,`password_pegawai`,`gaji_pegawai`,`jumlah_confirm`) VALUES 
+insert  into `pegawai`(`id_pegawai`,`nama_pegawai`,`alamat_pegawai`,`status_pegawai`,`password_pegawai`,`gaji_pegawai`,`jumlah_confirm`) values 
 (2,'Jason','Jl Ngagel',1,'jason','20000',NULL),
 (3,'rico','Jl Utara',0,'rico','20000',NULL),
 (4,'dvg','dvg',0,'dvg','122',2);
@@ -256,19 +311,19 @@ INSERT  INTO `pegawai`(`id_pegawai`,`nama_pegawai`,`alamat_pegawai`,`status_pega
 DROP TABLE IF EXISTS `produk`;
 
 CREATE TABLE `produk` (
-  `id_produk` INT(11) NOT NULL AUTO_INCREMENT,
-  `nama_produk` VARCHAR(255) DEFAULT NULL,
-  `id_kategori` INT(11) DEFAULT NULL,
-  `harga` VARCHAR(225) DEFAULT NULL,
-  `stok` INT(11) DEFAULT NULL,
-  `id_supplier` INT(11) DEFAULT NULL,
-  `status` TINYINT(1) DEFAULT 1,
+  `id_produk` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_produk` varchar(255) DEFAULT NULL,
+  `id_kategori` int(11) DEFAULT NULL,
+  `harga` varchar(225) DEFAULT NULL,
+  `stok` int(11) DEFAULT NULL,
+  `id_supplier` int(11) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`id_produk`)
-) ENGINE=INNODB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `produk` */
 
-INSERT  INTO `produk`(`id_produk`,`nama_produk`,`id_kategori`,`harga`,`stok`,`id_supplier`,`status`) VALUES 
+insert  into `produk`(`id_produk`,`nama_produk`,`id_kategori`,`harga`,`stok`,`id_supplier`,`status`) values 
 (1,'Susu',1,'10000',1005,NULL,1),
 (2,'Biji Kopi',1,'120000',50,NULL,1),
 (3,'Cocoa Powder',1,'30000',80,NULL,1),
@@ -298,15 +353,15 @@ INSERT  INTO `produk`(`id_produk`,`nama_produk`,`id_kategori`,`harga`,`stok`,`id
 DROP TABLE IF EXISTS `resep`;
 
 CREATE TABLE `resep` (
-  `id_resep` INT(11) DEFAULT NULL,
-  `id_stok` INT(11) DEFAULT NULL,
+  `id_resep` int(11) DEFAULT NULL,
+  `id_stok` int(11) DEFAULT NULL,
   KEY `id_stok` (`id_stok`),
   CONSTRAINT `resep_ibfk_1` FOREIGN KEY (`id_stok`) REFERENCES `stok` (`id_stok`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `resep` */
 
-INSERT  INTO `resep`(`id_resep`,`id_stok`) VALUES 
+insert  into `resep`(`id_resep`,`id_stok`) values 
 (1,1),
 (1,2),
 (2,2),
@@ -342,20 +397,41 @@ INSERT  INTO `resep`(`id_resep`,`id_stok`) VALUES
 (23,19),
 (24,17);
 
+/*Table structure for table `return` */
+
+DROP TABLE IF EXISTS `return`;
+
+CREATE TABLE `return` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_nota` int(11) DEFAULT NULL,
+  `id_menu` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
+  `alasan` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `return` */
+
+insert  into `return`(`id`,`id_nota`,`id_menu`,`jumlah`,`harga`,`alasan`) values 
+(1,1,2,2,5000,'tidak enak'),
+(2,1,2,2,5000,'martin anjg'),
+(3,1,2,2,5000,'martin anjg');
+
 /*Table structure for table `stok` */
 
 DROP TABLE IF EXISTS `stok`;
 
 CREATE TABLE `stok` (
-  `id_stok` INT(11) NOT NULL AUTO_INCREMENT,
-  `nama_stok` VARCHAR(255) DEFAULT NULL,
-  `jumlah_stok` INT(11) DEFAULT NULL,
+  `id_stok` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_stok` varchar(255) DEFAULT NULL,
+  `jumlah_stok` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_stok`)
-) ENGINE=INNODB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `stok` */
 
-INSERT  INTO `stok`(`id_stok`,`nama_stok`,`jumlah_stok`) VALUES 
+insert  into `stok`(`id_stok`,`nama_stok`,`jumlah_stok`) values 
 (1,'Susu',100),
 (2,'Biji Kopi',30),
 (3,'Cocoa Powder',30),
@@ -384,12 +460,12 @@ INSERT  INTO `stok`(`id_stok`,`nama_stok`,`jumlah_stok`) VALUES
 DROP TABLE IF EXISTS `supplier`;
 
 CREATE TABLE `supplier` (
-  `id_supplier` INT(11) NOT NULL AUTO_INCREMENT,
-  `nama_supplier` VARCHAR(255) DEFAULT NULL,
-  `alamat` VARCHAR(255) DEFAULT NULL,
-  `telp` VARCHAR(225) DEFAULT NULL,
+  `id_supplier` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_supplier` varchar(255) DEFAULT NULL,
+  `alamat` varchar(255) DEFAULT NULL,
+  `telp` varchar(225) DEFAULT NULL,
   PRIMARY KEY (`id_supplier`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `supplier` */
 
@@ -398,57 +474,63 @@ CREATE TABLE `supplier` (
 DROP TABLE IF EXISTS `transaksi`;
 
 CREATE TABLE `transaksi` (
-  `id_transaksi` INT(50) NOT NULL AUTO_INCREMENT,
-  `id_user` INT(50) DEFAULT NULL,
-  `id_menu` INT(50) DEFAULT NULL,
-  `jumlah` INT(50) DEFAULT NULL,
-  `tanggal` DATE DEFAULT NULL,
-  `total_harga` INT(50) DEFAULT NULL,
+  `id_transaksi` int(50) NOT NULL AUTO_INCREMENT,
+  `id_user` int(50) DEFAULT NULL,
+  `id_menu` int(50) DEFAULT NULL,
+  `jumlah` int(50) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `total_harga` int(50) DEFAULT NULL,
   PRIMARY KEY (`id_transaksi`),
   KEY `id_user` (`id_user`),
   KEY `id_menu` (`id_menu`),
   CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
   CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`)
-) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `transaksi` */
 
-INSERT  INTO `transaksi`(`id_transaksi`,`id_user`,`id_menu`,`jumlah`,`tanggal`,`total_harga`) VALUES 
+insert  into `transaksi`(`id_transaksi`,`id_user`,`id_menu`,`jumlah`,`tanggal`,`total_harga`) values 
 (1,4,2,20,'2025-01-10',400000),
 (2,4,5,10,'2025-01-10',240000),
 (3,4,6,11,'2025-01-10',308000),
 (4,4,9,2,'2025-01-10',30000),
 (5,4,18,7,'2025-01-10',350000);
 
+/*Table structure for table `transaksi_pegawai` */
+
+DROP TABLE IF EXISTS `transaksi_pegawai`;
+
+CREATE TABLE `transaksi_pegawai` (
+  `id_transaksi` int(10) NOT NULL AUTO_INCREMENT,
+  `id_cashout` int(10) DEFAULT NULL,
+  `id_pegawai` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id_transaksi`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `transaksi_pegawai` */
+
 /*Table structure for table `users` */
 
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
-  `id_user` INT(50) NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(255) DEFAULT NULL,
-  `password` VARCHAR(255) DEFAULT NULL,
-  `nama` VARCHAR(255) DEFAULT NULL,
-  `email` VARCHAR(255) DEFAULT NULL,
-  `phone` VARCHAR(15) DEFAULT NULL,
-  `id_member` INT(50) DEFAULT NULL,
-  `img` VARCHAR(255) DEFAULT NULL,
-  `status` TINYINT(1) DEFAULT NULL,
+  `id_user` int(50) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `id_member` int(50) DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `users` */
 
-INSERT  INTO `users`(`id_user`,`username`,`password`,`nama`,`email`,`phone`,`id_member`,`img`,`status`) VALUES 
+insert  into `users`(`id_user`,`username`,`password`,`nama`,`email`,`phone`,`id_member`,`img`,`status`) values 
 (4,'qwe','qwe','qwe','qwe@example.com','1234567890',NULL,NULL,1),
 (5,'asd','asd','asd','asd@example.com','0987654321',NULL,NULL,0);
-
-CREATE TABLE `transaksi_pegawai` (
-  `id_transaksi` INT(10) NOT NULL AUTO_INCREMENT,
-  `id_cashout` INT(10) DEFAULT NULL,
-  `id_pegawai` INT(10) DEFAULT NULL,
-  PRIMARY KEY (`id_transaksi`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
