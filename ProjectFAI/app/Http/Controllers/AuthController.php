@@ -98,34 +98,47 @@ public function profile()
 
 
 
-    public function updateProfile(Request $request)
-    {
-        $user = User::find(Session::get('user_id'));
-        
-        $request->validate([
-            'nama' => 'required|string',
-            'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
-        ]);
+public function updateProfile(Request $request)
+{
+    $user = User::find(Session::get('id_user'));
 
-        $user->nama = $request->input('nama');
-        if ($request->hasFile('img')) {
-            $file = $request->file('img');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('images'), $filename);
-            $user->img = $filename;
-        }
-        $user->save();
-
-        return redirect()->route('profile')->with('success', 'Profile updated successfully.');
+    if (!$user) {
+        return redirect()->back()->with('error', 'User not found. Please login again.');
     }
-    public function deleteAccount()
-    {
-        $user = User::find(Session::get('user_id'));
-        $user->status = '0'; 
-        $user->save();
 
-        Session::flush();
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5000',
+    ]);
 
-        return redirect('/')->with('success', 'Your account has been deactivated.');
+    $user->nama = $request->input('nama');
+
+    if ($request->hasFile('img')) {
+        $file = $request->file('img');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('images'), $filename);
+        $user->img = $filename; 
     }
+
+    $user->save();
+
+    return redirect()->route('profile')->with('success', 'Profile updated successfully.');
+}
+
+public function deleteAccount()
+{
+    $user = User::find(Session::get('id_user'));
+
+    if (!$user) {
+        return redirect()->back()->with('error', 'User not found. Please login again.');
+    }
+
+    $user->status = '0';
+    $user->save();
+
+    Session::flush();
+
+    return redirect('/')->with('success', 'Your account has been deactivated.');
+}
+
 }
