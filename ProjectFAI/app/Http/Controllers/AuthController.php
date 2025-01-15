@@ -100,7 +100,7 @@ public function profile()
 
     public function updateProfile(Request $request)
     {
-        $user = User::find(Session::get('user_id'));
+        $user = User::find(Session::get('id_user'));
         
         $request->validate([
             'nama' => 'required|string',
@@ -120,7 +120,7 @@ public function profile()
     }
     public function deleteAccount()
     {
-        $user = User::find(Session::get('user_id'));
+        $user = User::find(Session::get('id_user'));
         $user->status = '0'; 
         $user->save();
 
