@@ -376,15 +376,15 @@ class ManagerController extends Controller
             'harga' => $request->harga,
             'alasan' => $request->alasan
         ]);
-        DB::table('cash_out')->insert([
-            'cash_out' => $request->harga,
-            'id_produk' => $request->id_menu,
+        DB::table('cash_out_order')->insert([
+            'cash_out' => ($request->harga * $request->jumlah),
+            'id_menu' => $request->id_menu,
             'jumlah' => $request->jumlah,
             'harga' => $request->harga,
             'tanggal' => now()
         ]);
         DB::table('cash')->update([
-            'jumlah_cash' => DB::raw('jumlah_cash - ' . $request->harga)
+            'jumlah_cash' => DB::raw('jumlah_cash - ' . ($request->harga * $request->jumlah))
         ]);
         $dtrans = Dtrans::with('menu')->get();
         // dd($dtrans);

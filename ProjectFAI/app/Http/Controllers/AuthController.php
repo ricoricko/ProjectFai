@@ -98,18 +98,14 @@ public function profile()
 
 
 
-public function updateProfile(Request $request)
-{
-    $user = User::find(Session::get('id_user'));
-
-    if (!$user) {
-        return redirect()->back()->with('error', 'User not found. Please login again.');
-    }
-
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5000',
-    ]);
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(Session::get('id_user'));
+        
+        $request->validate([
+            'nama' => 'required|string',
+            'img' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048'
+        ]);
 
     $user->nama = $request->input('nama');
 
@@ -122,19 +118,13 @@ public function updateProfile(Request $request)
 
     $user->save();
 
-    return redirect()->route('profile')->with('success', 'Profile updated successfully.');
-}
-
-public function deleteAccount()
-{
-    $user = User::find(Session::get('id_user'));
-
-    if (!$user) {
-        return redirect()->back()->with('error', 'User not found. Please login again.');
+        return redirect()->route('profile')->with('success', 'Profile updated successfully.');
     }
-
-    $user->status = '0';
-    $user->save();
+    public function deleteAccount()
+    {
+        $user = User::find(Session::get('user_id'));
+        $user->status = '0'; 
+        $user->save();
 
     Session::flush();
 
