@@ -21,16 +21,16 @@
                 <li><a class="dropdown-item" href="/admin/cashOut">Cash Out</a></li>
             </ul>
         </div>
+        
         <div class="btn-group">
             <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Cash
+                Return Food
             </button>
             <ul class="dropdown-menu">
                 <li><a href="/admin/returnfood" class="dropdown-item">Return Food</a></li>
                 <li><a class="dropdown-item" href="/admin/hlmreturnfood">Table Return Food</a></li>
             </ul>
         </div>
-        <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
         <div class="btn-group">
             <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Laporan
