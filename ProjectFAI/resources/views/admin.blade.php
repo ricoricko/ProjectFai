@@ -11,13 +11,27 @@
         <a href="/admin/kategori" class="btn btn-warning">Kategori</a>
         <a href="/admin/users" class="btn btn-info">Users</a>
         <a href="/admin/menu" class="btn btn-danger">Menu</a>
-        <a href="/admin/cash" class="btn btn-danger">Cash</a>
-        <a href="/admin/cashIn" class="btn btn-danger">Cash In</a>
-        <a href="/admin/cashOut" class="btn btn-danger">Cash Out</a>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Cash
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/admin/cash">Cash</a></li>
+                <li><a class="dropdown-item" href="/admin/cashIn">Cash In</a></li>
+                <li><a class="dropdown-item" href="/admin/cashOut">Cash Out</a></li>
+            </ul>
+        </div>
         <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
-        <a href="/admin/best-seller" class="btn btn-danger">Best Drink</a>
-        <a href="/admin/best-food" class="btn btn-danger">Best Food</a>
-        <a href="/admin/best-pegawai" class="btn btn-danger">Best Pegawai</a>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Laporan
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/admin/best-seller" class="dropdown-item">Best Drink</a></li>
+                <li><a href="/admin/best-food" class="dropdown-item">Best Food</a></li>
+                <li><a href="/admin/best-pegawai" class="dropdown-item">Best Pegawai</a></li>
+            </ul>
+        </div>
     </div>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPegawaiModal">Add Pegawai</button>
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gajiPegawaiModal">Gaji Pegawai</button>
@@ -40,6 +54,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 
 <h2 class="mt-4">Daftar Pegawai</h2>
 <div class="table-responsive">
@@ -156,6 +177,62 @@
 @stop
 
 @section('css')
+<style>
+    .btn-group a,
+    .btn-group button {
+        margin-right: 10px; 
+        border-radius: 10px; 
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: black;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+    }
+
+    .dropdown-menu {
+        border-radius: 10px; 
+    }
+
+    .dropdown-menu a {
+        color: black;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #f8f9fa; 
+        border-radius: 5px; 
+    }
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap; 
+        gap: 10px; 
+    }
+</style>
 @stop
 
 @section('js')

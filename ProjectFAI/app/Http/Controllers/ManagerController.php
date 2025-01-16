@@ -372,31 +372,41 @@ class ManagerController extends Controller
 
 
     public function gajiPegawai(Request $request)
-    {
-        $request->validate([
-            'id_pegawai' => 'required',
-            'jumlah_gaji' => 'required|numeric'
-        ]);
+{
+    $request->validate([
+        'id_pegawai' => 'required',
+        'jumlah_gaji' => 'required|numeric'
+    ]);
+
     
-        DB::table('cash_out')->insert([
-            'cash_out' => $request->jumlah_gaji,
-            'tanggal' => now(),
-            'id_pegawai' => $request->id_pegawai // Menambahkan id_pegawai ke dalam tabel cash_out
-        ]);
+    $jumlah_cash = DB::table('cash')->value('jumlah_cash');
+
     
-        $id_cashout = DB::getPdo()->lastInsertId();
-    
-        DB::table('cash')->update([
-            'jumlah_cash' => DB::raw('jumlah_cash - ' . $request->jumlah_gaji)
-        ]);
-    
-        TransaksiPegawai::create([
-            'id_pegawai' => $request->id_pegawai,
-            'id_cashout' => $id_cashout
-        ]);
-    
-        return redirect()->route('admin.index')->with('success', 'Gaji Pegawai berhasil ditambahkan.');
+    if ($jumlah_cash < $request->jumlah_gaji) {
+        return redirect()->route('admin.index')->with('error', 'Jumlah cash tidak mencukupi untuk menggaji karyawan.');
     }
+
+    
+    DB::table('cash_out')->insert([
+        'cash_out' => $request->jumlah_gaji,
+        'tanggal' => now(),
+        'id_pegawai' => $request->id_pegawai
+    ]);
+
+    $id_cashout = DB::getPdo()->lastInsertId();
+
+    DB::table('cash')->update([
+        'jumlah_cash' => DB::raw('jumlah_cash - ' . $request->jumlah_gaji)
+    ]);
+
+    TransaksiPegawai::create([
+        'id_pegawai' => $request->id_pegawai,
+        'id_cashout' => $id_cashout
+    ]);
+
+    return redirect()->route('admin.index')->with('success', 'Gaji Pegawai berhasil ditambahkan.');
+    }
+
     
     public function viewReturn(){
         $dtrans = Dtrans::with('menu')->get();
