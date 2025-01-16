@@ -172,7 +172,8 @@ class ManagerController extends Controller
     public function indexMenu(){
         $produk = Produk::all();
         $kategori = Kategori::all();
-        return view('adminMenu', compact('produk','kategori'));
+        $menu= Menu::with('kategori')->get();
+        return view('adminMenu', compact('produk','kategori','menu'));
     }
 
 
@@ -214,6 +215,35 @@ class ManagerController extends Controller
 
         // Return the view with the retrieved data
         return view('adminMenu', compact('produk', 'kategori'));
+    }
+    public function deleteMenu($id){
+        $menu = Menu::findOrFail($id);
+        $menu->delete();
+        $produk = Produk::all();
+        $kategori = Kategori::all();
+        $menu= Menu::with('kategori')->get();
+        return view('adminMenu', compact('produk','kategori','menu'));
+    }
+    public function updateMenu(Request $request){
+        $menu = Menu::findOrFail($request->id);
+        if ($request->hasFile('image_menu')) {
+            $image = $request->file('image_menu');
+            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $path = $image->storeAs('menu', $imageName, 'public');
+            $newpath = 'storage/menu/' . $imageName;
+        }
+        $menu->update([
+            'nama_menu' => $request->input('nama'),
+            'harga_menu' => $request->input('harga'),
+            'kategori_menu' => $request->kategori_menu,
+            'image_menu' => $newpath
+
+        ]);
+        $produk = Produk::all();
+        $kategori = Kategori::all();
+        $menu= Menu::with('kategori')->get();
+        return view('adminMenu', compact('produk','kategori','menu'));
+
     }
 
 
@@ -336,12 +366,12 @@ class ManagerController extends Controller
         ->join('produk', 'cash_out.id_produk', '=', 'produk.id_produk')
         ->select('cash_out.*', 'produk.nama_produk')
         ->get();
-        
-        
+
+
         $cashOutPegawai = \DB::table('cash_out')
-        ->leftJoin('pegawai', 'cash_out.id_pegawai', '=', 'pegawai.id_pegawai') 
-        ->select('cash_out.*', 'pegawai.nama_pegawai') 
-        ->whereNull('cash_out.id_produk') 
+        ->leftJoin('pegawai', 'cash_out.id_pegawai', '=', 'pegawai.id_pegawai')
+        ->select('cash_out.*', 'pegawai.nama_pegawai')
+        ->whereNull('cash_out.id_produk')
         ->get();
 
         return view('adminCashOut', compact('cashOutData','cashOutPegawai'));
@@ -378,15 +408,15 @@ class ManagerController extends Controller
         'jumlah_gaji' => 'required|numeric'
     ]);
 
-    
+
     $jumlah_cash = DB::table('cash')->value('jumlah_cash');
 
-    
+
     if ($jumlah_cash < $request->jumlah_gaji) {
         return redirect()->route('admin.index')->with('error', 'Jumlah cash tidak mencukupi untuk menggaji karyawan.');
     }
 
-    
+
     DB::table('cash_out')->insert([
         'cash_out' => $request->jumlah_gaji,
         'tanggal' => now(),
@@ -407,7 +437,7 @@ class ManagerController extends Controller
     return redirect()->route('admin.index')->with('success', 'Gaji Pegawai berhasil ditambahkan.');
     }
 
-    
+
     public function viewReturn(){
         $dtrans = Dtrans::with('menu')->get();
         // dd($dtrans);

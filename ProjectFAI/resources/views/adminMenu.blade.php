@@ -114,6 +114,70 @@
             </div>
         </form>
     </div>
+    <h1>Daftar Menu</h1>
+    <table border="1" class="table">
+        <tr>
+            <th>Nama</th>
+            <th>Harga</th>
+            <th>Foto Menu</th>
+            <th>Kategori</th>
+            <th>Action</th>
+        </tr>
+        @foreach ($menu as $item)
+            <tr>
+                <td>{{$item->nama_menu}}</td>
+                <td>{{$item->harga_menu}}</td>
+                <td><img src="{{asset($item->image_menu)}}" width="50px" srcset=""></td>
+                <td>{{$item->kategori->nama_kategori}}</td>
+                <td>
+                    <button type="button" class="populate-form btn btn-warning"
+                        data-id="{{ $item->id_menu }}"
+                        data-nama="{{ $item->nama_menu }}"
+                        data-harga="{{ $item->harga_menu }}"
+                        data-image="{{ asset($item->image_menu) }}"
+                        data-kategori="{{ $item->kategori->id_kategori }}"
+                        data-idmenu="{{ $item->id_menu }}">
+                        Update
+                    </button>
+                    <form action="{{ route('admin.deletemenu', $item->id_menu) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </table>
+    <form action="{{ route('admin.updateMenu') }}" method="post" enctype="multipart/form-data" class="form-control mt-3">
+        @csrf
+        <div class="mb-3">
+            <label for="id" class="form-label">Id</label>
+            <input type="text" name="id" id="id" class="form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="nama" class="form-label">Nama Menu</label>
+            <input type="text" name="nama" id="nama" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="harga" class="form-label">Harga</label>
+            <input type="text" name="harga" id="harga" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="image_menu" class="form-label">Photo Menu</label>
+            <input type="file" name="image_menu" id="image_menu" class="form-control">
+            <img id="preview_image" src="" alt="Preview Image" style="width: 100px; margin-top: 10px;">
+        </div>
+        <div class="mb-3">
+            <label for="kategori_menu" class="form-label">Kategori Menu</label>
+            <select name="kategori_menu" id="kategori_menu" class="form-select">
+                @foreach ($kategori as $item)
+                    <option value="{{ $item->id_kategori }}">{{ $item->nama_kategori }}</option>
+                @endforeach
+            </select>
+        </div>
+        <input type="hidden" name="id_menu" id="id_menu">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
 @stop
 
@@ -121,8 +185,8 @@
 <style>
     .btn-group a,
     .btn-group button {
-        margin-right: 10px; 
-        border-radius: 10px; 
+        margin-right: 10px;
+        border-radius: 10px;
     }
 
     .btn-primary {
@@ -156,7 +220,7 @@
     }
 
     .dropdown-menu {
-        border-radius: 10px; 
+        border-radius: 10px;
     }
 
     .dropdown-menu a {
@@ -164,31 +228,43 @@
     }
 
     .dropdown-menu a:hover {
-        background-color: #f8f9fa; 
-        border-radius: 5px; 
+        background-color: #f8f9fa;
+        border-radius: 5px;
     }
 
     .btn-group {
         display: flex;
-        flex-wrap: wrap; 
-        gap: 10px; 
+        flex-wrap: wrap;
+        gap: 10px;
     }
 </style>
 @stop
 
 @section('js')
-    <script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
-    document.querySelectorAll('.form-check-input').forEach(checkbox => {
-    checkbox.addEventListener('change', function () {
-        const stockInput = this.parentElement.querySelector('input[type="number"]');
-            if (this.checked) {
-                stockInput.disabled = false;
-            } else {
-                stockInput.disabled = true;
-                stockInput.value = '';
-            }
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.populate-form');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.dataset.id;
+            const nama = this.dataset.nama;
+            const harga = this.dataset.harga;
+            const image = this.dataset.image;
+            const kategori = this.dataset.kategori;
+            const idmenu = this.dataset.idmenu;
+
+            document.getElementById('id').value = id;
+            document.getElementById('nama').value = nama;
+            document.getElementById('harga').value = harga;
+            document.getElementById('id_menu').value = idmenu;
+
+            const previewImage = document.getElementById('preview_image');
+            previewImage.src = image;
+            const kategoriMenu = document.getElementById('kategori_menu');
+            kategoriMenu.value = kategori;
         });
     });
-    </script>
+});
+
+</script>
 @stop
