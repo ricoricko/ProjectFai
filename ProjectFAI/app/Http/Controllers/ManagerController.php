@@ -209,7 +209,6 @@ class ManagerController extends Controller
             ]);
         }
 
-        // Retrieve all products and categories
         $produk = Produk::all();
         $kategori = Kategori::all();
         $menu= Menu::with('kategori')->get();
@@ -248,7 +247,7 @@ class ManagerController extends Controller
 
     public function deleteProduk($id){
         $produk = Produk::findOrFail($id);
-        $produk->update(['status' => 0]); // Mengubah status menjadi 0
+        $produk->update(['status' => 0]); 
         return redirect()->route('admin.produk')->with('success', 'Produk berhasil dihapus.');
     }
 
@@ -271,8 +270,13 @@ class ManagerController extends Controller
         return view('adminusers', compact('users'));
     }
     public function bestPegawai() {
-        $bestPegawai = Pegawai::orderBy('jumlah_confirm', 'desc')->get();
-         return view('bestPegawai', ['pegawai' => $bestPegawai]);
+        $bestPegawai = Pegawai::where('status_pegawai', 0)
+        ->whereNotNull('jumlah_confirm')
+        ->orderBy('jumlah_confirm', 'desc')
+        ->take(3)
+        ->get();
+    
+    return view('bestPegawai', ['pegawai' => $bestPegawai]);
     }
     public function bestSeller()
     {
@@ -348,6 +352,7 @@ class ManagerController extends Controller
             \DB::table('cash_in')->insert([
                 'cash_in' => $jumlahCash,
                 'tanggal' => now(),
+                'status' => 'top up'
             ]);
         });
 

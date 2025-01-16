@@ -27,8 +27,8 @@
                 Laporan
             </button>
             <ul class="dropdown-menu">
-                <li><a href="/admin/best-seller" class="dropdown-item">Best Drink</a></li>
-                <li><a href="/admin/best-food" class="dropdown-item">Best Food</a></li>
+                <li><a href="/admin/best-seller" class="dropdown-item">Penjualan Minuman</a></li>
+                <li><a href="/admin/best-food" class="dropdown-item">Penjualan Makanan</a></li>
                 <li><a href="/admin/best-pegawai" class="dropdown-item">Best Pegawai</a></li>
             </ul>
         </div>

@@ -83,7 +83,7 @@
         Nama Menu
         <input type="text" name="nama" id="nama" readonly><br>
         Jumlah
-        <input type="text" name="jumlah" id="jumlah"><br>
+        <input type="number" name="jumlah" id="jumlah" readonly><br>
         Harga
         <input type="text" name="harga" id="harga" readonly><br>
         Alasan
