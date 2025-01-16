@@ -67,12 +67,13 @@
                                 {{ $total_price }}
                             </td>
                             <td>
-                                <form action="{{ route('pegawai.confirm') }}" method="POST">
+                                <form action="{{ route('pegawai.confirm') }}" method="POST" onsubmit="return confirmAction()">
                                     @csrf
                                     <input type="hidden" name="user_id" value="{{ $items->first()->id_user }}">
                                     <button type="submit" class="btn btn-success">Confirm</button>
                                 </form>
                             </td>
+                            
                         </tr>
                     @endforeach
                 </tbody>
@@ -83,4 +84,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+<script>
+    function confirmAction() {
+        return confirm("Apakah Anda ingin mengkonfirmasi pesanan ini?");
+    }
+</script>
+
 </html>
