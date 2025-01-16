@@ -102,7 +102,7 @@
                 <label for="produk" class="form-label">Produk</label><br>
                 <div class="row">
                     @foreach ($produk as $index => $item)
-                        <div class="col-md-2 mb-2"> <!-- Adjust width for 5 items per row -->
+                        <div class="col-md-2 mb-2">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="produk[]" value="{{$item->id_produk}}" id="produk{{$item->id_produk}}">
                                 <label class="form-check-label" for="produk{{$item->id_produk}}">
@@ -140,7 +140,13 @@
                 <td><input type="text" name="nama_menu" class="form-control" value="{{ $item->nama_menu }}"></td>
                 <td><input type="text" name="harga_menu" class="form-control" value="{{ $item->harga_menu }}"></td>
                 <td><img src="{{asset($item->image_menu)}}" width="50px" alt="" srcset=""></td>
-                <td>{{ $item->kategori->nama_kategori}}</td>
+                <td>
+                    <select name="kategori_menu" id="kategori_menu" class="form-select">
+                        @foreach ($kategori as $items)
+                            <option value="{{$items->id_kategori}}" {{ $item->kategori_menu == $items->id_kategori ? 'selected' : '' }}>{{$items->nama_kategori}}</option>
+                        @endforeach
+                    </select>
+                </td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-success">Update</button>
                 </td>

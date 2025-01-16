@@ -238,7 +238,7 @@ class ManagerController extends Controller
         $menu->update([
             'nama_menu' => $request->input('nama_menu'),
             'harga_menu' => $request->input('harga_menu'),
-            // 'kategori_menu' => $request->kategori_menu,
+            'kategori_menu' => $request->kategori_menu,
             // 'image_menu' => $newpath
 
         ]);
