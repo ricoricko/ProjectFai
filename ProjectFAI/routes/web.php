@@ -67,6 +67,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::delete('/admin/kategori/{id}', [ManagerController::class, 'deletekategori'])->name('admin.deletekategori');
 
     Route::get('/admin/returnfood',[ManagerController::class,'viewReturn'])->name('admin.returnfood');
+    Route::get('/admin/hlmreturnfood',[ManagerController::class,'viewReturnfood'])->name('admin.returnfoods');
     Route::post('admin/returnfood/add',[ManagerController::class,'viewAdd'])->name('return.add');
 
 

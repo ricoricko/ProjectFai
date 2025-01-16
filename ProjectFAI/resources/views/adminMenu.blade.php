@@ -124,60 +124,30 @@
             <th>Action</th>
         </tr>
         @foreach ($menu as $item)
-            <tr>
-                <td>{{$item->nama_menu}}</td>
-                <td>{{$item->harga_menu}}</td>
-                <td><img src="{{asset($item->image_menu)}}" width="50px" srcset=""></td>
-                <td>{{$item->kategori->nama_kategori}}</td>
-                <td>
-                    <button type="button" class="populate-form btn btn-warning"
-                        data-id="{{ $item->id_menu }}"
-                        data-nama="{{ $item->nama_menu }}"
-                        data-harga="{{ $item->harga_menu }}"
-                        data-image="{{ asset($item->image_menu) }}"
-                        data-kategori="{{ $item->kategori->id_kategori }}"
-                        data-idmenu="{{ $item->id_menu }}">
-                        Update
-                    </button>
-                    <form action="{{ route('admin.deletemenu', $item->id_menu) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus menu ini?')">Delete</button>
-                    </form>
+        <tr>
+            <form action="{{ route('admin.updateMenu', $item->id_menu) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="nama_pegawai" class="form-control" value="{{ $item->id_menu }}">
+                <td><input type="text" name="nama_pegawai" class="form-control" value="{{ $item->nama_menu }}"></td>
+                <td><input type="text" name="alamat_pegawai" class="form-control" value="{{ $item->harga_menu }}"></td>
+                <td><img src="{{asset($item->image_menu)}}" width="50px" alt="" srcset=""></td>
+                <td><input type="text" name="alamat_pegawai" class="form-control" value="{{ $item->kategori->nama_kategori }}"></td>
+                <td class="text-center">
+                    <button type="submit" class="btn btn-success">Update</button>
                 </td>
-            </tr>
+            </form>
+            <td class="text-center">
+                <form action="{{ route('admin.deletemenu', $item->id_menu) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
+                </form>
+            </td>
+        </tr>
         @endforeach
     </table>
-    <form action="{{ route('admin.updateMenu') }}" method="post" enctype="multipart/form-data" class="form-control mt-3">
-        @csrf
-        <div class="mb-3">
-            <label for="id" class="form-label">Id</label>
-            <input type="text" name="id" id="id" class="form-control" readonly>
-        </div>
-        <div class="mb-3">
-            <label for="nama" class="form-label">Nama Menu</label>
-            <input type="text" name="nama" id="nama" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="harga" class="form-label">Harga</label>
-            <input type="text" name="harga" id="harga" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="image_menu" class="form-label">Photo Menu</label>
-            <input type="file" name="image_menu" id="image_menu" class="form-control">
-            <img id="preview_image" src="" alt="Preview Image" style="width: 100px; margin-top: 10px;">
-        </div>
-        <div class="mb-3">
-            <label for="kategori_menu" class="form-label">Kategori Menu</label>
-            <select name="kategori_menu" id="kategori_menu" class="form-select">
-                @foreach ($kategori as $item)
-                    <option value="{{ $item->id_kategori }}">{{ $item->nama_kategori }}</option>
-                @endforeach
-            </select>
-        </div>
-        <input type="hidden" name="id_menu" id="id_menu">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+
 </div>
 @stop
 

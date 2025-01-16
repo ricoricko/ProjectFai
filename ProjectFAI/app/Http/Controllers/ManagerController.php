@@ -222,19 +222,23 @@ class ManagerController extends Controller
         $menu= Menu::with('kategori')->get();
         return view('adminMenu', compact('produk','kategori','menu'));
     }
+    public function viewReturnfood(){
+        $return = Returnfood::with('menu')->get();
+        return view('hlmreturnfood', compact('return'));
+    }
     public function updateMenu(Request $request){
         $menu = Menu::findOrFail($request->id);
-        if ($request->hasFile('image_menu')) {
-            $image = $request->file('image_menu');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
-            $path = $image->storeAs('menu', $imageName, 'public');
-            $newpath = 'storage/menu/' . $imageName;
-        }
+        // if ($request->hasFile('image_menu')) {
+        //     $image = $request->file('image_menu');
+        //     $imageName = time().'.'.$image->getClientOriginalExtension();
+        //     $path = $image->storeAs('menu', $imageName, 'public');
+        //     $newpath = 'storage/menu/' . $imageName;
+        // }
         $menu->update([
-            'nama_menu' => $request->input('nama'),
-            'harga_menu' => $request->input('harga'),
+            'nama_menu' => $request->input('nama_menu'),
+            'harga_menu' => $request->input('harga_menu'),
             'kategori_menu' => $request->kategori_menu,
-            'image_menu' => $newpath
+            // 'image_menu' => $newpath
 
         ]);
         $produk = Produk::all();
@@ -247,7 +251,7 @@ class ManagerController extends Controller
 
     public function deleteProduk($id){
         $produk = Produk::findOrFail($id);
-        $produk->update(['status' => 0]); 
+        $produk->update(['status' => 0]);
         return redirect()->route('admin.produk')->with('success', 'Produk berhasil dihapus.');
     }
 
@@ -275,7 +279,7 @@ class ManagerController extends Controller
         ->orderBy('jumlah_confirm', 'desc')
         ->take(3)
         ->get();
-    
+
     return view('bestPegawai', ['pegawai' => $bestPegawai]);
     }
     public function bestSeller()

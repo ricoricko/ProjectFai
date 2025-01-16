@@ -21,6 +21,15 @@
                 <li><a class="dropdown-item" href="/admin/cashOut">Cash Out</a></li>
             </ul>
         </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Cash
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/admin/returnfood" class="dropdown-item">Return Food</a></li>
+                <li><a class="dropdown-item" href="/admin/hlmreturnfood">Table Return Food</a></li>
+            </ul>
+        </div>
         <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
         <div class="btn-group">
             <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,6 +52,7 @@
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
@@ -57,51 +67,39 @@
     </div>
 @endif
 
-<h2>List Users</h2>
+{{--
+<div class="mb-4">
+    <form action="{{ route('admin.addCash') }}" method="POST">
+        @csrf
+        <div class="input-group">
+            <input type="number" name="jumlah_cash" class="form-control" placeholder="Tambah Cash" min="0" required>
+            <button class="btn btn-primary" type="submit">Tambah</button>
+        </div>
+    </form>
+</div> --}}
+
 <div class="table-responsive">
-    <table class="table table-bordered table-hover align-middle">
-        <thead class="table-dark">
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Status</th>
-                {{-- <th colspan="2">Action</th> --}}
+                <th>Id nota</th>
+                <th>Nama menu</th>
+                <th>Alasan</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $pgw)
-                <tr>
-                    <form action="{{ route('admin.updatekategori', $pgw->id_user) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <td>{{ $pgw->id_user }}</td>
-                        <td><input type="text" name="nama_produk" class="form-control" value="{{ $pgw->username }}" disabled></td>
-                        <td><input type="password" name="password" class="form-control" value="{{ $pgw->password }}" disabled></td>
-                        <td><input type="text" name="nama" class="form-control" value="{{ $pgw->nama }}" disabled></td>
-                        <td><input type="email" name="email" class="form-control" value="{{ $pgw->email }}" disabled></td>
-                        <td><input type="number" name="phone" class="form-control" value="{{ $pgw->phone }}" disabled></td>
-                        <td>{{ $pgw->status == '1' ? 'Aktif' : 'Inactive' }}</td>
-                        {{-- <td>
-                            <button class="btn btn-success" type="submit">Update</button>
-                        </td> --}}
-                    </form>
-                    {{-- <td>
-                        <form action="{{ route('admin.deletekategori', $pgw->id_user) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger" type="submit" onclick="return confirm('Apakah Anda yakin ingin menonaktifkan user ini?')">Delete</button>
-                        </form>
-                    </td> --}}
-                </tr>
+            @foreach($return as $cash)
+            <tr>
+                <td>{{$cash->id_nota}}</td>
+                <td>{{ $cash->menu->nama_menu }}</td>
+                <td>{{ $cash->alasan }}</td>
+            </tr>
             @endforeach
         </tbody>
     </table>
 </div>
 @stop
+
 @section('css')
 <style>
     .btn-group a,
@@ -159,4 +157,21 @@
         gap: 10px;
     }
 </style>
+@stop
+
+@section('js')
+<script>
+    console.log("Hi, I'm using the Laravel-AdminLTE package!");
+    document.querySelectorAll('.form-check-input').forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+        const stockInput = this.parentElement.querySelector('input[type="number"]');
+            if (this.checked) {
+                stockInput.disabled = false;
+            } else {
+                stockInput.disabled = true;
+                stockInput.value = '';
+            }
+        });
+    });
+</script>
 @stop
