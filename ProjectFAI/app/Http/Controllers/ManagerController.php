@@ -216,7 +216,7 @@ class ManagerController extends Controller
     }
     public function deleteMenu($id){
         $menu = Menu::findOrFail($id);
-        $menu->delete();
+        $menu->update(['status' => 1]);
         $produk = Produk::all();
         $kategori = Kategori::all();
         $menu= Menu::with('kategori')->get();

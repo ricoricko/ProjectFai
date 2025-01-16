@@ -16,6 +16,7 @@ class Menu extends Model
         'kategori_menu',
         'harga_menu',
         'image_menu',
+        'status'
     ];
     public $timestamps = false;
     public function kategori()

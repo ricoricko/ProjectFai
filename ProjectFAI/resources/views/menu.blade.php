@@ -13,7 +13,7 @@
             background-color: #d2b48c;
         }
         .nav-link, .navbar-brand {
-            color: #000 !important; 
+            color: #000 !important;
         }
         .card {
             border: none;
@@ -88,7 +88,7 @@
         <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="kategori-{{ $category->id_kategori }}" role="tabpanel" aria-labelledby="tab-{{ $category->id_kategori }}">
             <div class="row">
                 @foreach($menus as $menu)
-                @if($menu->kategori_menu == $category->id_kategori)
+                @if($menu->kategori_menu == $category->id_kategori && $menu->status==0)
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
                         <img src="{{ asset($menu->image_menu) }}" class="card-img-top" alt="{{ $menu->nama_menu }}">

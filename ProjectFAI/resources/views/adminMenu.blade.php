@@ -132,6 +132,7 @@
             <th>Action</th>
         </tr>
         @foreach ($menu as $item)
+        @if ($item->status == 0)
         <tr>
             <form action="{{ route('admin.updateMenu', $item->id_menu) }}" method="POST">
                 @csrf
@@ -159,6 +160,7 @@
                 </form>
             </td>
         </tr>
+        @endif
         @endforeach
     </table>
 
