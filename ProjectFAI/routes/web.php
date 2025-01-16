@@ -35,8 +35,7 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->n
 Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
 Route::get('/payment-success', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
 
-// Halaman Pembayaran
-Route::get('/payment', function () {
+ZRoute::get('/payment', function () {
     return view('payment');
 })->name('payment');
 });
