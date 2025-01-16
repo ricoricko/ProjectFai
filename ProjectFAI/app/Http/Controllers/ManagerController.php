@@ -212,9 +212,8 @@ class ManagerController extends Controller
         // Retrieve all products and categories
         $produk = Produk::all();
         $kategori = Kategori::all();
-
-        // Return the view with the retrieved data
-        return view('adminMenu', compact('produk', 'kategori'));
+        $menu= Menu::with('kategori')->get();
+        return view('adminMenu', compact('produk','kategori','menu'));
     }
     public function deleteMenu($id){
         $menu = Menu::findOrFail($id);
