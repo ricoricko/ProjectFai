@@ -13,7 +13,7 @@
             background-color: #d2b48c;
         }
         .nav-link, .navbar-brand {
-            color: #000 !important; /* Changed text color to black */
+            color: #000 !important; 
         }
         .card {
             border: none;
