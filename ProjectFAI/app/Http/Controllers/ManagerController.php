@@ -226,8 +226,9 @@ class ManagerController extends Controller
         $return = Returnfood::with('menu')->get();
         return view('hlmreturnfood', compact('return'));
     }
-    public function updateMenu(Request $request){
-        $menu = Menu::findOrFail($request->id);
+    public function updateMenu(Request $request, $id){
+        $menu = Menu::findOrFail($id);
+        // dd($request);
         // if ($request->hasFile('image_menu')) {
         //     $image = $request->file('image_menu');
         //     $imageName = time().'.'.$image->getClientOriginalExtension();
@@ -237,7 +238,7 @@ class ManagerController extends Controller
         $menu->update([
             'nama_menu' => $request->input('nama_menu'),
             'harga_menu' => $request->input('harga_menu'),
-            'kategori_menu' => $request->kategori_menu,
+            // 'kategori_menu' => $request->kategori_menu,
             // 'image_menu' => $newpath
 
         ]);

@@ -136,11 +136,11 @@
             <form action="{{ route('admin.updateMenu', $item->id_menu) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="nama_pegawai" class="form-control" value="{{ $item->id_menu }}">
-                <td><input type="text" name="nama_pegawai" class="form-control" value="{{ $item->nama_menu }}"></td>
-                <td><input type="text" name="alamat_pegawai" class="form-control" value="{{ $item->harga_menu }}"></td>
+                <input type="hidden" name="id_menu" class="form-control" value="{{ $item->id_menu }}">
+                <td><input type="text" name="nama_menu" class="form-control" value="{{ $item->nama_menu }}"></td>
+                <td><input type="text" name="harga_menu" class="form-control" value="{{ $item->harga_menu }}"></td>
                 <td><img src="{{asset($item->image_menu)}}" width="50px" alt="" srcset=""></td>
-                <td><input type="text" name="nama_kategori" class="form-control" value="{{ $item->kategori->nama_kategori }}"></td>
+                <td>{{ $item->kategori->nama_kategori}}</td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-success">Update</button>
                 </td>
