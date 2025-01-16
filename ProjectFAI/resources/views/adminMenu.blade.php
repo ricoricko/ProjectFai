@@ -21,7 +21,15 @@
                 <li><a class="dropdown-item" href="/admin/cashOut">Cash Out</a></li>
             </ul>
         </div>
-        <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Return Food
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/admin/returnfood" class="dropdown-item">Return Food</a></li>
+                <li><a class="dropdown-item" href="/admin/hlmreturnfood">Table Return Food</a></li>
+            </ul>
+        </div>
         <div class="btn-group">
             <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Laporan
@@ -132,7 +140,7 @@
                 <td><input type="text" name="nama_pegawai" class="form-control" value="{{ $item->nama_menu }}"></td>
                 <td><input type="text" name="alamat_pegawai" class="form-control" value="{{ $item->harga_menu }}"></td>
                 <td><img src="{{asset($item->image_menu)}}" width="50px" alt="" srcset=""></td>
-                <td><input type="text" name="alamat_pegawai" class="form-control" value="{{ $item->kategori->nama_kategori }}"></td>
+                <td><input type="text" name="nama_kategori" class="form-control" value="{{ $item->kategori->nama_kategori }}"></td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-success">Update</button>
                 </td>

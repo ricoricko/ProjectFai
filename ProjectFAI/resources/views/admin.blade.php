@@ -21,7 +21,15 @@
                 <li><a class="dropdown-item" href="/admin/cashOut">Cash Out</a></li>
             </ul>
         </div>
-        <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Return Food
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/admin/returnfood" class="dropdown-item">Return Food</a></li>
+                <li><a class="dropdown-item" href="/admin/hlmreturnfood">Table Return Food</a></li>
+            </ul>
+        </div>
         <div class="btn-group">
             <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                 Laporan
@@ -180,8 +188,8 @@
 <style>
     .btn-group a,
     .btn-group button {
-        margin-right: 10px; 
-        border-radius: 10px; 
+        margin-right: 10px;
+        border-radius: 10px;
     }
 
     .btn-primary {
@@ -215,7 +223,7 @@
     }
 
     .dropdown-menu {
-        border-radius: 10px; 
+        border-radius: 10px;
     }
 
     .dropdown-menu a {
@@ -223,14 +231,14 @@
     }
 
     .dropdown-menu a:hover {
-        background-color: #f8f9fa; 
-        border-radius: 5px; 
+        background-color: #f8f9fa;
+        border-radius: 5px;
     }
 
     .btn-group {
         display: flex;
-        flex-wrap: wrap; 
-        gap: 10px; 
+        flex-wrap: wrap;
+        gap: 10px;
     }
 </style>
 @stop

@@ -5,34 +5,43 @@
 @section('content_header')
 <h1 class="mb-4">Dashboard</h1>
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <div class="btn-group" role="group">
-        <a href="/admin/produk" class="btn btn-primary">Produk</a>
-        <a href="/admin" class="btn btn-success">Admin</a>
-        <a href="/admin/kategori" class="btn btn-warning">Kategori</a>
-        <a href="/admin/users" class="btn btn-info">Users</a>
-        <a href="/admin/menu" class="btn btn-danger">Menu</a>
-        <div class="btn-group">
-            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Cash
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/admin/cash">Cash</a></li>
-                <li><a class="dropdown-item" href="/admin/cashIn">Cash In</a></li>
-                <li><a class="dropdown-item" href="/admin/cashOut">Cash Out</a></li>
-            </ul>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="btn-group" role="group">
+            <a href="/admin/produk" class="btn btn-primary">Produk</a>
+            <a href="/admin" class="btn btn-success">Admin</a>
+            <a href="/admin/kategori" class="btn btn-warning">Kategori</a>
+            <a href="/admin/users" class="btn btn-info">Users</a>
+            <a href="/admin/menu" class="btn btn-danger">Menu</a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Cash
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/admin/cash">Cash</a></li>
+                    <li><a class="dropdown-item" href="/admin/cashIn">Cash In</a></li>
+                    <li><a class="dropdown-item" href="/admin/cashOut">Cash Out</a></li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Return Food
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/admin/returnfood" class="dropdown-item">Return Food</a></li>
+                    <li><a class="dropdown-item" href="/admin/hlmreturnfood">Table Return Food</a></li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Laporan
+                </button>
+                <ul class="dropdown-menu">
+                <li><a href="/admin/best-seller" class="dropdown-item">Penjualan Minuman</a></li>
+                    <li><a href="/admin/best-food" class="dropdown-item">Penjualan Makanan</a></li>
+                    <li><a href="/admin/best-pegawai" class="dropdown-item">Best Pegawai</a></li>
+                </ul>
+            </div>
         </div>
-        <a href="/admin/returnfood" class="btn btn-danger">Return Food</a>
-        <div class="btn-group">
-            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Laporan
-            </button>
-            <ul class="dropdown-menu">
-            <li><a href="/admin/best-seller" class="dropdown-item">Penjualan Minuman</a></li>
-                <li><a href="/admin/best-food" class="dropdown-item">Penjualan Makanan</a></li>
-                <li><a href="/admin/best-pegawai" class="dropdown-item">Best Pegawai</a></li>
-            </ul>
-        </div>
-    </div>
     <form action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf
         <button type="submit" class="btn btn-secondary">Logout</button>
@@ -84,8 +93,8 @@
 <style>
     .btn-group a,
     .btn-group button {
-        margin-right: 10px; 
-        border-radius: 10px; 
+        margin-right: 10px;
+        border-radius: 10px;
     }
 
     .btn-primary {
@@ -119,7 +128,7 @@
     }
 
     .dropdown-menu {
-        border-radius: 10px; 
+        border-radius: 10px;
     }
 
     .dropdown-menu a {
@@ -127,14 +136,14 @@
     }
 
     .dropdown-menu a:hover {
-        background-color: #f8f9fa; 
-        border-radius: 5px; 
+        background-color: #f8f9fa;
+        border-radius: 5px;
     }
 
     .btn-group {
         display: flex;
-        flex-wrap: wrap; 
-        gap: 10px; 
+        flex-wrap: wrap;
+        gap: 10px;
     }
 </style>
 @stop
